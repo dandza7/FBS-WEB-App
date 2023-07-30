@@ -9,5 +9,7 @@ namespace FBSApp.Models
         public string Name { get; set; }
         public Stadium Stadium { get; set; }
         public long StadiumId { get; set; }
+        public Country Country { get; set; }
+        public long CountryId { get; set; }
     }
 }
