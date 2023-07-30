@@ -3,6 +3,7 @@ using FBSApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FBSApp.Migrations
 {
     [DbContext(typeof(FBS_DB_Context))]
-    partial class FBS_DB_ContextModelSnapshot : ModelSnapshot
+    [Migration("20230730221727_addedCountries")]
+    partial class addedCountries
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -499,521 +502,526 @@ namespace FBSApp.Migrations
                         new
                         {
                             Id = 92L,
-                            Name = "Kuwait"
+                            Name = "Kosovo"
                         },
                         new
                         {
                             Id = 93L,
-                            Name = "Kyrgyzstan"
+                            Name = "Kuwait"
                         },
                         new
                         {
                             Id = 94L,
-                            Name = "Laos"
+                            Name = "Kyrgyzstan"
                         },
                         new
                         {
                             Id = 95L,
-                            Name = "Latvia"
+                            Name = "Laos"
                         },
                         new
                         {
                             Id = 96L,
-                            Name = "Lebanon"
+                            Name = "Latvia"
                         },
                         new
                         {
                             Id = 97L,
-                            Name = "Lesotho"
+                            Name = "Lebanon"
                         },
                         new
                         {
                             Id = 98L,
-                            Name = "Liberia"
+                            Name = "Lesotho"
                         },
                         new
                         {
                             Id = 99L,
-                            Name = "Libya"
+                            Name = "Liberia"
                         },
                         new
                         {
                             Id = 100L,
-                            Name = "Liechtenstein"
+                            Name = "Libya"
                         },
                         new
                         {
                             Id = 101L,
-                            Name = "Lithuania"
+                            Name = "Liechtenstein"
                         },
                         new
                         {
                             Id = 102L,
-                            Name = "Luxembourg"
+                            Name = "Lithuania"
                         },
                         new
                         {
                             Id = 103L,
-                            Name = "Macedonia"
+                            Name = "Luxembourg"
                         },
                         new
                         {
                             Id = 104L,
-                            Name = "Madagascar"
+                            Name = "Macedonia"
                         },
                         new
                         {
                             Id = 105L,
-                            Name = "Malawi"
+                            Name = "Madagascar"
                         },
                         new
                         {
                             Id = 106L,
-                            Name = "Malaysia"
+                            Name = "Malawi"
                         },
                         new
                         {
                             Id = 107L,
-                            Name = "Maldives"
+                            Name = "Malaysia"
                         },
                         new
                         {
                             Id = 108L,
-                            Name = "Mali"
+                            Name = "Maldives"
                         },
                         new
                         {
                             Id = 109L,
-                            Name = "Malta"
+                            Name = "Mali"
                         },
                         new
                         {
                             Id = 110L,
-                            Name = "Marshall Islands"
+                            Name = "Malta"
                         },
                         new
                         {
                             Id = 111L,
-                            Name = "Mauritania"
+                            Name = "Marshall Islands"
                         },
                         new
                         {
                             Id = 112L,
-                            Name = "Mauritius"
+                            Name = "Mauritania"
                         },
                         new
                         {
                             Id = 113L,
-                            Name = "Mexico"
+                            Name = "Mauritius"
                         },
                         new
                         {
                             Id = 114L,
-                            Name = "Micronesia"
+                            Name = "Mexico"
                         },
                         new
                         {
                             Id = 115L,
-                            Name = "Moldova"
+                            Name = "Micronesia"
                         },
                         new
                         {
                             Id = 116L,
-                            Name = "Monaco"
+                            Name = "Moldova"
                         },
                         new
                         {
                             Id = 117L,
-                            Name = "Mongolia"
+                            Name = "Monaco"
                         },
                         new
                         {
                             Id = 118L,
-                            Name = "Montenegro"
+                            Name = "Mongolia"
                         },
                         new
                         {
                             Id = 119L,
-                            Name = "Morocco"
+                            Name = "Montenegro"
                         },
                         new
                         {
                             Id = 120L,
-                            Name = "Mozambique"
+                            Name = "Morocco"
                         },
                         new
                         {
                             Id = 121L,
-                            Name = "Myanmar"
+                            Name = "Mozambique"
                         },
                         new
                         {
                             Id = 122L,
-                            Name = "Namibia"
+                            Name = "Myanmar"
                         },
                         new
                         {
                             Id = 123L,
-                            Name = "Nauru"
+                            Name = "Namibia"
                         },
                         new
                         {
                             Id = 124L,
-                            Name = "Nepal"
+                            Name = "Nauru"
                         },
                         new
                         {
                             Id = 125L,
-                            Name = "Netherlands"
+                            Name = "Nepal"
                         },
                         new
                         {
                             Id = 126L,
-                            Name = "New Zealand"
+                            Name = "Netherlands"
                         },
                         new
                         {
                             Id = 127L,
-                            Name = "Nicaragua"
+                            Name = "New Zealand"
                         },
                         new
                         {
                             Id = 128L,
-                            Name = "Niger"
+                            Name = "Nicaragua"
                         },
                         new
                         {
                             Id = 129L,
-                            Name = "Nigeria"
+                            Name = "Niger"
                         },
                         new
                         {
                             Id = 130L,
-                            Name = "Norway"
+                            Name = "Nigeria"
                         },
                         new
                         {
                             Id = 131L,
-                            Name = "Oman"
+                            Name = "Norway"
                         },
                         new
                         {
                             Id = 132L,
-                            Name = "Pakistan"
+                            Name = "Oman"
                         },
                         new
                         {
                             Id = 133L,
-                            Name = "Palau"
+                            Name = "Pakistan"
                         },
                         new
                         {
                             Id = 134L,
-                            Name = "Panama"
+                            Name = "Palau"
                         },
                         new
                         {
                             Id = 135L,
-                            Name = "Papua New Guinea"
+                            Name = "Panama"
                         },
                         new
                         {
                             Id = 136L,
-                            Name = "Paraguay"
+                            Name = "Papua New Guinea"
                         },
                         new
                         {
                             Id = 137L,
-                            Name = "Peru"
+                            Name = "Paraguay"
                         },
                         new
                         {
                             Id = 138L,
-                            Name = "Philippines"
+                            Name = "Peru"
                         },
                         new
                         {
                             Id = 139L,
-                            Name = "Poland"
+                            Name = "Philippines"
                         },
                         new
                         {
                             Id = 140L,
-                            Name = "Portugal"
+                            Name = "Poland"
                         },
                         new
                         {
                             Id = 141L,
-                            Name = "Qatar"
+                            Name = "Portugal"
                         },
                         new
                         {
                             Id = 142L,
-                            Name = "Romania"
+                            Name = "Qatar"
                         },
                         new
                         {
                             Id = 143L,
-                            Name = "Russian Federation"
+                            Name = "Romania"
                         },
                         new
                         {
                             Id = 144L,
-                            Name = "Rwanda"
+                            Name = "Russian Federation"
                         },
                         new
                         {
                             Id = 145L,
-                            Name = "St Kitts & Nevis"
+                            Name = "Rwanda"
                         },
                         new
                         {
                             Id = 146L,
-                            Name = "St Lucia"
+                            Name = "St Kitts & Nevis"
                         },
                         new
                         {
                             Id = 147L,
-                            Name = "Saint Vincent & the Grenadines"
+                            Name = "St Lucia"
                         },
                         new
                         {
                             Id = 148L,
-                            Name = "Samoa"
+                            Name = "Saint Vincent & the Grenadines"
                         },
                         new
                         {
                             Id = 149L,
-                            Name = "San Marino"
+                            Name = "Samoa"
                         },
                         new
                         {
                             Id = 150L,
-                            Name = "Sao Tome & Principe"
+                            Name = "San Marino"
                         },
                         new
                         {
                             Id = 151L,
-                            Name = "Saudi Arabia"
+                            Name = "Sao Tome & Principe"
                         },
                         new
                         {
                             Id = 152L,
-                            Name = "Senegal"
+                            Name = "Saudi Arabia"
                         },
                         new
                         {
                             Id = 153L,
-                            Name = "Serbia"
+                            Name = "Senegal"
                         },
                         new
                         {
                             Id = 154L,
-                            Name = "Seychelles"
+                            Name = "Serbia"
                         },
                         new
                         {
                             Id = 155L,
-                            Name = "Sierra Leone"
+                            Name = "Seychelles"
                         },
                         new
                         {
                             Id = 156L,
-                            Name = "Singapore"
+                            Name = "Sierra Leone"
                         },
                         new
                         {
                             Id = 157L,
-                            Name = "Slovakia"
+                            Name = "Singapore"
                         },
                         new
                         {
                             Id = 158L,
-                            Name = "Slovenia"
+                            Name = "Slovakia"
                         },
                         new
                         {
                             Id = 159L,
-                            Name = "Solomon Islands"
+                            Name = "Slovenia"
                         },
                         new
                         {
                             Id = 160L,
-                            Name = "Somalia"
+                            Name = "Solomon Islands"
                         },
                         new
                         {
                             Id = 161L,
-                            Name = "South Africa"
+                            Name = "Somalia"
                         },
                         new
                         {
                             Id = 162L,
-                            Name = "South Sudan"
+                            Name = "South Africa"
                         },
                         new
                         {
                             Id = 163L,
-                            Name = "Spain"
+                            Name = "South Sudan"
                         },
                         new
                         {
                             Id = 164L,
-                            Name = "Sri Lanka"
+                            Name = "Spain"
                         },
                         new
                         {
                             Id = 165L,
-                            Name = "Sudan"
+                            Name = "Sri Lanka"
                         },
                         new
                         {
                             Id = 166L,
-                            Name = "Suriname"
+                            Name = "Sudan"
                         },
                         new
                         {
                             Id = 167L,
-                            Name = "Swaziland"
+                            Name = "Suriname"
                         },
                         new
                         {
                             Id = 168L,
-                            Name = "Sweden"
+                            Name = "Swaziland"
                         },
                         new
                         {
                             Id = 169L,
-                            Name = "Switzerland"
+                            Name = "Sweden"
                         },
                         new
                         {
                             Id = 170L,
-                            Name = "Syria"
+                            Name = "Switzerland"
                         },
                         new
                         {
                             Id = 171L,
-                            Name = "Taiwan"
+                            Name = "Syria"
                         },
                         new
                         {
                             Id = 172L,
-                            Name = "Tajikistan"
+                            Name = "Taiwan"
                         },
                         new
                         {
                             Id = 173L,
-                            Name = "Tanzania"
+                            Name = "Tajikistan"
                         },
                         new
                         {
                             Id = 174L,
-                            Name = "Thailand"
+                            Name = "Tanzania"
                         },
                         new
                         {
                             Id = 175L,
-                            Name = "Togo"
+                            Name = "Thailand"
                         },
                         new
                         {
                             Id = 176L,
-                            Name = "Tonga"
+                            Name = "Togo"
                         },
                         new
                         {
                             Id = 177L,
-                            Name = "Trinidad & Tobago"
+                            Name = "Tonga"
                         },
                         new
                         {
                             Id = 178L,
-                            Name = "Tunisia"
+                            Name = "Trinidad & Tobago"
                         },
                         new
                         {
                             Id = 179L,
-                            Name = "Turkey"
+                            Name = "Tunisia"
                         },
                         new
                         {
                             Id = 180L,
-                            Name = "Turkmenistan"
+                            Name = "Turkey"
                         },
                         new
                         {
                             Id = 181L,
-                            Name = "Tuvalu"
+                            Name = "Turkmenistan"
                         },
                         new
                         {
                             Id = 182L,
-                            Name = "Uganda"
+                            Name = "Tuvalu"
                         },
                         new
                         {
                             Id = 183L,
-                            Name = "Ukraine"
+                            Name = "Uganda"
                         },
                         new
                         {
                             Id = 184L,
-                            Name = "United Arab Emirates"
+                            Name = "Ukraine"
                         },
                         new
                         {
                             Id = 185L,
-                            Name = "United Kingdom"
+                            Name = "United Arab Emirates"
                         },
                         new
                         {
                             Id = 186L,
-                            Name = "United States"
+                            Name = "United Kingdom"
                         },
                         new
                         {
                             Id = 187L,
-                            Name = "Uruguay"
+                            Name = "United States"
                         },
                         new
                         {
                             Id = 188L,
-                            Name = "Uzbekistan"
+                            Name = "Uruguay"
                         },
                         new
                         {
                             Id = 189L,
-                            Name = "Vanuatu"
+                            Name = "Uzbekistan"
                         },
                         new
                         {
                             Id = 190L,
-                            Name = "Vatican City"
+                            Name = "Vanuatu"
                         },
                         new
                         {
                             Id = 191L,
-                            Name = "Venezuela"
+                            Name = "Vatican City"
                         },
                         new
                         {
                             Id = 192L,
-                            Name = "Vietnam"
+                            Name = "Venezuela"
                         },
                         new
                         {
                             Id = 193L,
-                            Name = "Yemen"
+                            Name = "Vietnam"
                         },
                         new
                         {
                             Id = 194L,
-                            Name = "Zambia"
+                            Name = "Yemen"
                         },
                         new
                         {
                             Id = 195L,
+                            Name = "Zambia"
+                        },
+                        new
+                        {
+                            Id = 196L,
                             Name = "Zimbabwe"
                         });
                 });
@@ -1051,9 +1059,9 @@ namespace FBSApp.Migrations
                         {
                             Id = 1L,
                             Email = "admin@gmail.com",
-                            Password = "91A841874A385D6B30583DC8C96A5AA05E17E048969A98F1835DCF5BCD4EB967D36DBA91AC8D3C5F29AB7A31B0347F3F65B6321274712EBA68EF12510B16539C",
+                            Password = "CE6D652E264FDB262A53C3B37092E55E8C9CAE3DDFDEA0CA32B332547F99211458169C97C36E45F6048A4105FF2EA4D6C3D438E5354E7978D1AEB4E016E08EF8",
                             Role = "ADMIN",
-                            Salt = new byte[] { 7, 255, 15, 6, 179, 98, 63, 99, 114, 93, 129, 123, 110, 153, 178, 229, 29, 103, 230, 83, 240, 111, 31, 159, 105, 118, 159, 171, 103, 101, 244, 229, 156, 125, 182, 158, 196, 190, 86, 132, 157, 244, 82, 189, 247, 59, 3, 43, 241, 249, 206, 183, 4, 82, 164, 219, 20, 160, 133, 175, 61, 207, 226, 214 }
+                            Salt = new byte[] { 79, 89, 22, 68, 184, 223, 159, 247, 90, 85, 142, 50, 156, 217, 154, 221, 139, 160, 210, 207, 171, 98, 63, 185, 20, 93, 224, 132, 253, 253, 238, 205, 134, 229, 55, 79, 148, 66, 194, 29, 140, 160, 88, 13, 245, 65, 132, 109, 12, 0, 100, 248, 129, 87, 27, 245, 234, 244, 218, 198, 56, 126, 162, 206 }
                         });
                 });
 #pragma warning restore 612, 618
