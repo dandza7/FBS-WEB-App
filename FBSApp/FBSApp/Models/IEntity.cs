@@ -1,4 +1,4 @@
-﻿namespace FBSApp.Model
+﻿namespace FBSApp.Models
 {
     public interface IEntity
     {

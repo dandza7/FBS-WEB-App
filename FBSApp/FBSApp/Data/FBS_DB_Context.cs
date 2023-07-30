@@ -1,4 +1,4 @@
-﻿using FBSApp.Model;
+﻿using FBSApp.Models;
 using FBSApp.SupportClasses.PasswordHasher;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

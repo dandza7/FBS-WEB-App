@@ -1,4 +1,7 @@
 using FBSApp.Data;
+using FBSApp.Repositories;
+using FBSApp.Repository;
+using FSBApp.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -50,6 +53,10 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddDbContext<FBS_DB_Context>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("ConStr")));
+
+builder.Services.AddScoped<DbContext, FBS_DB_Context>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {

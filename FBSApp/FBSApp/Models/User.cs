@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FBSApp.Model
+namespace FBSApp.Models
 {
     public class User : IEntity
     {
