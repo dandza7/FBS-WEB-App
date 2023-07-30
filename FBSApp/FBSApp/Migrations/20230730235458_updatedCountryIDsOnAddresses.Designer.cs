@@ -3,6 +3,7 @@ using FBSApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FBSApp.Migrations
 {
     [DbContext(typeof(FBS_DB_Context))]
-    partial class FBS_DB_ContextModelSnapshot : ModelSnapshot
+    [Migration("20230730235458_updatedCountryIDsOnAddresses")]
+    partial class updatedCountryIDsOnAddresses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1396,9 +1399,6 @@ namespace FBSApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("CountryId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1408,8 +1408,6 @@ namespace FBSApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CountryId");
-
                     b.HasIndex("StadiumId");
 
                     b.ToTable("Teams");
@@ -1418,161 +1416,138 @@ namespace FBSApp.Migrations
                         new
                         {
                             Id = 1L,
-                            CountryId = 54L,
                             Name = "Manchester United",
                             StadiumId = 1L
                         },
                         new
                         {
                             Id = 2L,
-                            CountryId = 54L,
                             Name = "Tottenham Hotspur",
                             StadiumId = 2L
                         },
                         new
                         {
                             Id = 3L,
-                            CountryId = 54L,
                             Name = "West Ham United",
                             StadiumId = 3L
                         },
                         new
                         {
                             Id = 4L,
-                            CountryId = 54L,
                             Name = "Arsenal",
                             StadiumId = 4L
                         },
                         new
                         {
                             Id = 5L,
-                            CountryId = 54L,
                             Name = "Manchester City",
                             StadiumId = 5L
                         },
                         new
                         {
                             Id = 6L,
-                            CountryId = 54L,
                             Name = "Liverpool",
                             StadiumId = 6L
                         },
                         new
                         {
                             Id = 7L,
-                            CountryId = 54L,
                             Name = "Newcastle United",
                             StadiumId = 7L
                         },
                         new
                         {
                             Id = 8L,
-                            CountryId = 54L,
                             Name = "Aston Villa",
                             StadiumId = 8L
                         },
                         new
                         {
                             Id = 9L,
-                            CountryId = 54L,
                             Name = "Chelsea",
                             StadiumId = 9L
                         },
                         new
                         {
                             Id = 10L,
-                            CountryId = 54L,
                             Name = "Everton",
                             StadiumId = 10L
                         },
                         new
                         {
                             Id = 11L,
-                            CountryId = 54L,
                             Name = "Sheffield United",
                             StadiumId = 11L
                         },
                         new
                         {
                             Id = 12L,
-                            CountryId = 54L,
                             Name = "Brighton & Hove Albion",
                             StadiumId = 12L
                         },
                         new
                         {
                             Id = 13L,
-                            CountryId = 54L,
                             Name = "Wolverhampton Wanderers",
                             StadiumId = 13L
                         },
                         new
                         {
                             Id = 14L,
-                            CountryId = 54L,
                             Name = "Crystal Palace",
                             StadiumId = 14L
                         },
                         new
                         {
                             Id = 15L,
-                            CountryId = 54L,
                             Name = "Fulham",
                             StadiumId = 15L
                         },
                         new
                         {
                             Id = 16L,
-                            CountryId = 54L,
                             Name = "Burnley",
                             StadiumId = 16L
                         },
                         new
                         {
                             Id = 17L,
-                            CountryId = 54L,
                             Name = "AFC Bournemouth",
                             StadiumId = 17L
                         },
                         new
                         {
                             Id = 18L,
-                            CountryId = 195L,
                             Name = "Cardiff City",
                             StadiumId = 18L
                         },
                         new
                         {
                             Id = 19L,
-                            CountryId = 54L,
                             Name = "Southampton",
                             StadiumId = 19L
                         },
                         new
                         {
                             Id = 20L,
-                            CountryId = 54L,
                             Name = "Leicester",
                             StadiumId = 20L
                         },
                         new
                         {
                             Id = 21L,
-                            CountryId = 54L,
                             Name = "Watford",
                             StadiumId = 21L
                         },
                         new
                         {
                             Id = 22L,
-                            CountryId = 54L,
                             Name = "Huddersfield Town",
                             StadiumId = 22L
                         },
                         new
                         {
                             Id = 23L,
-                            CountryId = 54L,
                             Name = "Norwich City",
                             StadiumId = 23L
                         });
@@ -1611,9 +1586,9 @@ namespace FBSApp.Migrations
                         {
                             Id = 1L,
                             Email = "admin@gmail.com",
-                            Password = "6617E8CA4FB09B09AD60CA83D4386D10C03CF0668107485212BC431305E7F2ED89192C992B31AF37894B0CBCA05AD7060CC6D0C13209759E997974FF14FF5B79",
+                            Password = "292EC360C5465021CE4D00E9AE9817CE231194940CF6CE9FDBEC486E73D9D30E6808758A8B6FCDF5EB0FFAB191A584327A4889240B5E485B4FBA6CA97E4FCEFE",
                             Role = "ADMIN",
-                            Salt = new byte[] { 158, 27, 52, 50, 186, 233, 12, 138, 76, 6, 238, 244, 75, 69, 29, 233, 132, 152, 115, 223, 141, 176, 2, 41, 209, 43, 95, 75, 24, 220, 0, 75, 139, 245, 157, 89, 3, 226, 209, 91, 232, 96, 92, 18, 134, 8, 211, 93, 144, 80, 210, 67, 181, 15, 243, 39, 235, 155, 240, 152, 174, 135, 6, 198 }
+                            Salt = new byte[] { 49, 104, 76, 160, 188, 31, 175, 86, 209, 169, 173, 143, 19, 233, 200, 99, 247, 85, 121, 245, 100, 242, 89, 124, 135, 133, 6, 93, 20, 249, 229, 170, 2, 109, 34, 239, 18, 212, 125, 236, 209, 196, 97, 209, 63, 30, 79, 142, 241, 89, 184, 63, 177, 150, 138, 119, 206, 93, 133, 137, 49, 149, 22, 234 }
                         });
                 });
 
@@ -1639,19 +1614,11 @@ namespace FBSApp.Migrations
 
             modelBuilder.Entity("FBSApp.Models.Team", b =>
                 {
-                    b.HasOne("FBSApp.Models.Country", "Country")
-                        .WithMany()
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FBSApp.Models.Stadium", "Stadium")
                         .WithMany()
                         .HasForeignKey("StadiumId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Country");
 
                     b.Navigation("Stadium");
                 });

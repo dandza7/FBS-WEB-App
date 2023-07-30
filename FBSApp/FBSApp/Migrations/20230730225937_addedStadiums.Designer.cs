@@ -3,6 +3,7 @@ using FBSApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FBSApp.Migrations
 {
     [DbContext(typeof(FBS_DB_Context))]
-    partial class FBS_DB_ContextModelSnapshot : ModelSnapshot
+    [Migration("20230730225937_addedStadiums")]
+    partial class addedStadiums
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,9 +36,6 @@ namespace FBSApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("CountryId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Number")
                         .HasColumnType("nvarchar(max)");
 
@@ -45,8 +45,6 @@ namespace FBSApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CountryId");
-
                     b.ToTable("Addresses");
 
                     b.HasData(
@@ -54,28 +52,24 @@ namespace FBSApp.Migrations
                         {
                             Id = 1L,
                             City = "Manchester",
-                            CountryId = 54L,
                             Street = "Sir Matt Busby Way"
                         },
                         new
                         {
                             Id = 2L,
                             City = "London",
-                            CountryId = 54L,
                             Street = "High Road"
                         },
                         new
                         {
                             Id = 3L,
                             City = "London",
-                            CountryId = 54L,
                             Street = "Queen Elizabeth Olympic Park"
                         },
                         new
                         {
                             Id = 4L,
                             City = "London",
-                            CountryId = 54L,
                             Number = "75",
                             Street = "Drayton Park"
                         },
@@ -83,134 +77,37 @@ namespace FBSApp.Migrations
                         {
                             Id = 5L,
                             City = "Manchester",
-                            CountryId = 54L,
                             Street = "Etihad Campus"
                         },
                         new
                         {
                             Id = 6L,
                             City = "Liverpool",
-                            CountryId = 54L,
                             Street = "Merseyside"
                         },
                         new
                         {
                             Id = 7L,
                             City = "Newcastle",
-                            CountryId = 54L,
                             Street = "Newcastle upon Tyne"
                         },
                         new
                         {
                             Id = 8L,
                             City = "Birmingham",
-                            CountryId = 54L,
                             Street = "Trinity Road"
                         },
                         new
                         {
                             Id = 9L,
                             City = "London",
-                            CountryId = 54L,
                             Street = "Fulham Road"
                         },
                         new
                         {
                             Id = 10L,
                             City = "Liverpool",
-                            CountryId = 54L,
                             Street = "Goodison Road"
-                        },
-                        new
-                        {
-                            Id = 11L,
-                            City = "Sheffield",
-                            CountryId = 54L,
-                            Street = "Granville Road"
-                        },
-                        new
-                        {
-                            Id = 12L,
-                            City = "Brighton",
-                            CountryId = 54L,
-                            Street = "Village Way"
-                        },
-                        new
-                        {
-                            Id = 13L,
-                            City = "Wolverhampton",
-                            CountryId = 54L,
-                            Street = "Waterloo Road"
-                        },
-                        new
-                        {
-                            Id = 14L,
-                            City = "London",
-                            CountryId = 54L,
-                            Street = "Whitehorse Lane"
-                        },
-                        new
-                        {
-                            Id = 15L,
-                            City = "London",
-                            CountryId = 54L,
-                            Street = "Stevenage Road"
-                        },
-                        new
-                        {
-                            Id = 16L,
-                            City = "Burnley",
-                            CountryId = 54L,
-                            Street = "Harry Potts Way"
-                        },
-                        new
-                        {
-                            Id = 17L,
-                            City = "Bournemouth",
-                            CountryId = 54L,
-                            Street = "Kings Park"
-                        },
-                        new
-                        {
-                            Id = 18L,
-                            City = "Cardiff",
-                            CountryId = 195L,
-                            Street = "Sloper Road"
-                        },
-                        new
-                        {
-                            Id = 19L,
-                            City = "Cardiff",
-                            CountryId = 54L,
-                            Street = "Britannia Road"
-                        },
-                        new
-                        {
-                            Id = 20L,
-                            City = "Leicester",
-                            CountryId = 54L,
-                            Street = "Filbert Way"
-                        },
-                        new
-                        {
-                            Id = 21L,
-                            City = "Watford",
-                            CountryId = 54L,
-                            Street = "Vicarage Road"
-                        },
-                        new
-                        {
-                            Id = 22L,
-                            City = "Huddersfield",
-                            CountryId = 54L,
-                            Street = "Stadium Way"
-                        },
-                        new
-                        {
-                            Id = 23L,
-                            City = "Norwich",
-                            CountryId = 54L,
-                            Street = "Carrow Road"
                         });
                 });
 
@@ -502,726 +399,711 @@ namespace FBSApp.Migrations
                         new
                         {
                             Id = 54L,
-                            Name = "England"
-                        },
-                        new
-                        {
-                            Id = 55L,
                             Name = "Equatorial Guinea"
                         },
                         new
                         {
-                            Id = 56L,
+                            Id = 55L,
                             Name = "Eritrea"
                         },
                         new
                         {
-                            Id = 57L,
+                            Id = 56L,
                             Name = "Estonia"
                         },
                         new
                         {
-                            Id = 58L,
+                            Id = 57L,
                             Name = "Ethiopia"
                         },
                         new
                         {
-                            Id = 59L,
+                            Id = 58L,
                             Name = "Fiji"
                         },
                         new
                         {
-                            Id = 60L,
+                            Id = 59L,
                             Name = "Finland"
                         },
                         new
                         {
-                            Id = 61L,
+                            Id = 60L,
                             Name = "France"
                         },
                         new
                         {
-                            Id = 62L,
+                            Id = 61L,
                             Name = "Gabon"
                         },
                         new
                         {
-                            Id = 63L,
+                            Id = 62L,
                             Name = "Gambia"
                         },
                         new
                         {
-                            Id = 64L,
+                            Id = 63L,
                             Name = "Georgia"
                         },
                         new
                         {
-                            Id = 65L,
+                            Id = 64L,
                             Name = "Germany"
                         },
                         new
                         {
-                            Id = 66L,
+                            Id = 65L,
                             Name = "Ghana"
                         },
                         new
                         {
-                            Id = 67L,
+                            Id = 66L,
                             Name = "Greece"
                         },
                         new
                         {
-                            Id = 68L,
+                            Id = 67L,
                             Name = "Grenada"
                         },
                         new
                         {
-                            Id = 69L,
+                            Id = 68L,
                             Name = "Guatemala"
                         },
                         new
                         {
-                            Id = 70L,
+                            Id = 69L,
                             Name = "Guinea"
                         },
                         new
                         {
-                            Id = 71L,
+                            Id = 70L,
                             Name = "Guinea-Bissau"
                         },
                         new
                         {
-                            Id = 72L,
+                            Id = 71L,
                             Name = "Guyana"
                         },
                         new
                         {
-                            Id = 73L,
+                            Id = 72L,
                             Name = "Haiti"
                         },
                         new
                         {
-                            Id = 74L,
+                            Id = 73L,
                             Name = "Honduras"
                         },
                         new
                         {
-                            Id = 75L,
+                            Id = 74L,
                             Name = "Hungary"
                         },
                         new
                         {
-                            Id = 76L,
+                            Id = 75L,
                             Name = "Iceland"
                         },
                         new
                         {
-                            Id = 77L,
+                            Id = 76L,
                             Name = "India"
                         },
                         new
                         {
-                            Id = 78L,
+                            Id = 77L,
                             Name = "Indonesia"
                         },
                         new
                         {
-                            Id = 79L,
+                            Id = 78L,
                             Name = "Iran"
                         },
                         new
                         {
-                            Id = 80L,
+                            Id = 79L,
                             Name = "Iraq"
                         },
                         new
                         {
-                            Id = 81L,
+                            Id = 80L,
                             Name = "Ireland"
                         },
                         new
                         {
-                            Id = 82L,
+                            Id = 81L,
                             Name = "Israel"
                         },
                         new
                         {
-                            Id = 83L,
+                            Id = 82L,
                             Name = "Italy"
                         },
                         new
                         {
-                            Id = 84L,
+                            Id = 83L,
                             Name = "Ivory Coast"
                         },
                         new
                         {
-                            Id = 85L,
+                            Id = 84L,
                             Name = "Jamaica"
                         },
                         new
                         {
-                            Id = 86L,
+                            Id = 85L,
                             Name = "Japan"
                         },
                         new
                         {
-                            Id = 87L,
+                            Id = 86L,
                             Name = "Jordan"
                         },
                         new
                         {
-                            Id = 88L,
+                            Id = 87L,
                             Name = "Kazakhstan"
                         },
                         new
                         {
-                            Id = 89L,
+                            Id = 88L,
                             Name = "Kenya"
                         },
                         new
                         {
-                            Id = 90L,
+                            Id = 89L,
                             Name = "Kiribati"
                         },
                         new
                         {
-                            Id = 91L,
+                            Id = 90L,
                             Name = "Korea North"
                         },
                         new
                         {
-                            Id = 92L,
+                            Id = 91L,
                             Name = "Korea South"
                         },
                         new
                         {
-                            Id = 93L,
+                            Id = 92L,
                             Name = "Kuwait"
                         },
                         new
                         {
-                            Id = 94L,
+                            Id = 93L,
                             Name = "Kyrgyzstan"
                         },
                         new
                         {
-                            Id = 95L,
+                            Id = 94L,
                             Name = "Laos"
                         },
                         new
                         {
-                            Id = 96L,
+                            Id = 95L,
                             Name = "Latvia"
                         },
                         new
                         {
-                            Id = 97L,
+                            Id = 96L,
                             Name = "Lebanon"
                         },
                         new
                         {
-                            Id = 98L,
+                            Id = 97L,
                             Name = "Lesotho"
                         },
                         new
                         {
-                            Id = 99L,
+                            Id = 98L,
                             Name = "Liberia"
                         },
                         new
                         {
-                            Id = 100L,
+                            Id = 99L,
                             Name = "Libya"
                         },
                         new
                         {
-                            Id = 101L,
+                            Id = 100L,
                             Name = "Liechtenstein"
                         },
                         new
                         {
-                            Id = 102L,
+                            Id = 101L,
                             Name = "Lithuania"
                         },
                         new
                         {
-                            Id = 103L,
+                            Id = 102L,
                             Name = "Luxembourg"
                         },
                         new
                         {
-                            Id = 104L,
+                            Id = 103L,
                             Name = "Macedonia"
                         },
                         new
                         {
-                            Id = 105L,
+                            Id = 104L,
                             Name = "Madagascar"
                         },
                         new
                         {
-                            Id = 106L,
+                            Id = 105L,
                             Name = "Malawi"
                         },
                         new
                         {
-                            Id = 107L,
+                            Id = 106L,
                             Name = "Malaysia"
                         },
                         new
                         {
-                            Id = 108L,
+                            Id = 107L,
                             Name = "Maldives"
                         },
                         new
                         {
-                            Id = 109L,
+                            Id = 108L,
                             Name = "Mali"
                         },
                         new
                         {
-                            Id = 110L,
+                            Id = 109L,
                             Name = "Malta"
                         },
                         new
                         {
-                            Id = 111L,
+                            Id = 110L,
                             Name = "Marshall Islands"
                         },
                         new
                         {
-                            Id = 112L,
+                            Id = 111L,
                             Name = "Mauritania"
                         },
                         new
                         {
-                            Id = 113L,
+                            Id = 112L,
                             Name = "Mauritius"
                         },
                         new
                         {
-                            Id = 114L,
+                            Id = 113L,
                             Name = "Mexico"
                         },
                         new
                         {
-                            Id = 115L,
+                            Id = 114L,
                             Name = "Micronesia"
                         },
                         new
                         {
-                            Id = 116L,
+                            Id = 115L,
                             Name = "Moldova"
                         },
                         new
                         {
-                            Id = 117L,
+                            Id = 116L,
                             Name = "Monaco"
                         },
                         new
                         {
-                            Id = 118L,
+                            Id = 117L,
                             Name = "Mongolia"
                         },
                         new
                         {
-                            Id = 119L,
+                            Id = 118L,
                             Name = "Montenegro"
                         },
                         new
                         {
-                            Id = 120L,
+                            Id = 119L,
                             Name = "Morocco"
                         },
                         new
                         {
-                            Id = 121L,
+                            Id = 120L,
                             Name = "Mozambique"
                         },
                         new
                         {
-                            Id = 122L,
+                            Id = 121L,
                             Name = "Myanmar"
                         },
                         new
                         {
-                            Id = 123L,
+                            Id = 122L,
                             Name = "Namibia"
                         },
                         new
                         {
-                            Id = 124L,
+                            Id = 123L,
                             Name = "Nauru"
                         },
                         new
                         {
-                            Id = 125L,
+                            Id = 124L,
                             Name = "Nepal"
                         },
                         new
                         {
-                            Id = 126L,
+                            Id = 125L,
                             Name = "Netherlands"
                         },
                         new
                         {
-                            Id = 127L,
+                            Id = 126L,
                             Name = "New Zealand"
                         },
                         new
                         {
-                            Id = 128L,
+                            Id = 127L,
                             Name = "Nicaragua"
                         },
                         new
                         {
-                            Id = 129L,
+                            Id = 128L,
                             Name = "Niger"
                         },
                         new
                         {
-                            Id = 130L,
+                            Id = 129L,
                             Name = "Nigeria"
                         },
                         new
                         {
-                            Id = 131L,
-                            Name = "Northern Ireland"
-                        },
-                        new
-                        {
-                            Id = 132L,
+                            Id = 130L,
                             Name = "Norway"
                         },
                         new
                         {
-                            Id = 133L,
+                            Id = 131L,
                             Name = "Oman"
                         },
                         new
                         {
-                            Id = 134L,
+                            Id = 132L,
                             Name = "Pakistan"
                         },
                         new
                         {
-                            Id = 135L,
+                            Id = 133L,
                             Name = "Palau"
                         },
                         new
                         {
-                            Id = 136L,
+                            Id = 134L,
                             Name = "Panama"
                         },
                         new
                         {
-                            Id = 137L,
+                            Id = 135L,
                             Name = "Papua New Guinea"
                         },
                         new
                         {
-                            Id = 138L,
+                            Id = 136L,
                             Name = "Paraguay"
                         },
                         new
                         {
-                            Id = 139L,
+                            Id = 137L,
                             Name = "Peru"
                         },
                         new
                         {
-                            Id = 140L,
+                            Id = 138L,
                             Name = "Philippines"
                         },
                         new
                         {
-                            Id = 141L,
+                            Id = 139L,
                             Name = "Poland"
                         },
                         new
                         {
-                            Id = 142L,
+                            Id = 140L,
                             Name = "Portugal"
                         },
                         new
                         {
-                            Id = 143L,
+                            Id = 141L,
                             Name = "Qatar"
                         },
                         new
                         {
-                            Id = 144L,
+                            Id = 142L,
                             Name = "Romania"
                         },
                         new
                         {
-                            Id = 145L,
+                            Id = 143L,
                             Name = "Russian Federation"
                         },
                         new
                         {
-                            Id = 146L,
+                            Id = 144L,
                             Name = "Rwanda"
                         },
                         new
                         {
-                            Id = 147L,
+                            Id = 145L,
                             Name = "St Kitts & Nevis"
                         },
                         new
                         {
-                            Id = 148L,
+                            Id = 146L,
                             Name = "St Lucia"
                         },
                         new
                         {
-                            Id = 149L,
+                            Id = 147L,
                             Name = "Saint Vincent & the Grenadines"
                         },
                         new
                         {
-                            Id = 150L,
+                            Id = 148L,
                             Name = "Samoa"
                         },
                         new
                         {
-                            Id = 151L,
+                            Id = 149L,
                             Name = "San Marino"
                         },
                         new
                         {
-                            Id = 152L,
+                            Id = 150L,
                             Name = "Sao Tome & Principe"
                         },
                         new
                         {
-                            Id = 153L,
+                            Id = 151L,
                             Name = "Saudi Arabia"
                         },
                         new
                         {
-                            Id = 154L,
-                            Name = "Scotland"
-                        },
-                        new
-                        {
-                            Id = 155L,
+                            Id = 152L,
                             Name = "Senegal"
                         },
                         new
                         {
-                            Id = 156L,
+                            Id = 153L,
                             Name = "Serbia"
                         },
                         new
                         {
-                            Id = 157L,
+                            Id = 154L,
                             Name = "Seychelles"
                         },
                         new
                         {
-                            Id = 158L,
+                            Id = 155L,
                             Name = "Sierra Leone"
                         },
                         new
                         {
-                            Id = 159L,
+                            Id = 156L,
                             Name = "Singapore"
                         },
                         new
                         {
-                            Id = 160L,
+                            Id = 157L,
                             Name = "Slovakia"
                         },
                         new
                         {
-                            Id = 161L,
+                            Id = 158L,
                             Name = "Slovenia"
                         },
                         new
                         {
-                            Id = 162L,
+                            Id = 159L,
                             Name = "Solomon Islands"
                         },
                         new
                         {
-                            Id = 163L,
+                            Id = 160L,
                             Name = "Somalia"
                         },
                         new
                         {
-                            Id = 164L,
+                            Id = 161L,
                             Name = "South Africa"
                         },
                         new
                         {
-                            Id = 165L,
+                            Id = 162L,
                             Name = "South Sudan"
                         },
                         new
                         {
-                            Id = 166L,
+                            Id = 163L,
                             Name = "Spain"
                         },
                         new
                         {
-                            Id = 167L,
+                            Id = 164L,
                             Name = "Sri Lanka"
                         },
                         new
                         {
-                            Id = 168L,
+                            Id = 165L,
                             Name = "Sudan"
                         },
                         new
                         {
-                            Id = 169L,
+                            Id = 166L,
                             Name = "Suriname"
                         },
                         new
                         {
-                            Id = 170L,
+                            Id = 167L,
                             Name = "Swaziland"
                         },
                         new
                         {
-                            Id = 171L,
+                            Id = 168L,
                             Name = "Sweden"
                         },
                         new
                         {
-                            Id = 172L,
+                            Id = 169L,
                             Name = "Switzerland"
                         },
                         new
                         {
-                            Id = 173L,
+                            Id = 170L,
                             Name = "Syria"
                         },
                         new
                         {
-                            Id = 174L,
+                            Id = 171L,
                             Name = "Taiwan"
                         },
                         new
                         {
-                            Id = 175L,
+                            Id = 172L,
                             Name = "Tajikistan"
                         },
                         new
                         {
-                            Id = 176L,
+                            Id = 173L,
                             Name = "Tanzania"
                         },
                         new
                         {
-                            Id = 177L,
+                            Id = 174L,
                             Name = "Thailand"
                         },
                         new
                         {
-                            Id = 178L,
+                            Id = 175L,
                             Name = "Togo"
                         },
                         new
                         {
-                            Id = 179L,
+                            Id = 176L,
                             Name = "Tonga"
                         },
                         new
                         {
-                            Id = 180L,
+                            Id = 177L,
                             Name = "Trinidad & Tobago"
                         },
                         new
                         {
-                            Id = 181L,
+                            Id = 178L,
                             Name = "Tunisia"
                         },
                         new
                         {
-                            Id = 182L,
+                            Id = 179L,
                             Name = "Turkey"
                         },
                         new
                         {
-                            Id = 183L,
+                            Id = 180L,
                             Name = "Turkmenistan"
                         },
                         new
                         {
-                            Id = 184L,
+                            Id = 181L,
                             Name = "Tuvalu"
                         },
                         new
                         {
-                            Id = 185L,
+                            Id = 182L,
                             Name = "Uganda"
                         },
                         new
                         {
-                            Id = 186L,
+                            Id = 183L,
                             Name = "Ukraine"
                         },
                         new
                         {
-                            Id = 187L,
+                            Id = 184L,
                             Name = "United Arab Emirates"
                         },
                         new
                         {
-                            Id = 188L,
+                            Id = 185L,
+                            Name = "United Kingdom"
+                        },
+                        new
+                        {
+                            Id = 186L,
                             Name = "United States"
                         },
                         new
                         {
-                            Id = 189L,
+                            Id = 187L,
                             Name = "Uruguay"
                         },
                         new
                         {
-                            Id = 190L,
+                            Id = 188L,
                             Name = "Uzbekistan"
                         },
                         new
                         {
-                            Id = 191L,
+                            Id = 189L,
                             Name = "Vanuatu"
                         },
                         new
                         {
-                            Id = 192L,
+                            Id = 190L,
                             Name = "Vatican City"
                         },
                         new
                         {
-                            Id = 193L,
+                            Id = 191L,
                             Name = "Venezuela"
                         },
                         new
                         {
-                            Id = 194L,
+                            Id = 192L,
                             Name = "Vietnam"
                         },
                         new
                         {
-                            Id = 195L,
-                            Name = "Wales"
-                        },
-                        new
-                        {
-                            Id = 196L,
+                            Id = 193L,
                             Name = "Yemen"
                         },
                         new
                         {
-                            Id = 197L,
+                            Id = 194L,
                             Name = "Zambia"
                         },
                         new
                         {
-                            Id = 198L,
+                            Id = 195L,
                             Name = "Zimbabwe"
                         });
                 });
@@ -1288,7 +1170,7 @@ namespace FBSApp.Migrations
                         {
                             Id = 7L,
                             AddressId = 7L,
-                            Name = "St. James' Park"
+                            Name = "St. James Park"
                         },
                         new
                         {
@@ -1307,274 +1189,6 @@ namespace FBSApp.Migrations
                             Id = 10L,
                             AddressId = 10L,
                             Name = "Goodison Park"
-                        },
-                        new
-                        {
-                            Id = 11L,
-                            AddressId = 11L,
-                            Name = "Bramall Lane"
-                        },
-                        new
-                        {
-                            Id = 12L,
-                            AddressId = 12L,
-                            Name = "Falmer Stadium"
-                        },
-                        new
-                        {
-                            Id = 13L,
-                            AddressId = 13L,
-                            Name = "Molineux"
-                        },
-                        new
-                        {
-                            Id = 14L,
-                            AddressId = 14L,
-                            Name = "Selhurst Park"
-                        },
-                        new
-                        {
-                            Id = 15L,
-                            AddressId = 15L,
-                            Name = "Craven Cottage"
-                        },
-                        new
-                        {
-                            Id = 16L,
-                            AddressId = 16L,
-                            Name = "Turf Moor"
-                        },
-                        new
-                        {
-                            Id = 17L,
-                            AddressId = 17L,
-                            Name = "Dean Court"
-                        },
-                        new
-                        {
-                            Id = 18L,
-                            AddressId = 18L,
-                            Name = "Cardiff City Stadium"
-                        },
-                        new
-                        {
-                            Id = 19L,
-                            AddressId = 19L,
-                            Name = "St Mary's Stadium"
-                        },
-                        new
-                        {
-                            Id = 20L,
-                            AddressId = 20L,
-                            Name = "King Power Stadium"
-                        },
-                        new
-                        {
-                            Id = 21L,
-                            AddressId = 21L,
-                            Name = "Vicarage Road"
-                        },
-                        new
-                        {
-                            Id = 22L,
-                            AddressId = 22L,
-                            Name = "Kirklees Stadium"
-                        },
-                        new
-                        {
-                            Id = 23L,
-                            AddressId = 23L,
-                            Name = "Carrow Road"
-                        });
-                });
-
-            modelBuilder.Entity("FBSApp.Models.Team", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("CountryId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("StadiumId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CountryId");
-
-                    b.HasIndex("StadiumId");
-
-                    b.ToTable("Teams");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            CountryId = 54L,
-                            Name = "Manchester United",
-                            StadiumId = 1L
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            CountryId = 54L,
-                            Name = "Tottenham Hotspur",
-                            StadiumId = 2L
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            CountryId = 54L,
-                            Name = "West Ham United",
-                            StadiumId = 3L
-                        },
-                        new
-                        {
-                            Id = 4L,
-                            CountryId = 54L,
-                            Name = "Arsenal",
-                            StadiumId = 4L
-                        },
-                        new
-                        {
-                            Id = 5L,
-                            CountryId = 54L,
-                            Name = "Manchester City",
-                            StadiumId = 5L
-                        },
-                        new
-                        {
-                            Id = 6L,
-                            CountryId = 54L,
-                            Name = "Liverpool",
-                            StadiumId = 6L
-                        },
-                        new
-                        {
-                            Id = 7L,
-                            CountryId = 54L,
-                            Name = "Newcastle United",
-                            StadiumId = 7L
-                        },
-                        new
-                        {
-                            Id = 8L,
-                            CountryId = 54L,
-                            Name = "Aston Villa",
-                            StadiumId = 8L
-                        },
-                        new
-                        {
-                            Id = 9L,
-                            CountryId = 54L,
-                            Name = "Chelsea",
-                            StadiumId = 9L
-                        },
-                        new
-                        {
-                            Id = 10L,
-                            CountryId = 54L,
-                            Name = "Everton",
-                            StadiumId = 10L
-                        },
-                        new
-                        {
-                            Id = 11L,
-                            CountryId = 54L,
-                            Name = "Sheffield United",
-                            StadiumId = 11L
-                        },
-                        new
-                        {
-                            Id = 12L,
-                            CountryId = 54L,
-                            Name = "Brighton & Hove Albion",
-                            StadiumId = 12L
-                        },
-                        new
-                        {
-                            Id = 13L,
-                            CountryId = 54L,
-                            Name = "Wolverhampton Wanderers",
-                            StadiumId = 13L
-                        },
-                        new
-                        {
-                            Id = 14L,
-                            CountryId = 54L,
-                            Name = "Crystal Palace",
-                            StadiumId = 14L
-                        },
-                        new
-                        {
-                            Id = 15L,
-                            CountryId = 54L,
-                            Name = "Fulham",
-                            StadiumId = 15L
-                        },
-                        new
-                        {
-                            Id = 16L,
-                            CountryId = 54L,
-                            Name = "Burnley",
-                            StadiumId = 16L
-                        },
-                        new
-                        {
-                            Id = 17L,
-                            CountryId = 54L,
-                            Name = "AFC Bournemouth",
-                            StadiumId = 17L
-                        },
-                        new
-                        {
-                            Id = 18L,
-                            CountryId = 195L,
-                            Name = "Cardiff City",
-                            StadiumId = 18L
-                        },
-                        new
-                        {
-                            Id = 19L,
-                            CountryId = 54L,
-                            Name = "Southampton",
-                            StadiumId = 19L
-                        },
-                        new
-                        {
-                            Id = 20L,
-                            CountryId = 54L,
-                            Name = "Leicester",
-                            StadiumId = 20L
-                        },
-                        new
-                        {
-                            Id = 21L,
-                            CountryId = 54L,
-                            Name = "Watford",
-                            StadiumId = 21L
-                        },
-                        new
-                        {
-                            Id = 22L,
-                            CountryId = 54L,
-                            Name = "Huddersfield Town",
-                            StadiumId = 22L
-                        },
-                        new
-                        {
-                            Id = 23L,
-                            CountryId = 54L,
-                            Name = "Norwich City",
-                            StadiumId = 23L
                         });
                 });
 
@@ -1611,19 +1225,10 @@ namespace FBSApp.Migrations
                         {
                             Id = 1L,
                             Email = "admin@gmail.com",
-                            Password = "6617E8CA4FB09B09AD60CA83D4386D10C03CF0668107485212BC431305E7F2ED89192C992B31AF37894B0CBCA05AD7060CC6D0C13209759E997974FF14FF5B79",
+                            Password = "58351124FFE00083BD2029564E30E70008E4E34E2ECEAE7E416526C0399168E9903DB0ED43C27C9DDFADCF5628C73134B03FA248F148B1E4E4F3070053B34B0F",
                             Role = "ADMIN",
-                            Salt = new byte[] { 158, 27, 52, 50, 186, 233, 12, 138, 76, 6, 238, 244, 75, 69, 29, 233, 132, 152, 115, 223, 141, 176, 2, 41, 209, 43, 95, 75, 24, 220, 0, 75, 139, 245, 157, 89, 3, 226, 209, 91, 232, 96, 92, 18, 134, 8, 211, 93, 144, 80, 210, 67, 181, 15, 243, 39, 235, 155, 240, 152, 174, 135, 6, 198 }
+                            Salt = new byte[] { 39, 178, 14, 104, 248, 88, 251, 56, 238, 72, 11, 215, 240, 29, 46, 87, 84, 151, 156, 99, 167, 161, 100, 111, 55, 122, 102, 28, 236, 213, 149, 141, 195, 81, 166, 72, 242, 213, 184, 254, 234, 213, 148, 79, 47, 189, 32, 96, 140, 164, 183, 21, 61, 191, 146, 178, 77, 235, 136, 166, 183, 169, 152, 46 }
                         });
-                });
-
-            modelBuilder.Entity("FBSApp.Models.Address", b =>
-                {
-                    b.HasOne("FBSApp.Models.Country", "Country")
-                        .WithMany()
-                        .HasForeignKey("CountryId");
-
-                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("FBSApp.Models.Stadium", b =>
@@ -1635,25 +1240,6 @@ namespace FBSApp.Migrations
                         .IsRequired();
 
                     b.Navigation("Address");
-                });
-
-            modelBuilder.Entity("FBSApp.Models.Team", b =>
-                {
-                    b.HasOne("FBSApp.Models.Country", "Country")
-                        .WithMany()
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FBSApp.Models.Stadium", "Stadium")
-                        .WithMany()
-                        .HasForeignKey("StadiumId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Country");
-
-                    b.Navigation("Stadium");
                 });
 #pragma warning restore 612, 618
         }
