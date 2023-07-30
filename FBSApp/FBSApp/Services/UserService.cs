@@ -2,6 +2,7 @@
 using FBSApp.Models;
 using FBSApp.Models.DTOs.User;
 using FBSApp.Repositories;
+using FBSApp.SupportClasses.JWT;
 using FBSApp.SupportClasses.PasswordHasher;
 
 namespace FBSApp.Services
@@ -10,11 +11,13 @@ namespace FBSApp.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IJWTGenerator _JWTGenerator;
 
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, IJWTGenerator JWTGenerator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _JWTGenerator = JWTGenerator;
         }
         public JWTokenWrapper Login(LoginDTO login)
         {
@@ -27,7 +30,7 @@ namespace FBSApp.Services
             {
                 return new JWTokenWrapper { Token = "los pw", ExpirationDate = DateTime.Now };
             }
-            return new JWTokenWrapper { Token = "dobar", ExpirationDate = DateTime.Now };
+            return _JWTGenerator.GenerateToken(user);
         }
 
         public long Register(NewUserDTO newUser)
