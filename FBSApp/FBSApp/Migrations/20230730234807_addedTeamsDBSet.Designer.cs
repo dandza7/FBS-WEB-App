@@ -3,6 +3,7 @@ using FBSApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FBSApp.Migrations
 {
     [DbContext(typeof(FBS_DB_Context))]
-    partial class FBS_DB_ContextModelSnapshot : ModelSnapshot
+    [Migration("20230730234807_addedTeamsDBSet")]
+    partial class addedTeamsDBSet
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1230,7 +1233,7 @@ namespace FBSApp.Migrations
 
                     b.HasIndex("AddressId");
 
-                    b.ToTable("Stadiums");
+                    b.ToTable("Stadium");
 
                     b.HasData(
                         new
@@ -1392,7 +1395,7 @@ namespace FBSApp.Migrations
 
                     b.HasIndex("StadiumId");
 
-                    b.ToTable("Teams");
+                    b.ToTable("Team");
 
                     b.HasData(
                         new
@@ -1568,9 +1571,9 @@ namespace FBSApp.Migrations
                         {
                             Id = 1L,
                             Email = "admin@gmail.com",
-                            Password = "6B22B3E65D773FE5638B1BAE74C38FC8ED5A9CE41D8E3302AF81E9F6C22B57E960A0E8A3B5E148675D6D19CC0860CDDA81D222D3809381F2EA322B483AC74B52",
+                            Password = "F128EAF0838CF532AE561D08E704F5EF2D83A1B3AFD16A19DEB18264EEC79A348E7FF82CB1A4BDAE5C7E289FEF67CD2F7C19E35FA4D261BA46DC90AEE9532421",
                             Role = "ADMIN",
-                            Salt = new byte[] { 57, 205, 239, 122, 244, 141, 180, 216, 219, 51, 16, 140, 65, 165, 194, 97, 108, 166, 127, 37, 132, 151, 119, 119, 252, 148, 219, 4, 76, 87, 140, 44, 109, 64, 192, 246, 209, 94, 31, 36, 177, 82, 86, 236, 87, 62, 47, 207, 189, 146, 21, 76, 200, 3, 187, 222, 165, 51, 198, 71, 31, 140, 167, 95 }
+                            Salt = new byte[] { 229, 217, 182, 239, 170, 181, 131, 215, 131, 150, 180, 84, 204, 89, 6, 206, 33, 30, 72, 162, 210, 60, 73, 213, 32, 188, 198, 18, 91, 22, 208, 48, 194, 216, 207, 158, 5, 94, 111, 208, 43, 131, 192, 89, 90, 7, 86, 89, 85, 240, 19, 72, 208, 37, 172, 7, 225, 126, 1, 191, 130, 53, 59, 69 }
                         });
                 });
 

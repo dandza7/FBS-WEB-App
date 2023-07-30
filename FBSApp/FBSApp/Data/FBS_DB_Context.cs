@@ -10,6 +10,7 @@ namespace FBSApp.Data
         public DbSet<Country> Countries { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Stadium> Stadiums { get; set; }
+        public DbSet<Team> Teams { get; set; }
         public FBS_DB_Context(DbContextOptions options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -132,6 +133,37 @@ namespace FBSApp.Data
                 stadium.HasData(new { Id = 23L, Name = "Carrow Road", AddressId = 23L });
             });
             #endregion
+            modelBuilder.Entity<Team>().HasKey(t => t.Id);
+            modelBuilder.Entity<Team>().Property(t => t.Name).IsRequired();
+            modelBuilder.Entity<Team>().HasOne(t => t.Stadium).WithMany().HasForeignKey(t => t.StadiumId).IsRequired();
+            #region TeamData
+            modelBuilder.Entity<Team>(team =>
+            {
+                team.HasData(new { Id = 1L, Name = "Manchester United", StadiumId = 1L });
+                team.HasData(new { Id = 2L, Name = "Tottenham Hotspur", StadiumId = 2L });
+                team.HasData(new { Id = 3L, Name = "West Ham United", StadiumId = 3L });
+                team.HasData(new { Id = 4L, Name = "Arsenal", StadiumId = 4L });
+                team.HasData(new { Id = 5L, Name = "Manchester City", StadiumId = 5L });
+                team.HasData(new { Id = 6L, Name = "Liverpool", StadiumId = 6L });
+                team.HasData(new { Id = 7L, Name = "Newcastle United", StadiumId = 7L });
+                team.HasData(new { Id = 8L, Name = "Aston Villa", StadiumId = 8L });
+                team.HasData(new { Id = 9L, Name = "Chelsea", StadiumId = 9L });
+                team.HasData(new { Id = 10L, Name = "Everton", StadiumId = 10L });
+                team.HasData(new { Id = 11L, Name = "Sheffield United", StadiumId = 11L });
+                team.HasData(new { Id = 12L, Name = "Brighton & Hove Albion", StadiumId = 12L });
+                team.HasData(new { Id = 13L, Name = "Wolverhampton Wanderers", StadiumId = 13L });
+                team.HasData(new { Id = 14L, Name = "Crystal Palace", StadiumId = 14L });
+                team.HasData(new { Id = 15L, Name = "Fulham", StadiumId = 15L });
+                team.HasData(new { Id = 16L, Name = "Burnley", StadiumId = 16L });
+                team.HasData(new { Id = 17L, Name = "AFC Bournemouth", StadiumId = 17L });
+                team.HasData(new { Id = 18L, Name = "Cardiff City", StadiumId = 18L });
+                team.HasData(new { Id = 19L, Name = "Southampton", StadiumId = 19L });
+                team.HasData(new { Id = 20L, Name = "Leicester", StadiumId = 20L });
+                team.HasData(new { Id = 21L, Name = "Watford", StadiumId = 21L });
+                team.HasData(new { Id = 22L, Name = "Huddersfield Town", StadiumId = 22L });
+                team.HasData(new { Id = 23L, Name = "Norwich City", StadiumId = 23L });
+            });
+            # endregion
         }
     }
 }

@@ -3,6 +3,7 @@ using FBSApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FBSApp.Migrations
 {
     [DbContext(typeof(FBS_DB_Context))]
-    partial class FBS_DB_ContextModelSnapshot : ModelSnapshot
+    [Migration("20230730234551_addedTeams")]
+    partial class addedTeams
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1392,7 +1395,7 @@ namespace FBSApp.Migrations
 
                     b.HasIndex("StadiumId");
 
-                    b.ToTable("Teams");
+                    b.ToTable("Team");
 
                     b.HasData(
                         new
@@ -1568,9 +1571,9 @@ namespace FBSApp.Migrations
                         {
                             Id = 1L,
                             Email = "admin@gmail.com",
-                            Password = "6B22B3E65D773FE5638B1BAE74C38FC8ED5A9CE41D8E3302AF81E9F6C22B57E960A0E8A3B5E148675D6D19CC0860CDDA81D222D3809381F2EA322B483AC74B52",
+                            Password = "47E7E84C149F9D255FBC86A4ABE811255FD4183C9037010DD41C1B675ADED674DC20E082E78FB367E9CD966D80956E0DC9E177901DBF8FC0100D40E268FC7B21",
                             Role = "ADMIN",
-                            Salt = new byte[] { 57, 205, 239, 122, 244, 141, 180, 216, 219, 51, 16, 140, 65, 165, 194, 97, 108, 166, 127, 37, 132, 151, 119, 119, 252, 148, 219, 4, 76, 87, 140, 44, 109, 64, 192, 246, 209, 94, 31, 36, 177, 82, 86, 236, 87, 62, 47, 207, 189, 146, 21, 76, 200, 3, 187, 222, 165, 51, 198, 71, 31, 140, 167, 95 }
+                            Salt = new byte[] { 115, 176, 218, 43, 176, 137, 92, 204, 33, 100, 254, 186, 247, 243, 249, 145, 41, 172, 60, 92, 1, 70, 128, 89, 45, 58, 83, 229, 142, 118, 18, 132, 180, 132, 153, 31, 187, 216, 14, 126, 48, 197, 158, 81, 162, 71, 56, 173, 167, 42, 216, 242, 43, 141, 21, 10, 129, 72, 133, 176, 172, 22, 40, 31 }
                         });
                 });
 
