@@ -2,6 +2,7 @@
 using FBSApp.Models;
 using FBSApp.Models.DTOs.User;
 using FBSApp.Repositories;
+using FBSApp.SupportClasses.GlobalExceptionHandler.CustomExceptions;
 using FBSApp.SupportClasses.JWT;
 using FBSApp.SupportClasses.PasswordHasher;
 
@@ -24,11 +25,11 @@ namespace FBSApp.Services
             var user = _unitOfWork.UserRepository.GetAll().Where(u => u.Email == login.Email).FirstOrDefault();
             if (user == null)
             {
-                return new JWTokenWrapper { Token = "los email", ExpirationDate = DateTime.Now };
+                throw new NotFoundException($"There is not user in database with email: {login.Email}.");
             }
             if (!PasswordHasher.VerifyPassword(login.Password, user.Password, user.Salt))
             {
-                return new JWTokenWrapper { Token = "los pw", ExpirationDate = DateTime.Now };
+                throw new BadCredentialsException();
             }
             return _JWTGenerator.GenerateToken(user);
         }
@@ -37,7 +38,7 @@ namespace FBSApp.Services
         {
             if (_unitOfWork.UserRepository.GetAll().Where(u => u.Email == newUser.Email).Any())
             {
-                return -1;
+                throw new DuplicateItemException($"There is already user in database with email: {newUser.Email}.");
             }
             byte[] salt;
             var user = new User

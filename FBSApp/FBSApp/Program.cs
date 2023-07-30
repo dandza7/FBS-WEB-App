@@ -2,6 +2,7 @@ using FBSApp.Data;
 using FBSApp.Repositories;
 using FBSApp.Repository;
 using FBSApp.Services;
+using FBSApp.SupportClasses.GlobalExceptionHandler;
 using FBSApp.SupportClasses.JWT;
 using FSBApp.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -97,7 +98,7 @@ if (app.Environment.IsDevelopment())
     app.UseCors(devCorsPolicy);
 }
 
-//app.AddGlobalExceptionHandler();
+app.AddGlobalExceptionHandler();
 
 app.UseHttpsRedirection();
 
