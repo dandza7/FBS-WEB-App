@@ -18,6 +18,9 @@ namespace FBSApp.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// This api handles all the logic for weather forecast.
+        /// </summary>
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
