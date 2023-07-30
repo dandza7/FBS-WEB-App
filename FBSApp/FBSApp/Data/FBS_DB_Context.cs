@@ -1,13 +1,12 @@
 ﻿using FBSApp.Models;
 using FBSApp.SupportClasses.PasswordHasher;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Data;
 
 namespace FBSApp.Data
 {
     public class FBS_DB_Context : DbContext
     {
+        public DbSet<User> Users { get; set; }
         public FBS_DB_Context(DbContextOptions options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

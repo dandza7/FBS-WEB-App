@@ -6,6 +6,6 @@ namespace FBSApp.Repositories
     public interface IUnitOfWork
     {
         IGenericRepository<User> UserRepository { get; }
-        Task SaveChangesAsync();
+        void SaveChanges();
     }
 }

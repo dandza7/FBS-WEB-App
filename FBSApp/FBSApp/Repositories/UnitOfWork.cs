@@ -23,9 +23,9 @@ namespace FBSApp.Repositories
             }
         }
 
-        public async Task SaveChangesAsync()
+        public void SaveChanges()
         {
-            await _FBS_DB_Context.SaveChangesAsync();
+            _FBS_DB_Context.SaveChanges();
         }
     }
 }

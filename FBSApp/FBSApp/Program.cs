@@ -1,6 +1,7 @@
 using FBSApp.Data;
 using FBSApp.Repositories;
 using FBSApp.Repository;
+using FBSApp.Services;
 using FSBApp.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -57,6 +58,7 @@ builder.Services.AddDbContext<FBS_DB_Context>(x => x.UseSqlServer(builder.Config
 builder.Services.AddScoped<DbContext, FBS_DB_Context>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
