@@ -41,13 +41,10 @@ namespace FBSApp.Services
                 throw new DuplicateItemException($"There is already user in database with email: {newUser.Email}.");
             }
             byte[] salt;
-            var user = new User
-            {
-                Email = newUser.Email,
-                Password = PasswordHasher.HashPassword(newUser.Password, out salt),
-                Role = "USER",
-                Salt = salt
-            };
+            var user = _mapper.Map<User>(newUser);
+            user.Password = PasswordHasher.HashPassword(newUser.Password, out salt);
+            user.Salt = salt;
+            user.Role = "USER";
             var createdUser = _unitOfWork.UserRepository.Create(user);
             _unitOfWork.SaveChanges();
             return createdUser.Id;
