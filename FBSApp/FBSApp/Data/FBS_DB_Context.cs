@@ -68,28 +68,42 @@ namespace FBSApp.Data
 
             });
             #endregion
-            modelBuilder.Entity<Address>().HasKey(u => u.Id);
-            modelBuilder.Entity<Address>().Property(u => u.Street).IsRequired();
-            modelBuilder.Entity<Address>().Property(u => u.City).IsRequired();
-            modelBuilder.Entity<Address>().Property(u => u.Number).IsRequired(false);
+            modelBuilder.Entity<Address>().HasKey(a => a.Id);
+            modelBuilder.Entity<Address>().Property(a => a.Street).IsRequired();
+            modelBuilder.Entity<Address>().Property(a => a.City).IsRequired();
+            modelBuilder.Entity<Address>().Property(a => a.Number).IsRequired(false);
+            modelBuilder.Entity<Address>().HasOne(a => a.Country).WithMany().HasForeignKey(a => a.CountryId).IsRequired(false);
             #region AddressData
             modelBuilder.Entity<Address>(address =>
             {
-                address.HasData(new { Id = 1L, Street = "Sir Matt Busby Way", City = "Manchester" });
-                address.HasData(new { Id = 2L, Street = "High Road", City = "London" });
-                address.HasData(new { Id = 3L, Street = "Queen Elizabeth Olympic Park", City = "London" });
-                address.HasData(new { Id = 4L, Street = "Drayton Park", City = "London", Number = "75" });
-                address.HasData(new { Id = 5L, Street = "Etihad Campus", City = "Manchester" });
-                address.HasData(new { Id = 6L, Street = "Merseyside", City = "Liverpool" });
-                address.HasData(new { Id = 7L, Street = "Newcastle upon Tyne", City = "Newcastle" });
-                address.HasData(new { Id = 8L, Street = "Trinity Road", City = "Birmingham" });
-                address.HasData(new { Id = 9L, Street = "Fulham Road", City = "London" });
-                address.HasData(new { Id = 10L, Street = "Goodison Road", City = "Liverpool" });
+                address.HasData(new { Id = 1L, Street = "Sir Matt Busby Way", City = "Manchester", CountryId = 185L });
+                address.HasData(new { Id = 2L, Street = "High Road", City = "London", CountryId = 185L });
+                address.HasData(new { Id = 3L, Street = "Queen Elizabeth Olympic Park", City = "London", CountryId = 185L });
+                address.HasData(new { Id = 4L, Street = "Drayton Park", City = "London", Number = "75", CountryId = 185L });
+                address.HasData(new { Id = 5L, Street = "Etihad Campus", City = "Manchester", CountryId = 185L });
+                address.HasData(new { Id = 6L, Street = "Merseyside", City = "Liverpool", CountryId = 185L });
+                address.HasData(new { Id = 7L, Street = "Newcastle upon Tyne", City = "Newcastle", CountryId = 185L });
+                address.HasData(new { Id = 8L, Street = "Trinity Road", City = "Birmingham", CountryId = 185L });
+                address.HasData(new { Id = 9L, Street = "Fulham Road", City = "London", CountryId = 185L });
+                address.HasData(new { Id = 10L, Street = "Goodison Road", City = "Liverpool", CountryId = 185L });
+                address.HasData(new { Id = 11L, Street = "Granville Road", City = "Sheffield", CountryId = 185L });
+                address.HasData(new { Id = 12L, Street = "Village Way", City = "Brighton", CountryId = 185L });
+                address.HasData(new { Id = 13L, Street = "Waterloo Road", City = "Wolverhampton", CountryId = 185L });
+                address.HasData(new { Id = 14L, Street = "Whitehorse Lane", City = "London", CountryId = 185L });
+                address.HasData(new { Id = 15L, Street = "Stevenage Road", City = "London", CountryId = 185L });
+                address.HasData(new { Id = 16L, Street = "Harry Potts Way", City = "Burnley", CountryId = 185L });
+                address.HasData(new { Id = 17L, Street = "Kings Park", City = "Bournemouth", CountryId = 185L });
+                address.HasData(new { Id = 18L, Street = "Sloper Road", City = "Cardiff", CountryId = 185L });
+                address.HasData(new { Id = 19L, Street = "Britannia Road", City = "Cardiff", CountryId = 185L });
+                address.HasData(new { Id = 20L, Street = "Filbert Way", City = "Leicester", CountryId = 185L });
+                address.HasData(new { Id = 21L, Street = "Vicarage Road", City = "Watford", CountryId = 185L });
+                address.HasData(new { Id = 22L, Street = "Stadium Way", City = "Huddersfield", CountryId = 185L });
+                address.HasData(new { Id = 23L, Street = "Carrow Road", City = "Norwich", CountryId = 185L });
             });
             #endregion
-            modelBuilder.Entity<Stadium>().HasKey(u => u.Id);
-            modelBuilder.Entity<Stadium>().Property(u => u.Name).IsRequired();
-            modelBuilder.Entity<Stadium>().HasOne(u => u.Address).WithMany().HasForeignKey(s => s.AddressId).IsRequired();
+            modelBuilder.Entity<Stadium>().HasKey(s => s.Id);
+            modelBuilder.Entity<Stadium>().Property(s => s.Name).IsRequired();
+            modelBuilder.Entity<Stadium>().HasOne(s => s.Address).WithMany().HasForeignKey(s => s.AddressId).IsRequired();
             #region StadiumData
             modelBuilder.Entity<Stadium>(stadium =>
             {
@@ -99,10 +113,23 @@ namespace FBSApp.Data
                 stadium.HasData(new { Id = 4L, Name = "Emirates Stadium", AddressId = 4L });
                 stadium.HasData(new { Id = 5L, Name = "Etihad Stadium", AddressId = 5L });
                 stadium.HasData(new { Id = 6L, Name = "Anfield", AddressId = 6L });
-                stadium.HasData(new { Id = 7L, Name = "St. James Park", AddressId = 7L });
+                stadium.HasData(new { Id = 7L, Name = "St. James' Park", AddressId = 7L });
                 stadium.HasData(new { Id = 8L, Name = "Villa Park", AddressId = 8L });
                 stadium.HasData(new { Id = 9L, Name = "Stamford Bridge", AddressId = 9L });
                 stadium.HasData(new { Id = 10L, Name = "Goodison Park", AddressId = 10L });
+                stadium.HasData(new { Id = 11L, Name = "Bramall Lane", AddressId = 11L });
+                stadium.HasData(new { Id = 12L, Name = "Falmer Stadium", AddressId = 12L });
+                stadium.HasData(new { Id = 13L, Name = "Molineux", AddressId = 13L });
+                stadium.HasData(new { Id = 14L, Name = "Selhurst Park", AddressId = 14L });
+                stadium.HasData(new { Id = 15L, Name = "Craven Cottage", AddressId = 15L });
+                stadium.HasData(new { Id = 16L, Name = "Turf Moor", AddressId = 16L });
+                stadium.HasData(new { Id = 17L, Name = "Dean Court", AddressId = 17L });
+                stadium.HasData(new { Id = 18L, Name = "Cardiff City Stadium", AddressId = 18L });
+                stadium.HasData(new { Id = 19L, Name = "St Mary's Stadium", AddressId = 19L });
+                stadium.HasData(new { Id = 20L, Name = "King Power Stadium", AddressId = 20L });
+                stadium.HasData(new { Id = 21L, Name = "Vicarage Road", AddressId = 21L });
+                stadium.HasData(new { Id = 22L, Name = "Kirklees Stadium", AddressId = 22L });
+                stadium.HasData(new { Id = 23L, Name = "Carrow Road", AddressId = 23L });
             });
             #endregion
         }
