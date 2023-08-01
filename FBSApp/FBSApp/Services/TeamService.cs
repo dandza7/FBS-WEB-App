@@ -18,7 +18,7 @@ namespace FBSApp.Services
 
         public PaginationWrapper<TeamListPreviewDTO> GetListed(TeamFilterQuery query)
         {
-            var teams = _unitOfWork.TeamRepository.GetAll().Where(t => t.Name.Contains(query.Name));
+            var teams = _unitOfWork.TeamRepository.GetAll(t => t.Country).Where(t => t.Name.Contains(query.Name));
             if (query.CountryId != 0)
             {
                 teams = teams.Where(t => t.CountryId == query.CountryId);
