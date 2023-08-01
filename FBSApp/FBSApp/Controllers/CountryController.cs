@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FBSApp.Controllers
 {
     [ApiController]
-    [Route("api/authentication")]
+    [Route("api/countries")]
     public class CountryController : ControllerBase
     {
         private readonly ICountryService _countryService;
@@ -16,7 +16,7 @@ namespace FBSApp.Controllers
         }
 
         /// <summary>
-        /// [Anonymous] Gets all countries
+        /// [User, Admin] Gets all countries
         /// </summary>
         [HttpGet(Name = "GetAllCountries")]
         [Authorize(Roles = "ADMIN, USER")]
