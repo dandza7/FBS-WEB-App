@@ -3,6 +3,7 @@ using FBSApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FBSApp.Migrations
 {
     [DbContext(typeof(FBS_DB_Context))]
-    partial class FBS_DB_ContextModelSnapshot : ModelSnapshot
+    [Migration("20230801185206_ChangedInsertionOfCountries")]
+    partial class ChangedInsertionOfCountries
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -237,1189 +240,976 @@ namespace FBSApp.Migrations
                         new
                         {
                             Id = 1L,
-                            Flag = new byte[0],
                             Name = "Afghanistan"
                         },
                         new
                         {
                             Id = 2L,
-                            Flag = new byte[0],
                             Name = "Albania"
                         },
                         new
                         {
                             Id = 3L,
-                            Flag = new byte[0],
                             Name = "Algeria"
                         },
                         new
                         {
                             Id = 4L,
-                            Flag = new byte[0],
                             Name = "Andorra"
                         },
                         new
                         {
                             Id = 5L,
-                            Flag = new byte[0],
                             Name = "Angola"
                         },
                         new
                         {
                             Id = 6L,
-                            Flag = new byte[0],
                             Name = "Antigua & Deps"
                         },
                         new
                         {
                             Id = 7L,
-                            Flag = new byte[0],
                             Name = "Argentina"
                         },
                         new
                         {
                             Id = 8L,
-                            Flag = new byte[0],
                             Name = "Armenia"
                         },
                         new
                         {
                             Id = 9L,
-                            Flag = new byte[0],
                             Name = "Australia"
                         },
                         new
                         {
                             Id = 10L,
-                            Flag = new byte[0],
                             Name = "Austria"
                         },
                         new
                         {
                             Id = 11L,
-                            Flag = new byte[0],
                             Name = "Azerbaijan"
                         },
                         new
                         {
                             Id = 12L,
-                            Flag = new byte[0],
                             Name = "Bahamas"
                         },
                         new
                         {
                             Id = 13L,
-                            Flag = new byte[0],
                             Name = "Bahrain"
                         },
                         new
                         {
                             Id = 14L,
-                            Flag = new byte[0],
                             Name = "Bangladesh"
                         },
                         new
                         {
                             Id = 15L,
-                            Flag = new byte[0],
                             Name = "Barbados"
                         },
                         new
                         {
                             Id = 16L,
-                            Flag = new byte[0],
                             Name = "Belarus"
                         },
                         new
                         {
                             Id = 17L,
-                            Flag = new byte[0],
                             Name = "Belgium"
                         },
                         new
                         {
                             Id = 18L,
-                            Flag = new byte[0],
                             Name = "Belize"
                         },
                         new
                         {
                             Id = 19L,
-                            Flag = new byte[0],
                             Name = "Benin"
                         },
                         new
                         {
                             Id = 20L,
-                            Flag = new byte[0],
                             Name = "Bhutan"
                         },
                         new
                         {
                             Id = 21L,
-                            Flag = new byte[0],
                             Name = "Bolivia"
                         },
                         new
                         {
                             Id = 22L,
-                            Flag = new byte[0],
                             Name = "Bosnia Herzegovina"
                         },
                         new
                         {
                             Id = 23L,
-                            Flag = new byte[0],
                             Name = "Botswana"
                         },
                         new
                         {
                             Id = 24L,
-                            Flag = new byte[0],
                             Name = "Brazil"
                         },
                         new
                         {
                             Id = 25L,
-                            Flag = new byte[0],
                             Name = "Brunei"
                         },
                         new
                         {
                             Id = 26L,
-                            Flag = new byte[0],
                             Name = "Bulgaria"
                         },
                         new
                         {
                             Id = 27L,
-                            Flag = new byte[0],
                             Name = "Burkina"
                         },
                         new
                         {
                             Id = 28L,
-                            Flag = new byte[0],
                             Name = "Burundi"
                         },
                         new
                         {
                             Id = 29L,
-                            Flag = new byte[0],
                             Name = "Cambodia"
                         },
                         new
                         {
                             Id = 30L,
-                            Flag = new byte[0],
                             Name = "Cameroon"
                         },
                         new
                         {
                             Id = 31L,
-                            Flag = new byte[0],
                             Name = "Canada"
                         },
                         new
                         {
                             Id = 32L,
-                            Flag = new byte[0],
                             Name = "Cape Verde"
                         },
                         new
                         {
                             Id = 33L,
-                            Flag = new byte[0],
                             Name = "Central African Rep"
                         },
                         new
                         {
                             Id = 34L,
-                            Flag = new byte[0],
                             Name = "Chad"
                         },
                         new
                         {
                             Id = 35L,
-                            Flag = new byte[0],
                             Name = "Chile"
                         },
                         new
                         {
                             Id = 36L,
-                            Flag = new byte[0],
                             Name = "China"
                         },
                         new
                         {
                             Id = 37L,
-                            Flag = new byte[0],
                             Name = "Colombia"
                         },
                         new
                         {
                             Id = 38L,
-                            Flag = new byte[0],
                             Name = "Comoros"
                         },
                         new
                         {
                             Id = 39L,
-                            Flag = new byte[0],
                             Name = "Congo"
                         },
                         new
                         {
                             Id = 40L,
-                            Flag = new byte[0],
                             Name = "Congo {Democratic Rep}"
                         },
                         new
                         {
                             Id = 41L,
-                            Flag = new byte[0],
                             Name = "Costa Rica"
                         },
                         new
                         {
                             Id = 42L,
-                            Flag = new byte[0],
                             Name = "Croatia"
                         },
                         new
                         {
                             Id = 43L,
-                            Flag = new byte[0],
                             Name = "Cuba"
                         },
                         new
                         {
                             Id = 44L,
-                            Flag = new byte[0],
                             Name = "Cyprus"
                         },
                         new
                         {
                             Id = 45L,
-                            Flag = new byte[0],
                             Name = "Czech Republic"
                         },
                         new
                         {
                             Id = 46L,
-                            Flag = new byte[0],
                             Name = "Denmark"
                         },
                         new
                         {
                             Id = 47L,
-                            Flag = new byte[0],
                             Name = "Djibouti"
                         },
                         new
                         {
                             Id = 48L,
-                            Flag = new byte[0],
                             Name = "Dominica"
                         },
                         new
                         {
                             Id = 49L,
-                            Flag = new byte[0],
                             Name = "Dominican Republic"
                         },
                         new
                         {
                             Id = 50L,
-                            Flag = new byte[0],
                             Name = "East Timor"
                         },
                         new
                         {
                             Id = 51L,
-                            Flag = new byte[0],
                             Name = "Ecuador"
                         },
                         new
                         {
                             Id = 52L,
-                            Flag = new byte[0],
                             Name = "Egypt"
                         },
                         new
                         {
                             Id = 53L,
-                            Flag = new byte[0],
                             Name = "El Salvador"
                         },
                         new
                         {
                             Id = 54L,
-                            Flag = new byte[] { 137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0, 125, 0, 0, 0, 80, 8, 3, 0, 0, 0, 3, 108, 138, 255, 0, 0, 0, 4, 103, 65, 77, 65, 0, 0, 177, 143, 11, 252, 97, 5, 0, 0, 0, 32, 99, 72, 82, 77, 0, 0, 122, 38, 0, 0, 128, 132, 0, 0, 250, 0, 0, 0, 128, 232, 0, 0, 117, 48, 0, 0, 234, 96, 0, 0, 58, 152, 0, 0, 23, 112, 156, 186, 81, 60, 0, 0, 1, 26, 80, 76, 84, 69, 253, 253, 253, 254, 254, 254, 252, 252, 252, 250, 126, 126, 248, 42, 42, 248, 50, 50, 248, 49, 49, 248, 48, 48, 248, 44, 44, 249, 76, 76, 252, 221, 221, 251, 253, 253, 251, 250, 250, 251, 251, 251, 250, 250, 250, 250, 249, 249, 249, 249, 249, 234, 234, 234, 255, 255, 255, 255, 254, 254, 252, 127, 127, 250, 42, 42, 250, 50, 50, 250, 49, 49, 250, 48, 48, 250, 44, 44, 251, 76, 76, 255, 223, 223, 239, 238, 238, 249, 42, 42, 249, 50, 50, 249, 49, 49, 249, 48, 48, 249, 44, 44, 250, 76, 76, 254, 222, 222, 254, 253, 253, 238, 237, 237, 238, 238, 238, 239, 239, 239, 242, 242, 242, 243, 243, 243, 243, 242, 242, 245, 245, 245, 246, 246, 246, 248, 247, 247, 248, 248, 248, 252, 126, 126, 250, 75, 75, 254, 221, 221, 254, 252, 252, 252, 251, 251, 252, 129, 129, 254, 226, 226, 252, 255, 255, 254, 234, 234, 254, 235, 235, 252, 117, 117, 249, 45, 45, 250, 73, 73, 253, 207, 207, 254, 236, 236, 254, 233, 233, 252, 232, 232, 250, 79, 79, 250, 80, 80, 250, 57, 57, 249, 47, 47, 250, 52, 52, 250, 81, 81, 251, 80, 80, 249, 79, 79, 249, 43, 43, 250, 43, 43, 249, 41, 41, 250, 41, 41, 252, 160, 160, 252, 162, 162, 251, 87, 87, 249, 46, 46, 250, 63, 63, 252, 143, 143, 252, 163, 163, 253, 161, 161, 250, 159, 159, 252, 130, 130, 250, 77, 77, 254, 230, 230, 253, 255, 255, 253, 254, 254, 251, 126, 126, 248, 41, 41, 251, 252, 252, 252, 250, 250, 233, 13, 146, 87, 0, 0, 0, 1, 98, 75, 71, 68, 18, 123, 188, 108, 0, 0, 0, 0, 9, 112, 72, 89, 115, 0, 0, 14, 195, 0, 0, 14, 195, 1, 199, 111, 168, 100, 0, 0, 0, 7, 116, 73, 77, 69, 7, 231, 8, 1, 18, 32, 49, 148, 161, 254, 184, 0, 0, 1, 151, 73, 68, 65, 84, 104, 222, 237, 154, 87, 83, 194, 64, 20, 133, 55, 106, 4, 17, 34, 110, 48, 27, 11, 16, 48, 246, 134, 216, 177, 139, 5, 177, 247, 254, 255, 255, 134, 97, 38, 74, 130, 160, 120, 198, 97, 199, 201, 253, 158, 242, 116, 190, 156, 151, 187, 247, 225, 50, 230, 160, 124, 11, 251, 74, 27, 107, 239, 80, 59, 93, 66, 106, 184, 43, 210, 29, 141, 213, 69, 139, 106, 21, 122, 234, 16, 215, 122, 25, 7, 208, 117, 158, 232, 51, 132, 139, 105, 244, 15, 12, 114, 29, 200, 25, 250, 161, 119, 67, 18, 201, 84, 218, 197, 74, 101, 178, 195, 138, 13, 132, 140, 96, 221, 21, 158, 72, 122, 186, 59, 118, 110, 255, 182, 188, 19, 34, 215, 62, 26, 212, 238, 92, 225, 99, 82, 237, 227, 1, 182, 79, 144, 61, 144, 246, 201, 0, 119, 159, 10, 176, 125, 90, 170, 125, 134, 236, 129, 180, 207, 6, 184, 123, 92, 170, 61, 38, 213, 174, 145, 93, 146, 61, 198, 108, 140, 57, 159, 61, 55, 111, 231, 129, 144, 5, 168, 187, 195, 162, 191, 251, 18, 20, 178, 204, 86, 32, 86, 215, 188, 246, 194, 250, 198, 230, 22, 144, 178, 205, 118, 32, 118, 247, 138, 162, 138, 181, 159, 59, 0, 66, 14, 143, 88, 9, 163, 40, 172, 79, 185, 41, 172, 12, 146, 113, 92, 98, 6, 134, 71, 94, 209, 35, 17, 41, 35, 197, 76, 16, 225, 3, 73, 176, 132, 197, 132, 52, 200, 78, 246, 255, 101, 55, 27, 124, 55, 79, 218, 177, 163, 211, 198, 111, 71, 167, 77, 25, 163, 144, 174, 14, 28, 83, 20, 147, 72, 198, 73, 153, 157, 66, 156, 157, 103, 60, 205, 47, 46, 175, 174, 129, 144, 155, 91, 244, 125, 191, 243, 189, 239, 247, 15, 80, 200, 35, 180, 219, 228, 243, 127, 181, 219, 232, 8, 138, 94, 187, 215, 233, 54, 16, 210, 38, 117, 171, 36, 59, 217, 201, 222, 74, 59, 35, 59, 217, 201, 78, 118, 178, 147, 157, 236, 100, 39, 123, 171, 237, 245, 46, 157, 44, 23, 248, 210, 9, 236, 238, 187, 242, 18, 240, 149, 151, 210, 156, 93, 225, 254, 95, 102, 79, 207, 47, 106, 232, 3, 53, 156, 141, 188, 190, 213, 92, 182, 53, 67, 252, 29, 46, 169, 97, 46, 169, 73, 160, 63, 0, 0, 0, 37, 116, 69, 88, 116, 100, 97, 116, 101, 58, 99, 114, 101, 97, 116, 101, 0, 50, 48, 50, 51, 45, 48, 56, 45, 48, 49, 84, 49, 56, 58, 51, 50, 58, 51, 54, 43, 48, 48, 58, 48, 48, 37, 105, 241, 88, 0, 0, 0, 37, 116, 69, 88, 116, 100, 97, 116, 101, 58, 109, 111, 100, 105, 102, 121, 0, 50, 48, 50, 51, 45, 48, 56, 45, 48, 49, 84, 49, 56, 58, 51, 50, 58, 51, 54, 43, 48, 48, 58, 48, 48, 84, 52, 73, 228, 0, 0, 0, 0, 73, 69, 78, 68, 174, 66, 96, 130 },
-                            Name = "England"
-                        },
-                        new
-                        {
-                            Id = 55L,
-                            Flag = new byte[0],
                             Name = "Equatorial Guinea"
                         },
                         new
                         {
-                            Id = 56L,
-                            Flag = new byte[0],
+                            Id = 55L,
                             Name = "Eritrea"
                         },
                         new
                         {
-                            Id = 57L,
-                            Flag = new byte[0],
+                            Id = 56L,
                             Name = "Estonia"
                         },
                         new
                         {
-                            Id = 58L,
-                            Flag = new byte[0],
+                            Id = 57L,
                             Name = "Ethiopia"
                         },
                         new
                         {
-                            Id = 59L,
-                            Flag = new byte[0],
+                            Id = 58L,
                             Name = "Fiji"
                         },
                         new
                         {
-                            Id = 60L,
-                            Flag = new byte[0],
+                            Id = 59L,
                             Name = "Finland"
                         },
                         new
                         {
-                            Id = 61L,
-                            Flag = new byte[0],
+                            Id = 60L,
                             Name = "France"
                         },
                         new
                         {
-                            Id = 62L,
-                            Flag = new byte[0],
+                            Id = 61L,
                             Name = "Gabon"
                         },
                         new
                         {
-                            Id = 63L,
-                            Flag = new byte[0],
+                            Id = 62L,
                             Name = "Gambia"
                         },
                         new
                         {
-                            Id = 64L,
-                            Flag = new byte[0],
+                            Id = 63L,
                             Name = "Georgia"
                         },
                         new
                         {
-                            Id = 65L,
-                            Flag = new byte[0],
+                            Id = 64L,
                             Name = "Germany"
                         },
                         new
                         {
-                            Id = 66L,
-                            Flag = new byte[0],
+                            Id = 65L,
                             Name = "Ghana"
                         },
                         new
                         {
-                            Id = 67L,
-                            Flag = new byte[0],
+                            Id = 66L,
                             Name = "Greece"
                         },
                         new
                         {
-                            Id = 68L,
-                            Flag = new byte[0],
+                            Id = 67L,
                             Name = "Grenada"
                         },
                         new
                         {
-                            Id = 69L,
-                            Flag = new byte[0],
+                            Id = 68L,
                             Name = "Guatemala"
                         },
                         new
                         {
-                            Id = 70L,
-                            Flag = new byte[0],
+                            Id = 69L,
                             Name = "Guinea"
                         },
                         new
                         {
-                            Id = 71L,
-                            Flag = new byte[0],
+                            Id = 70L,
                             Name = "Guinea-Bissau"
                         },
                         new
                         {
-                            Id = 72L,
-                            Flag = new byte[0],
+                            Id = 71L,
                             Name = "Guyana"
                         },
                         new
                         {
-                            Id = 73L,
-                            Flag = new byte[0],
+                            Id = 72L,
                             Name = "Haiti"
                         },
                         new
                         {
-                            Id = 74L,
-                            Flag = new byte[0],
+                            Id = 73L,
                             Name = "Honduras"
                         },
                         new
                         {
-                            Id = 75L,
-                            Flag = new byte[0],
+                            Id = 74L,
                             Name = "Hungary"
                         },
                         new
                         {
-                            Id = 76L,
-                            Flag = new byte[0],
+                            Id = 75L,
                             Name = "Iceland"
                         },
                         new
                         {
-                            Id = 77L,
-                            Flag = new byte[0],
+                            Id = 76L,
                             Name = "India"
                         },
                         new
                         {
-                            Id = 78L,
-                            Flag = new byte[0],
+                            Id = 77L,
                             Name = "Indonesia"
                         },
                         new
                         {
-                            Id = 79L,
-                            Flag = new byte[0],
+                            Id = 78L,
                             Name = "Iran"
                         },
                         new
                         {
-                            Id = 80L,
-                            Flag = new byte[0],
+                            Id = 79L,
                             Name = "Iraq"
                         },
                         new
                         {
-                            Id = 81L,
-                            Flag = new byte[0],
+                            Id = 80L,
                             Name = "Ireland {Republic}"
                         },
                         new
                         {
-                            Id = 82L,
-                            Flag = new byte[0],
+                            Id = 81L,
                             Name = "Israel"
                         },
                         new
                         {
-                            Id = 83L,
-                            Flag = new byte[0],
+                            Id = 82L,
                             Name = "Italy"
                         },
                         new
                         {
-                            Id = 84L,
-                            Flag = new byte[0],
+                            Id = 83L,
                             Name = "Ivory Coast"
                         },
                         new
                         {
-                            Id = 85L,
-                            Flag = new byte[0],
+                            Id = 84L,
                             Name = "Jamaica"
                         },
                         new
                         {
-                            Id = 86L,
-                            Flag = new byte[0],
+                            Id = 85L,
                             Name = "Japan"
                         },
                         new
                         {
-                            Id = 87L,
-                            Flag = new byte[0],
+                            Id = 86L,
                             Name = "Jordan"
                         },
                         new
                         {
-                            Id = 88L,
-                            Flag = new byte[0],
+                            Id = 87L,
                             Name = "Kazakhstan"
                         },
                         new
                         {
-                            Id = 89L,
-                            Flag = new byte[0],
+                            Id = 88L,
                             Name = "Kenya"
                         },
                         new
                         {
-                            Id = 90L,
-                            Flag = new byte[0],
+                            Id = 89L,
                             Name = "Kiribati"
                         },
                         new
                         {
-                            Id = 91L,
-                            Flag = new byte[0],
+                            Id = 90L,
                             Name = "Korea North"
                         },
                         new
                         {
-                            Id = 92L,
-                            Flag = new byte[0],
+                            Id = 91L,
                             Name = "Korea South"
                         },
                         new
                         {
-                            Id = 93L,
-                            Flag = new byte[0],
+                            Id = 92L,
                             Name = "Kuwait"
                         },
                         new
                         {
-                            Id = 94L,
-                            Flag = new byte[0],
+                            Id = 93L,
                             Name = "Kyrgyzstan"
                         },
                         new
                         {
-                            Id = 95L,
-                            Flag = new byte[0],
+                            Id = 94L,
                             Name = "Laos"
                         },
                         new
                         {
-                            Id = 96L,
-                            Flag = new byte[0],
+                            Id = 95L,
                             Name = "Latvia"
                         },
                         new
                         {
-                            Id = 97L,
-                            Flag = new byte[0],
+                            Id = 96L,
                             Name = "Lebanon"
                         },
                         new
                         {
-                            Id = 98L,
-                            Flag = new byte[0],
+                            Id = 97L,
                             Name = "Lesotho"
                         },
                         new
                         {
-                            Id = 99L,
-                            Flag = new byte[0],
+                            Id = 98L,
                             Name = "Liberia"
                         },
                         new
                         {
-                            Id = 100L,
-                            Flag = new byte[0],
+                            Id = 99L,
                             Name = "Libya"
                         },
                         new
                         {
-                            Id = 101L,
-                            Flag = new byte[0],
+                            Id = 100L,
                             Name = "Liechtenstein"
                         },
                         new
                         {
-                            Id = 102L,
-                            Flag = new byte[0],
+                            Id = 101L,
                             Name = "Lithuania"
                         },
                         new
                         {
-                            Id = 103L,
-                            Flag = new byte[0],
+                            Id = 102L,
                             Name = "Luxembourg"
                         },
                         new
                         {
-                            Id = 104L,
-                            Flag = new byte[0],
+                            Id = 103L,
                             Name = "Macedonia"
                         },
                         new
                         {
-                            Id = 105L,
-                            Flag = new byte[0],
+                            Id = 104L,
                             Name = "Madagascar"
                         },
                         new
                         {
-                            Id = 106L,
-                            Flag = new byte[0],
+                            Id = 105L,
                             Name = "Malawi"
                         },
                         new
                         {
-                            Id = 107L,
-                            Flag = new byte[0],
+                            Id = 106L,
                             Name = "Malaysia"
                         },
                         new
                         {
-                            Id = 108L,
-                            Flag = new byte[0],
+                            Id = 107L,
                             Name = "Maldives"
                         },
                         new
                         {
-                            Id = 109L,
-                            Flag = new byte[0],
+                            Id = 108L,
                             Name = "Mali"
                         },
                         new
                         {
-                            Id = 110L,
-                            Flag = new byte[0],
+                            Id = 109L,
                             Name = "Malta"
                         },
                         new
                         {
-                            Id = 111L,
-                            Flag = new byte[0],
+                            Id = 110L,
                             Name = "Marshall Islands"
                         },
                         new
                         {
-                            Id = 112L,
-                            Flag = new byte[0],
+                            Id = 111L,
                             Name = "Mauritania"
                         },
                         new
                         {
-                            Id = 113L,
-                            Flag = new byte[0],
+                            Id = 112L,
                             Name = "Mauritius"
                         },
                         new
                         {
-                            Id = 114L,
-                            Flag = new byte[0],
+                            Id = 113L,
                             Name = "Mexico"
                         },
                         new
                         {
-                            Id = 115L,
-                            Flag = new byte[0],
+                            Id = 114L,
                             Name = "Micronesia"
                         },
                         new
                         {
-                            Id = 116L,
-                            Flag = new byte[0],
+                            Id = 115L,
                             Name = "Moldova"
                         },
                         new
                         {
-                            Id = 117L,
-                            Flag = new byte[0],
+                            Id = 116L,
                             Name = "Monaco"
                         },
                         new
                         {
-                            Id = 118L,
-                            Flag = new byte[0],
+                            Id = 117L,
                             Name = "Mongolia"
                         },
                         new
                         {
-                            Id = 119L,
-                            Flag = new byte[0],
+                            Id = 118L,
                             Name = "Montenegro"
                         },
                         new
                         {
-                            Id = 120L,
-                            Flag = new byte[0],
+                            Id = 119L,
                             Name = "Morocco"
                         },
                         new
                         {
-                            Id = 121L,
-                            Flag = new byte[0],
+                            Id = 120L,
                             Name = "Mozambique"
                         },
                         new
                         {
-                            Id = 122L,
-                            Flag = new byte[0],
+                            Id = 121L,
                             Name = "Myanmar {Burma}"
                         },
                         new
                         {
-                            Id = 123L,
-                            Flag = new byte[0],
+                            Id = 122L,
                             Name = "Namibia"
                         },
                         new
                         {
-                            Id = 124L,
-                            Flag = new byte[0],
+                            Id = 123L,
                             Name = "Nauru"
                         },
                         new
                         {
-                            Id = 125L,
-                            Flag = new byte[0],
+                            Id = 124L,
                             Name = "Nepal"
                         },
                         new
                         {
-                            Id = 126L,
-                            Flag = new byte[0],
+                            Id = 125L,
                             Name = "Netherlands"
                         },
                         new
                         {
-                            Id = 127L,
-                            Flag = new byte[0],
+                            Id = 126L,
                             Name = "New Zealand"
                         },
                         new
                         {
-                            Id = 128L,
-                            Flag = new byte[0],
+                            Id = 127L,
                             Name = "Nicaragua"
                         },
                         new
                         {
-                            Id = 129L,
-                            Flag = new byte[0],
+                            Id = 128L,
                             Name = "Niger"
                         },
                         new
                         {
-                            Id = 130L,
-                            Flag = new byte[0],
+                            Id = 129L,
                             Name = "Nigeria"
                         },
                         new
                         {
-                            Id = 131L,
-                            Flag = new byte[0],
+                            Id = 130L,
                             Name = "Norway"
                         },
                         new
                         {
-                            Id = 132L,
-                            Flag = new byte[0],
+                            Id = 131L,
                             Name = "Oman"
                         },
                         new
                         {
-                            Id = 133L,
-                            Flag = new byte[0],
+                            Id = 132L,
                             Name = "Pakistan"
                         },
                         new
                         {
-                            Id = 134L,
-                            Flag = new byte[0],
+                            Id = 133L,
                             Name = "Palau"
                         },
                         new
                         {
-                            Id = 135L,
-                            Flag = new byte[0],
+                            Id = 134L,
                             Name = "Panama"
                         },
                         new
                         {
-                            Id = 136L,
-                            Flag = new byte[0],
+                            Id = 135L,
                             Name = "Papua New Guinea"
                         },
                         new
                         {
-                            Id = 137L,
-                            Flag = new byte[0],
+                            Id = 136L,
                             Name = "Paraguay"
                         },
                         new
                         {
-                            Id = 138L,
-                            Flag = new byte[0],
+                            Id = 137L,
                             Name = "Peru"
                         },
                         new
                         {
-                            Id = 139L,
-                            Flag = new byte[0],
+                            Id = 138L,
                             Name = "Philippines"
                         },
                         new
                         {
-                            Id = 140L,
-                            Flag = new byte[0],
+                            Id = 139L,
                             Name = "Poland"
                         },
                         new
                         {
-                            Id = 141L,
-                            Flag = new byte[0],
+                            Id = 140L,
                             Name = "Portugal"
                         },
                         new
                         {
-                            Id = 142L,
-                            Flag = new byte[0],
+                            Id = 141L,
                             Name = "Qatar"
                         },
                         new
                         {
-                            Id = 143L,
-                            Flag = new byte[0],
+                            Id = 142L,
                             Name = "Romania"
                         },
                         new
                         {
-                            Id = 144L,
-                            Flag = new byte[0],
+                            Id = 143L,
                             Name = "Russian Federation"
                         },
                         new
                         {
-                            Id = 145L,
-                            Flag = new byte[0],
+                            Id = 144L,
                             Name = "Rwanda"
                         },
                         new
                         {
-                            Id = 146L,
-                            Flag = new byte[0],
+                            Id = 145L,
                             Name = "St Kitts & Nevis"
                         },
                         new
                         {
-                            Id = 147L,
-                            Flag = new byte[0],
+                            Id = 146L,
                             Name = "St Lucia"
                         },
                         new
                         {
-                            Id = 148L,
-                            Flag = new byte[0],
+                            Id = 147L,
                             Name = "Saint Vincent & the Grenadines"
                         },
                         new
                         {
-                            Id = 149L,
-                            Flag = new byte[0],
+                            Id = 148L,
                             Name = "Samoa"
                         },
                         new
                         {
-                            Id = 150L,
-                            Flag = new byte[0],
+                            Id = 149L,
                             Name = "San Marino"
                         },
                         new
                         {
-                            Id = 151L,
-                            Flag = new byte[0],
+                            Id = 150L,
                             Name = "Sao Tome & Principe"
                         },
                         new
                         {
-                            Id = 152L,
-                            Flag = new byte[0],
+                            Id = 151L,
                             Name = "Saudi Arabia"
                         },
                         new
                         {
-                            Id = 153L,
-                            Flag = new byte[0],
-                            Name = "Scotland"
-                        },
-                        new
-                        {
-                            Id = 154L,
-                            Flag = new byte[0],
+                            Id = 152L,
                             Name = "Senegal"
                         },
                         new
                         {
-                            Id = 155L,
-                            Flag = new byte[0],
+                            Id = 153L,
                             Name = "Serbia"
                         },
                         new
                         {
-                            Id = 156L,
-                            Flag = new byte[0],
+                            Id = 154L,
                             Name = "Seychelles"
                         },
                         new
                         {
-                            Id = 157L,
-                            Flag = new byte[0],
+                            Id = 155L,
                             Name = "Sierra Leone"
                         },
                         new
                         {
-                            Id = 158L,
-                            Flag = new byte[0],
+                            Id = 156L,
                             Name = "Singapore"
                         },
                         new
                         {
-                            Id = 159L,
-                            Flag = new byte[0],
+                            Id = 157L,
                             Name = "Slovakia"
                         },
                         new
                         {
-                            Id = 160L,
-                            Flag = new byte[0],
+                            Id = 158L,
                             Name = "Slovenia"
                         },
                         new
                         {
-                            Id = 161L,
-                            Flag = new byte[0],
+                            Id = 159L,
                             Name = "Solomon Islands"
                         },
                         new
                         {
-                            Id = 162L,
-                            Flag = new byte[0],
+                            Id = 160L,
                             Name = "Somalia"
                         },
                         new
                         {
-                            Id = 163L,
-                            Flag = new byte[0],
+                            Id = 161L,
                             Name = "South Africa"
                         },
                         new
                         {
-                            Id = 164L,
-                            Flag = new byte[0],
+                            Id = 162L,
                             Name = "South Sudan"
                         },
                         new
                         {
-                            Id = 165L,
-                            Flag = new byte[0],
+                            Id = 163L,
                             Name = "Spain"
                         },
                         new
                         {
-                            Id = 166L,
-                            Flag = new byte[0],
+                            Id = 164L,
                             Name = "Sri Lanka"
                         },
                         new
                         {
-                            Id = 167L,
-                            Flag = new byte[0],
+                            Id = 165L,
                             Name = "Sudan"
                         },
                         new
                         {
-                            Id = 168L,
-                            Flag = new byte[0],
+                            Id = 166L,
                             Name = "Suriname"
                         },
                         new
                         {
-                            Id = 169L,
-                            Flag = new byte[0],
+                            Id = 167L,
                             Name = "Swaziland"
                         },
                         new
                         {
-                            Id = 170L,
-                            Flag = new byte[0],
+                            Id = 168L,
                             Name = "Sweden"
                         },
                         new
                         {
-                            Id = 171L,
-                            Flag = new byte[0],
+                            Id = 169L,
                             Name = "Switzerland"
                         },
                         new
                         {
-                            Id = 172L,
-                            Flag = new byte[0],
+                            Id = 170L,
                             Name = "Syria"
                         },
                         new
                         {
-                            Id = 173L,
-                            Flag = new byte[0],
+                            Id = 171L,
                             Name = "Taiwan"
                         },
                         new
                         {
-                            Id = 174L,
-                            Flag = new byte[0],
+                            Id = 172L,
                             Name = "Tajikistan"
                         },
                         new
                         {
-                            Id = 175L,
-                            Flag = new byte[0],
+                            Id = 173L,
                             Name = "Tanzania"
                         },
                         new
                         {
-                            Id = 176L,
-                            Flag = new byte[0],
+                            Id = 174L,
                             Name = "Thailand"
                         },
                         new
                         {
-                            Id = 177L,
-                            Flag = new byte[0],
+                            Id = 175L,
                             Name = "Togo"
                         },
                         new
                         {
-                            Id = 178L,
-                            Flag = new byte[0],
+                            Id = 176L,
                             Name = "Tonga"
                         },
                         new
                         {
-                            Id = 179L,
-                            Flag = new byte[0],
+                            Id = 177L,
                             Name = "Trinidad & Tobago"
                         },
                         new
                         {
-                            Id = 180L,
-                            Flag = new byte[0],
+                            Id = 178L,
                             Name = "Tunisia"
                         },
                         new
                         {
-                            Id = 181L,
-                            Flag = new byte[0],
+                            Id = 179L,
                             Name = "Turkey"
                         },
                         new
                         {
-                            Id = 182L,
-                            Flag = new byte[0],
+                            Id = 180L,
                             Name = "Turkmenistan"
                         },
                         new
                         {
-                            Id = 183L,
-                            Flag = new byte[0],
+                            Id = 181L,
                             Name = "Tuvalu"
                         },
                         new
                         {
-                            Id = 184L,
-                            Flag = new byte[0],
+                            Id = 182L,
                             Name = "Uganda"
                         },
                         new
                         {
-                            Id = 185L,
-                            Flag = new byte[0],
+                            Id = 183L,
                             Name = "Ukraine"
                         },
                         new
                         {
-                            Id = 186L,
-                            Flag = new byte[0],
+                            Id = 184L,
                             Name = "United Arab Emirates"
                         },
                         new
                         {
-                            Id = 187L,
-                            Flag = new byte[0],
+                            Id = 185L,
                             Name = "United Kingdom"
                         },
                         new
                         {
-                            Id = 188L,
-                            Flag = new byte[0],
+                            Id = 186L,
                             Name = "United States"
                         },
                         new
                         {
-                            Id = 189L,
-                            Flag = new byte[0],
+                            Id = 187L,
                             Name = "Uruguay"
                         },
                         new
                         {
-                            Id = 190L,
-                            Flag = new byte[0],
+                            Id = 188L,
                             Name = "Uzbekistan"
                         },
                         new
                         {
-                            Id = 191L,
-                            Flag = new byte[0],
+                            Id = 189L,
                             Name = "Vanuatu"
                         },
                         new
                         {
-                            Id = 192L,
-                            Flag = new byte[0],
+                            Id = 190L,
                             Name = "Vatican City"
                         },
                         new
                         {
-                            Id = 193L,
-                            Flag = new byte[0],
+                            Id = 191L,
                             Name = "Venezuela"
                         },
                         new
                         {
-                            Id = 194L,
-                            Flag = new byte[0],
+                            Id = 192L,
                             Name = "Vietnam"
                         },
                         new
                         {
-                            Id = 195L,
-                            Flag = new byte[0],
-                            Name = "Wales"
-                        },
-                        new
-                        {
-                            Id = 196L,
-                            Flag = new byte[0],
+                            Id = 193L,
                             Name = "Yemen"
                         },
                         new
                         {
-                            Id = 197L,
-                            Flag = new byte[0],
+                            Id = 194L,
                             Name = "Zambia"
                         },
                         new
                         {
-                            Id = 198L,
-                            Flag = new byte[0],
+                            Id = 195L,
                             Name = "Zimbabwe"
                         });
                 });
@@ -1812,9 +1602,9 @@ namespace FBSApp.Migrations
                         {
                             Id = 1L,
                             Email = "admin@gmail.com",
-                            Password = "F4C69FAB57334A5C1B4BD37F06FE6FF046DB6C1A3C8D045A4AF8F2580253E5A68B4ED34655F8BD248C2E6ED3C0C3E3D3B40E32A4D751037F4E85805338472DB0",
+                            Password = "55E3C92606A7306DBCDBDB59CF52861E7691AFA1BE243721ABDA5BC098D53FACAF49DA0100252F7417DB0B913C6CB24BC12976DE8F31461816D8374CA2B1D98B",
                             Role = "ADMIN",
-                            Salt = new byte[] { 35, 179, 57, 250, 159, 109, 203, 101, 124, 66, 156, 114, 219, 191, 164, 97, 244, 110, 101, 20, 108, 143, 122, 46, 98, 90, 21, 218, 204, 193, 24, 78, 57, 172, 103, 128, 254, 78, 14, 47, 131, 239, 229, 158, 172, 146, 30, 198, 196, 44, 11, 189, 189, 248, 136, 35, 26, 196, 31, 210, 203, 100, 41, 197 }
+                            Salt = new byte[] { 200, 231, 241, 92, 110, 133, 248, 91, 244, 177, 245, 14, 161, 203, 105, 5, 123, 47, 38, 229, 144, 136, 197, 196, 161, 123, 155, 107, 177, 152, 107, 36, 47, 126, 133, 189, 90, 92, 140, 39, 116, 241, 28, 131, 30, 32, 171, 40, 105, 23, 75, 109, 159, 38, 47, 115, 114, 39, 196, 238, 205, 138, 82, 36 }
                         });
                 });
 
