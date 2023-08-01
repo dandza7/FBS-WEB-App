@@ -1,0 +1,17 @@
+.main {
+  background-color: rgb(230, 229, 229);
+  padding: 1rem;
+}
+.outletContainer {
+  width: 50%;
+
+  min-width: 600px;
+  margin: auto;
+  min-height: 100vh;
+}
+@media only screen and (max-width: 650px) {
+  .outletContainer {
+    width: 100%;
+    min-width: 400px;
+  }
+}

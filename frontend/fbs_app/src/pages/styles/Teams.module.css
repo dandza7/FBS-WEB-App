@@ -1,0 +1,49 @@
+.teamsTable thead tr {
+  background-color: rgb(218, 218, 218);
+  color: #272727;
+  text-align: left;
+}
+
+.teamsTable th,
+.teamsTable td {
+  padding: 0.5rem 2rem;
+}
+.teamsTable th {
+  font-size: 1rem;
+  font-weight: 400;
+  font-size: 13px;
+}
+
+.teamsTable tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.teamsTable tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.teamsTable tbody tr:nth-of-type(odd) {
+  background-color: #ffffff;
+}
+
+.teamsTable tbody tr:last-of-type {
+  border-bottom: 1px solid var(--darkGreen);
+}
+
+.teamsTable {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+  border-radius: 1rem;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+.whiteContainer {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 1rem;
+}
