@@ -135,6 +135,7 @@ namespace FBSApp.Data
             #endregion
             modelBuilder.Entity<Team>().HasKey(t => t.Id);
             modelBuilder.Entity<Team>().Property(t => t.Name).IsRequired();
+            modelBuilder.Entity<Team>().Property(t => t.Logo).IsRequired(false);
             modelBuilder.Entity<Team>().HasOne(t => t.Stadium).WithMany().HasForeignKey(t => t.StadiumId).IsRequired();
             modelBuilder.Entity<Team>().HasOne(t => t.Country).WithMany().HasForeignKey(t => t.CountryId).IsRequired();
             #region TeamData
