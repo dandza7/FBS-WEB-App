@@ -1,0 +1,15 @@
+.countrySelectContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.optionContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.optionImage {
+  width: 30px;
+  height: 20px;
+}

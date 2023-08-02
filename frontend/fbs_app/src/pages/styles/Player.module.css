@@ -20,6 +20,7 @@
 .playerMenuItem {
   cursor: pointer;
   font-weight: 600;
+  color: #555454;
 }
 
 .whiteContainerTitle {
@@ -125,4 +126,9 @@
   width: 150px;
   height: 200px;
   border-radius: 1rem;
+}
+
+.playerMenuItemSelected {
+  color: rgb(40, 54, 131);
+  font-weight: bold;
 }

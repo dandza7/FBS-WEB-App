@@ -1,4 +1,8 @@
 * {
   margin: 0px;
   padding: 0px;
+  --darkBlue: rgb(14, 31, 50);
+  --navbaritemColor: rgba(23, 80, 74, 0.2);
+  --openedMenuColor: rgb(29, 30, 31);
+  --ligtGrey: rgb(230, 229, 229);
 }

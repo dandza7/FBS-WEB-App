@@ -26,13 +26,21 @@ const Player = () => {
       </div>
       <div className={classes.playerMenu}>
         <div
-          className={classes.playerMenuItem}
+          className={
+            showMatches
+              ? classes.playerMenuItemSelected
+              : classes.playerMenuItem
+          }
           onClick={() => setshowMaches(true)}
         >
           Matches
         </div>
         <div
-          className={classes.playerMenuItem}
+          className={
+            !showMatches
+              ? classes.playerMenuItemSelected
+              : classes.playerMenuItem
+          }
           onClick={() => setshowMaches(false)}
         >
           Teams

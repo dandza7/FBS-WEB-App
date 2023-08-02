@@ -5,7 +5,7 @@ const Leagues = () => {
   return (
     <div>
       <div className={classes.whiteContainer}>
-        <h3>Leagues</h3>
+        <h2>Leagues</h2>
         <br></br>
         <div className={classes.leagues}>
           <table className={classes.leaguesTable}>
