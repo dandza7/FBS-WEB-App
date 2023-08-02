@@ -13,6 +13,7 @@ namespace FBSApp.Repositories
         private IGenericRepository<Address> _addressRepository;
         private IGenericRepository<Stadium> _stadiumRepository;
         private IGenericRepository<Team> _teamRepository;
+        private IGenericRepository<Player> _playerRepository;
         public UnitOfWork(DbContext FBS_DB_Context)
         {
             _FBS_DB_Context = FBS_DB_Context;
@@ -56,6 +57,14 @@ namespace FBSApp.Repositories
             {
                 _teamRepository ??= new GenericRepository<Team>(_FBS_DB_Context);
                 return _teamRepository;
+            }
+        }
+        public IGenericRepository<Player> PlayerRepository
+        {
+            get
+            {
+                _playerRepository ??= new GenericRepository<Player>(_FBS_DB_Context);
+                return _playerRepository;
             }
         }
 

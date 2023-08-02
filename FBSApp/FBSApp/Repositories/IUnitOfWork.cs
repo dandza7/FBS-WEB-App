@@ -10,6 +10,7 @@ namespace FBSApp.Repositories
         IGenericRepository<Address> AddressRepository { get; }
         IGenericRepository<Stadium> StadiumRepository { get; }
         IGenericRepository<Team> TeamRepository { get; }
+        IGenericRepository<Player> PlayerRepository { get; }
         void SaveChanges();
     }
 }
