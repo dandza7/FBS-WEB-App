@@ -29,17 +29,35 @@ const Navbar = () => {
             </div>
             <div className={classes.menuClosed}>
               <div className={classes.navbarItem}>
-                <NavLink to="/leagues" className={classes.NavLink}>
+                <NavLink
+                  to="/leagues"
+                  className={classes.NavLink}
+                  style={({ isActive }) => ({
+                    color: isActive ? "#45FF93" : "#fff",
+                  })}
+                >
                   Leagues
                 </NavLink>
               </div>
               <div className={classes.navbarItem}>
-                <NavLink to="/teams" className={classes.NavLink}>
+                <NavLink
+                  to="/teams"
+                  className={classes.NavLink}
+                  style={({ isActive }) => ({
+                    color: isActive ? "#45FF93" : "#fff",
+                  })}
+                >
                   Teams
                 </NavLink>
               </div>
               <div className={classes.navbarItem}>
-                <NavLink to="/players" className={classes.NavLink}>
+                <NavLink
+                  to="/players"
+                  className={classes.NavLink}
+                  style={({ isActive }) => ({
+                    color: isActive ? "#45FF93" : "#fff",
+                  })}
+                >
                   Players
                 </NavLink>
               </div>
