@@ -50,7 +50,7 @@
 
 .flag {
   width: 20px;
-  height: 20px;
+  height: 15px;
 }
 
 .teams {
@@ -68,9 +68,13 @@
   border-radius: 1rem;
   padding: 1rem;
   width: calc(100% - 2rem);
+  background-color: #f3f3fa;
+  color: rgb(0, 0, 0);
+  font-size: 1rem;
+  font-weight: 600;
 }
 .logo {
-  width: 50px;
+  width: 45px;
   height: 50px;
 }
 .optionContainer {
@@ -88,4 +92,66 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.titleFiltersContainer {
+  display: flex;
+  margin-bottom: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filters {
+  background-color: #ffffff;
+  border: 1px solid rgb(230, 229, 229);
+  border-radius: 1rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-bottom: 2rem;
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+
+.filterButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(240, 240, 240);
+  border: 1px solid rgb(219, 218, 218);
+  color: rgb(67, 67, 67);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.closeModalButtonContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: -0.5rem;
+  margin-right: -0.5rem;
+}
+
+.closeModalButton {
+  color: rgb(67, 67, 67);
+  cursor: pointer;
+}
+.nameInputContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nameInput {
+  width: 160px;
+  height: 35px;
+  border: 1px solid rgb(203, 203, 203);
+  border-radius: 0.2rem;
+  margin-left: 1rem;
+  padding-left: 0.5rem;
 }

@@ -1,15 +1,38 @@
 import React from "react";
 import classes from "./styles/CountrySelect.module.css";
 import Select from "react-select";
+import { useState, useContext, useEffect } from "react";
 
 const CountrySelect = (props: any) => {
+  const [selectedCountry, setSelectedCountry] = useState(
+    props ? props.selected : null
+  );
+
+  useEffect(() => {
+    console.log(props.selected);
+  }, []);
+
+  useEffect(() => {
+    if (!selectedCountry) {
+      props.onChange({
+        value: "0",
+        label: "",
+        image: "",
+      });
+    } else {
+      props.onChange(selectedCountry);
+    }
+  }, [selectedCountry]);
+
   return (
     <div className={classes.countrySelectContainer}>
       <span>Country:</span>
       <Select
-        onChange={props.onChange}
+        defaultValue={selectedCountry}
+        onChange={setSelectedCountry}
         options={props.countries}
-        placeholder="Select country"
+        isClearable
+        placeholder="Select country..."
         formatOptionLabel={(country: any) => (
           <div className={classes.optionContainer}>
             <img
