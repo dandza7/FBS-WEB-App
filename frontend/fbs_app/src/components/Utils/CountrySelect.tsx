@@ -9,10 +9,6 @@ const CountrySelect = (props: any) => {
   );
 
   useEffect(() => {
-    console.log(props.selected);
-  }, []);
-
-  useEffect(() => {
     if (!selectedCountry) {
       props.onChange({
         value: "0",
@@ -30,6 +26,7 @@ const CountrySelect = (props: any) => {
       <Select
         defaultValue={selectedCountry}
         onChange={setSelectedCountry}
+        className={classes.select}
         options={props.countries}
         isClearable
         placeholder="Select country..."
