@@ -7,6 +7,7 @@ import CountrySelect from "../components/Utils/CountrySelect";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import CloseIcon from "@mui/icons-material/Close";
 import Filters from "../components/Utils/Filters";
+import TeamCard from "../components/Teams/TeamCard";
 
 const Teams = () => {
   const [teams, setTeams] = useState<any[]>([]);
@@ -75,7 +76,6 @@ const Teams = () => {
         return res.json();
       })
       .then((data) => {
-        console.log(data.entities);
         setTeams(data.entities);
       })
       .catch((error) => {
@@ -102,6 +102,7 @@ const Teams = () => {
         <div className={classes.rightContainer}>
           {toggleFilters && (
             <Filters
+              filters={["teamName"]}
               countries={countries}
               onChange={changeCountryHandler}
               selected={selectedCountry}
@@ -112,17 +113,7 @@ const Teams = () => {
         </div>
         <div className={classes.teams}>
           {teams.map((team) => (
-            <div key={team.id} className={classes.team}>
-              <img
-                src={`data:image/png;base64,${team.logo}`}
-                className={classes.logo}
-              ></img>
-              <p>{team.name}</p>
-              <img
-                src={`data:image/png;base64,${team.flag}`}
-                className={classes.flag}
-              ></img>
-            </div>
+            <TeamCard team={team} key={team.id}></TeamCard>
           ))}
         </div>
       </div>
