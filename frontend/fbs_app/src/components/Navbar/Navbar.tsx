@@ -5,6 +5,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import CloseIcon from "@mui/icons-material/Close";
+
 const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const navigate = useNavigate();
@@ -45,7 +47,9 @@ const Navbar = () => {
           </div>
           <div>
             <div className={classes.navbarItem}>
-              <PersonIcon className={classes.icon}></PersonIcon>
+              <NavLink to="/login" className={classes.NavLink}>
+                <PersonIcon className={classes.icon}></PersonIcon>
+              </NavLink>
             </div>
           </div>
         </div>
@@ -61,7 +65,7 @@ const Navbar = () => {
                 });
               }}
             >
-              X
+              <CloseIcon></CloseIcon>
             </button>
           </div>
           <div className={classes.openedMenuItems}>
