@@ -17,10 +17,10 @@ namespace FBSApp.Controllers
         }
 
         /// <summary>
-        /// [User, Admin] Gets teams in list view
+        /// [Anonymous] Gets teams in list view
         /// </summary>
         [HttpPost(Name = "GetTeamsListed")]
-        [Authorize(Roles = "ADMIN, USER")]
+        [AllowAnonymous]
         public ActionResult<PaginationWrapper<TeamListPreviewDTO>> GetTeamsListed([FromBody] TeamFilterQuery query)
         {
             return Ok(_teamService.GetListed(query));

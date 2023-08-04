@@ -16,11 +16,11 @@ namespace FBSApp.Controllers
         }
 
         /// <summary>
-        /// [User, Admin] Gets all countries
+        /// [Anonymous] Gets all countries
         /// </summary>
         [HttpGet(Name = "GetAllCountries")]
-        [Authorize(Roles = "ADMIN, USER")]
-        public ActionResult<IEnumerable<CountryPreviewDTO>> Login()
+        [AllowAnonymous]
+        public ActionResult<IEnumerable<CountryPreviewDTO>> GetAllCountries()
         {
             return Ok(_countryService.GetAll());
         }

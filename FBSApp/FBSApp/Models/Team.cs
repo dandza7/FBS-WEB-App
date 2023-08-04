@@ -12,5 +12,6 @@ namespace FBSApp.Models
         public Country Country { get; set; }
         public long CountryId { get; set; }
         public byte[] Logo { get; set; }
+        public IEnumerable<Season> Seasons { get; set; }
     }
 }
