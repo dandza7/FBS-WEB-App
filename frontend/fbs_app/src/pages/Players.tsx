@@ -5,8 +5,10 @@ import AuthContext from "../store/auth-context";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Filters from "../components/Utils/Filters";
 import PlayerCard from "../components/Players/PlayerCard";
+import Pagination from "../components/Utils/Pagination";
 
 const Players = () => {
+  const pageSize = 10;
   const [players, setPlayers] = useState<any[]>([]);
   const authCtx = useContext(AuthContext);
   const [selectedCountry, setSelectedCountry] = useState(0);
@@ -14,6 +16,12 @@ const Players = () => {
   const [toggleFilters, setToggleFilters] = useState(false);
   const [playerName, setPlayerName] = useState("");
   const [playerPos, setPlayerPos] = useState({ value: "ALL", label: "" });
+  const [totalCount, setTotalCount] = useState(null);
+  const [selectedPage, setSelectedPage] = useState(1);
+
+  const changePage = (page: number) => {
+    setSelectedPage(page);
+  };
 
   const changeCountryHandler = (value: any) => {
     setSelectedCountry(value);
@@ -54,11 +62,6 @@ const Players = () => {
       });
   }, []);
 
-  const handleInputChange = (event) => {
-    console.log(event?.target.value);
-    setPlayerName(event?.target.value);
-  };
-
   useEffect(() => {
     fetch("http://localhost:5271/api/players", {
       method: "POST",
@@ -67,8 +70,8 @@ const Players = () => {
         countryId: selectedCountry.value,
         name: playerName,
         position: playerPos.value,
-        pageSize: 10,
-        page: 1,
+        pageSize: pageSize,
+        page: selectedPage,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -79,12 +82,13 @@ const Players = () => {
         return res.json();
       })
       .then((data) => {
+        setTotalCount(data.totalCount);
         setPlayers(data.entities);
       })
       .catch((error) => {
         alert(error);
       });
-  }, [selectedCountry, playerName, playerPos]);
+  }, [selectedCountry, playerName, playerPos, selectedPage]);
 
   return (
     <div>
@@ -121,6 +125,11 @@ const Players = () => {
             <PlayerCard player={player} key={player.id}></PlayerCard>
           ))}
         </div>
+        <Pagination
+          change={changePage}
+          totalCount={totalCount}
+          pageSize={pageSize}
+        ></Pagination>
       </div>
     </div>
   );
