@@ -8,6 +8,7 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import CloseIcon from "@mui/icons-material/Close";
 import Filters from "../components/Utils/Filters";
 import TeamCard from "../components/Teams/TeamCard";
+import Pagination from "../components/Utils/Pagination";
 
 const Teams = () => {
   const [teams, setTeams] = useState<any[]>([]);
@@ -16,6 +17,13 @@ const Teams = () => {
   const [countries, setCountries] = useState<any[]>([]);
   const [toggleFilters, setToggleFilters] = useState(false);
   const [teamName, setTeamName] = useState("");
+  const pageSize = 10;
+  const [totalCount, setTotalCount] = useState(null);
+  const [selectedPage, setSelectedPage] = useState(1);
+
+  const changePage = (page: number) => {
+    setSelectedPage(page);
+  };
 
   const changeCountryHandler = (value: any) => {
     setSelectedCountry(value);
@@ -52,11 +60,6 @@ const Teams = () => {
       });
   }, []);
 
-  const handleInputChange = (event) => {
-    console.log(event?.target.value);
-    setTeamName(event?.target.value);
-  };
-
   useEffect(() => {
     fetch("http://localhost:5271/api/teams", {
       method: "POST",
@@ -64,8 +67,8 @@ const Teams = () => {
         isOrderAscending: true,
         countryId: selectedCountry.value,
         name: teamName,
-        pageSize: 10,
-        page: 1,
+        pageSize: pageSize,
+        page: selectedPage,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -76,47 +79,58 @@ const Teams = () => {
         return res.json();
       })
       .then((data) => {
+        setTotalCount(data.totalCount);
         setTeams(data.entities);
       })
       .catch((error) => {
         alert(error);
       });
-  }, [selectedCountry, teamName]);
+  }, [selectedCountry, teamName, selectedPage]);
 
   return (
     <div>
-      <div className={classes.whiteContainer}>
-        <div className={classes.titleFiltersContainer}>
-          <h2>Teams</h2>
-          <div
-            className={classes.filterButton}
-            onClick={() => {
-              setToggleFilters((prevState) => {
-                return !prevState;
-              });
-            }}
-          >
-            <FilterAltIcon></FilterAltIcon>
+      {teams.length > 0 ? (
+        <div className={classes.whiteContainer}>
+          <div className={classes.titleFiltersContainer}>
+            <h2>Teams</h2>
+            <div
+              className={classes.filterButton}
+              onClick={() => {
+                setToggleFilters((prevState) => {
+                  return !prevState;
+                });
+              }}
+            >
+              <FilterAltIcon></FilterAltIcon>
+            </div>
           </div>
+          <div className={classes.rightContainer}>
+            {toggleFilters && (
+              <Filters
+                filters={["teamName"]}
+                countries={countries}
+                onChange={changeCountryHandler}
+                selected={selectedCountry}
+                onChangeTeamName={changeNameHandler}
+                selectedName={teamName}
+              ></Filters>
+            )}
+          </div>
+          <div className={classes.teams}>
+            {teams?.map((team) => (
+              <TeamCard team={team} key={team.id}></TeamCard>
+            ))}
+          </div>
+
+          <Pagination
+            change={changePage}
+            totalCount={totalCount}
+            pageSize={pageSize}
+          ></Pagination>
         </div>
-        <div className={classes.rightContainer}>
-          {toggleFilters && (
-            <Filters
-              filters={["teamName"]}
-              countries={countries}
-              onChange={changeCountryHandler}
-              selected={selectedCountry}
-              onChangeTeamName={changeNameHandler}
-              selectedName={teamName}
-            ></Filters>
-          )}
-        </div>
-        <div className={classes.teams}>
-          {teams.map((team) => (
-            <TeamCard team={team} key={team.id}></TeamCard>
-          ))}
-        </div>
-      </div>
+      ) : (
+        <div>asd</div>
+      )}
     </div>
   );
 };
