@@ -604,6 +604,21 @@ namespace FBSApp.Data
             modelBuilder.Entity<Season>().HasKey(s => s.Id);
             modelBuilder.Entity<Season>().Property(s => s.Year).IsRequired();
             modelBuilder.Entity<Season>().HasOne(s => s.League).WithMany().HasForeignKey(s => s.LeagueId).IsRequired();
+            modelBuilder.Entity<Season>().HasMany(s => s.Teams).WithMany(t => t.Seasons).UsingEntity<Dictionary<string, object>>(
+                    "TeamSeason",
+                    r => r.HasOne<Team>().WithMany().HasForeignKey("TeamId"),
+                    l => l.HasOne<Season>().WithMany().HasForeignKey("SeasonId"),
+                    je =>
+                    {
+                        je.HasKey("SeasonId", "TeamId");
+                        je.HasData(
+                            new { SeasonId = 1L, TeamId = 1L },
+                            new { SeasonId = 1L, TeamId = 2L },
+                            new { SeasonId = 1L, TeamId = 4L },
+                            new { SeasonId = 1L, TeamId = 5L },
+                            new { SeasonId = 1L, TeamId = 6L },
+                            new { SeasonId = 1L, TeamId = 9L });
+                    });
             #region SeasonData
             modelBuilder.Entity<Season>(season =>
             {

@@ -9,5 +9,6 @@ namespace FBSApp.Models
         public string Year { get; set; }
         public League League { get; set; }
         public long LeagueId { get; set; }
+        public IEnumerable<Team> Teams { get; set; }
     }
 }
