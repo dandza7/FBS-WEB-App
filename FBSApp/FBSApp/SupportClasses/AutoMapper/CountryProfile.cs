@@ -11,7 +11,7 @@ namespace FBSApp.SupportClasses.AutoMapper
             CreateMap<Country, CountryPreviewDTO>()
                 .ForMember(c => c.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(c => c.Name, opt => opt.MapFrom(src => src.Name))
-                .ForMember(c => c.Flag, opt => opt.MapFrom(src => Convert.ToBase64String(src.Flag)));
+                .ForMember(c => c.Flag, opt => opt.MapFrom(src => src.Flag));
         }
     }
 }

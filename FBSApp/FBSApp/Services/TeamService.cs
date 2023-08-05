@@ -84,8 +84,8 @@ namespace FBSApp.Services
             {
                 Id = team.Id,
                 Name = team.Name,
-                Logo = Convert.ToBase64String(team.Logo),
-                Flag = Convert.ToBase64String(team.Country.Flag),
+                Logo = team.Logo,
+                Flag = team.Country.Flag,
                 StadiumName = team.Stadium.Name,
                 StadiumAddress = $"{team.Stadium.Address.Street}{(team.Stadium.Address.Number != null ? " " + team.Stadium.Address.Number : "")}, {team.Stadium.Address.Country.Name}",
                 Seasons = _mapper.Map<IEnumerable<SeasonDTO>>(team.Seasons),

@@ -24,8 +24,8 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
-        Title = "Library API",
-        Description = "Books Management API",
+        Title = "FBS API",
+        Description = "Football Statistics API",
     });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {

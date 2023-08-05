@@ -7,6 +7,6 @@ namespace FBSApp.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public string Name { get; set; }
-        public byte[] Flag { get; set; }
+        public string Flag { get; set; }
     }
 }
