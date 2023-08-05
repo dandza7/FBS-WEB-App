@@ -682,8 +682,8 @@ namespace FBSApp.Data
             {
                 matchActor.HasData(new { Id = 1L, TeamId = 1L, MatchId = 1L, IsTeamHost = true });
                 matchActor.HasData(new { Id = 2L, TeamId = 9L, MatchId = 1L, IsTeamHost = false });
-                matchActor.HasData(new { Id = 3L, TeamId = 2L, MatchId = 2L, IsTeamHost = true });
-                matchActor.HasData(new { Id = 4L, TeamId = 5L, MatchId = 2L, IsTeamHost = false });
+                matchActor.HasData(new { Id = 3L, TeamId = 5L, MatchId = 2L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 4L, TeamId = 2L, MatchId = 2L, IsTeamHost = false });
                 matchActor.HasData(new { Id = 5L, TeamId = 6L, MatchId = 3L, IsTeamHost = true });
                 matchActor.HasData(new { Id = 6L, TeamId = 4L, MatchId = 3L, IsTeamHost = false });
 
