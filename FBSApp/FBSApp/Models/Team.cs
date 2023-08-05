@@ -13,5 +13,6 @@ namespace FBSApp.Models
         public long CountryId { get; set; }
         public byte[] Logo { get; set; }
         public IEnumerable<Season> Seasons { get; set; }
+        public IEnumerable<MatchActor> PlayedMatches { get; set; }
     }
 }

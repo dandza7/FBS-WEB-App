@@ -14,6 +14,8 @@ namespace FBSApp.Data
         public DbSet<Player> Players { get; set; }
         public DbSet<League> Leagues { get; set; }
         public DbSet<Season> Seasons { get; set; }
+        public DbSet<Match> Matches { get; set; }
+        public DbSet<MatchActor> MatchActors { get; set; }
         public FBS_DB_Context(DbContextOptions options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -604,6 +606,7 @@ namespace FBSApp.Data
             modelBuilder.Entity<Season>().HasKey(s => s.Id);
             modelBuilder.Entity<Season>().Property(s => s.Year).IsRequired();
             modelBuilder.Entity<Season>().HasOne(s => s.League).WithMany().HasForeignKey(s => s.LeagueId).IsRequired();
+            #region SeasonData
             modelBuilder.Entity<Season>().HasMany(s => s.Teams).WithMany(t => t.Seasons).UsingEntity<Dictionary<string, object>>(
                     "TeamSeason",
                     r => r.HasOne<Team>().WithMany().HasForeignKey("TeamId"),
@@ -619,12 +622,136 @@ namespace FBSApp.Data
                             new { SeasonId = 1L, TeamId = 6L },
                             new { SeasonId = 1L, TeamId = 9L });
                     });
-            #region SeasonData
             modelBuilder.Entity<Season>(season =>
             {
                 season.HasData(new { Id = 1L, Year = "2018/19 Big6Only", LeagueId = 1L });
             });
             #endregion
+            #region MatchData
+            modelBuilder.Entity<Match>().HasKey(m => m.Id);
+            modelBuilder.Entity<Match>().Property(m => m.Date).IsRequired();
+            modelBuilder.Entity<Match>().Property(m => m.Gameweek).IsRequired();
+            modelBuilder.Entity<Match>().HasOne(m => m.Season).WithMany(s => s.Matches).HasForeignKey(m => m.SeasonId).IsRequired();
+
+            modelBuilder.Entity<MatchActor>().HasKey(ma => ma.Id);
+            modelBuilder.Entity<MatchActor>().HasOne(ma => ma.Team).WithMany(t => t.PlayedMatches).HasForeignKey(ma => ma.TeamId).IsRequired();
+            modelBuilder.Entity<MatchActor>().HasOne(ma => ma.Match).WithMany(t => t.MatchActors).HasForeignKey(ma => ma.MatchId).IsRequired();
+            modelBuilder.Entity<Match>(match =>
+            {
+                match.HasData(new { Id = 1L, Date = DateTime.Parse("01/12/2018 16:00:00"), Gameweek = 1, SeasonId = 1L });
+                match.HasData(new { Id = 2L, Date = DateTime.Parse("01/12/2018 18:30:00"), Gameweek = 1, SeasonId = 1L });
+                match.HasData(new { Id = 3L, Date = DateTime.Parse("02/12/2018 15:00:00"), Gameweek = 1, SeasonId = 1L });
+
+                match.HasData(new { Id = 4L, Date = DateTime.Parse("08/12/2018 16:00:00"), Gameweek = 2, SeasonId = 1L });
+                match.HasData(new { Id = 5L, Date = DateTime.Parse("08/12/2018 18:30:00"), Gameweek = 2, SeasonId = 1L });
+                match.HasData(new { Id = 6L, Date = DateTime.Parse("09/12/2018 15:00:00"), Gameweek = 2, SeasonId = 1L });
+
+                match.HasData(new { Id = 7L, Date = DateTime.Parse("15/12/2018 16:00:00"), Gameweek = 3, SeasonId = 1L });
+                match.HasData(new { Id = 8L, Date = DateTime.Parse("15/12/2018 18:30:00"), Gameweek = 3, SeasonId = 1L });
+                match.HasData(new { Id = 9L, Date = DateTime.Parse("16/12/2018 15:00:00"), Gameweek = 3, SeasonId = 1L });
+
+                match.HasData(new { Id = 10L, Date = DateTime.Parse("22/12/2018 16:00:00"), Gameweek = 4, SeasonId = 1L });
+                match.HasData(new { Id = 11L, Date = DateTime.Parse("22/12/2018 18:30:00"), Gameweek = 4, SeasonId = 1L });
+                match.HasData(new { Id = 12L, Date = DateTime.Parse("23/12/2018 15:00:00"), Gameweek = 4, SeasonId = 1L });
+
+                match.HasData(new { Id = 13L, Date = DateTime.Parse("29/12/2018 16:00:00"), Gameweek = 5, SeasonId = 1L });
+                match.HasData(new { Id = 14L, Date = DateTime.Parse("29/12/2018 18:30:00"), Gameweek = 5, SeasonId = 1L });
+                match.HasData(new { Id = 15L, Date = DateTime.Parse("30/12/2018 15:00:00"), Gameweek = 5, SeasonId = 1L });
+
+                match.HasData(new { Id = 16L, Date = DateTime.Parse("05/01/2019 16:00:00"), Gameweek = 6, SeasonId = 1L });
+                match.HasData(new { Id = 17L, Date = DateTime.Parse("05/01/2019 18:30:00"), Gameweek = 6, SeasonId = 1L });
+                match.HasData(new { Id = 18L, Date = DateTime.Parse("06/01/2019 15:00:00"), Gameweek = 6, SeasonId = 1L });
+
+                match.HasData(new { Id = 19L, Date = DateTime.Parse("12/01/2019 16:00:00"), Gameweek = 7, SeasonId = 1L });
+                match.HasData(new { Id = 20L, Date = DateTime.Parse("12/01/2019 18:30:00"), Gameweek = 7, SeasonId = 1L });
+                match.HasData(new { Id = 21L, Date = DateTime.Parse("13/01/2019 15:00:00"), Gameweek = 7, SeasonId = 1L });
+
+                match.HasData(new { Id = 22L, Date = DateTime.Parse("19/01/2019 16:00:00"), Gameweek = 8, SeasonId = 1L });
+                match.HasData(new { Id = 23L, Date = DateTime.Parse("19/01/2019 18:30:00"), Gameweek = 8, SeasonId = 1L });
+                match.HasData(new { Id = 24L, Date = DateTime.Parse("20/01/2019 15:00:00"), Gameweek = 8, SeasonId = 1L });
+
+                match.HasData(new { Id = 25L, Date = DateTime.Parse("26/01/2019 16:00:00"), Gameweek = 9, SeasonId = 1L });
+                match.HasData(new { Id = 26L, Date = DateTime.Parse("26/01/2019 18:30:00"), Gameweek = 9, SeasonId = 1L });
+                match.HasData(new { Id = 27L, Date = DateTime.Parse("27/01/2019 15:00:00"), Gameweek = 9, SeasonId = 1L });
+
+                match.HasData(new { Id = 28L, Date = DateTime.Parse("02/02/2019 16:00:00"), Gameweek = 10, SeasonId = 1L });
+                match.HasData(new { Id = 29L, Date = DateTime.Parse("02/02/2019 18:30:00"), Gameweek = 10, SeasonId = 1L });
+                match.HasData(new { Id = 30L, Date = DateTime.Parse("03/01/2019 15:00:00"), Gameweek = 10, SeasonId = 1L });
+            });
+            modelBuilder.Entity<MatchActor>(matchActor =>
+            {
+                matchActor.HasData(new { Id = 1L, TeamId = 1L, MatchId = 1L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 2L, TeamId = 9L, MatchId = 1L, IsTeamHost = false });
+                matchActor.HasData(new { Id = 3L, TeamId = 2L, MatchId = 2L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 4L, TeamId = 5L, MatchId = 2L, IsTeamHost = false });
+                matchActor.HasData(new { Id = 5L, TeamId = 6L, MatchId = 3L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 6L, TeamId = 4L, MatchId = 3L, IsTeamHost = false });
+
+                matchActor.HasData(new { Id = 7L, TeamId = 2L, MatchId = 4L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 8L, TeamId = 1L, MatchId = 4L, IsTeamHost = false });
+                matchActor.HasData(new { Id = 9L, TeamId = 4L, MatchId = 5L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 10L, TeamId = 9L, MatchId = 5L, IsTeamHost = false });
+                matchActor.HasData(new { Id = 11L, TeamId = 6L, MatchId = 6L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 12L, TeamId = 5L, MatchId = 6L, IsTeamHost = false });
+
+                matchActor.HasData(new { Id = 13L, TeamId = 1L, MatchId = 7L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 14L, TeamId = 6L, MatchId = 7L, IsTeamHost = false });
+                matchActor.HasData(new { Id = 15L, TeamId = 2L, MatchId = 8L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 16L, TeamId = 9L, MatchId = 8L, IsTeamHost = false });
+                matchActor.HasData(new { Id = 17L, TeamId = 5L, MatchId = 9L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 18L, TeamId = 4L, MatchId = 9L, IsTeamHost = false });
+
+                matchActor.HasData(new { Id = 19L, TeamId = 9L, MatchId = 10L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 20L, TeamId = 1L, MatchId = 10L, IsTeamHost = false });
+                matchActor.HasData(new { Id = 21L, TeamId = 2L, MatchId = 11L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 22L, TeamId = 6L, MatchId = 11L, IsTeamHost = false });
+                matchActor.HasData(new { Id = 23L, TeamId = 4L, MatchId = 12L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 24L, TeamId = 5L, MatchId = 12L, IsTeamHost = false });
+
+                matchActor.HasData(new { Id = 25L, TeamId = 1L, MatchId = 13L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 26L, TeamId = 5L, MatchId = 13L, IsTeamHost = false });
+                matchActor.HasData(new { Id = 27L, TeamId = 6L, MatchId = 14L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 28L, TeamId = 2L, MatchId = 14L, IsTeamHost = false });
+                matchActor.HasData(new { Id = 29L, TeamId = 9L, MatchId = 15L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 30L, TeamId = 4L, MatchId = 15L, IsTeamHost = false });
+
+                matchActor.HasData(new { Id = 31L, TeamId = 5L, MatchId = 16L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 32L, TeamId = 1L, MatchId = 16L, IsTeamHost = false });
+                matchActor.HasData(new { Id = 33L, TeamId = 4L, MatchId = 17L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 34L, TeamId = 2L, MatchId = 17L, IsTeamHost = false });
+                matchActor.HasData(new { Id = 35L, TeamId = 6L, MatchId = 18L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 36L, TeamId = 9L, MatchId = 18L, IsTeamHost = false });
+
+                matchActor.HasData(new { Id = 37L, TeamId = 1L, MatchId = 19L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 38L, TeamId = 4L, MatchId = 19L, IsTeamHost = false });
+                matchActor.HasData(new { Id = 39L, TeamId = 2L, MatchId = 20L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 40L, TeamId = 5L, MatchId = 20L, IsTeamHost = false });
+                matchActor.HasData(new { Id = 41L, TeamId = 9L, MatchId = 21L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 42L, TeamId = 6L, MatchId = 21L, IsTeamHost = false });
+
+                matchActor.HasData(new { Id = 43L, TeamId = 6L, MatchId = 22L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 44L, TeamId = 1L, MatchId = 22L, IsTeamHost = false });
+                matchActor.HasData(new { Id = 45L, TeamId = 2L, MatchId = 23L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 46L, TeamId = 4L, MatchId = 23L, IsTeamHost = false });
+                matchActor.HasData(new { Id = 47L, TeamId = 5L, MatchId = 24L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 48L, TeamId = 9L, MatchId = 24L, IsTeamHost = false });
+
+                matchActor.HasData(new { Id = 49L, TeamId = 1L, MatchId = 25L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 50L, TeamId = 2L, MatchId = 25L, IsTeamHost = false });
+                matchActor.HasData(new { Id = 51L, TeamId = 4L, MatchId = 26L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 52L, TeamId = 6L, MatchId = 26L, IsTeamHost = false });
+                matchActor.HasData(new { Id = 53L, TeamId = 9L, MatchId = 27L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 54L, TeamId = 5L, MatchId = 27L, IsTeamHost = false });
+
+                matchActor.HasData(new { Id = 55L, TeamId = 4L, MatchId = 28L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 56L, TeamId = 1L, MatchId = 28L, IsTeamHost = false });
+                matchActor.HasData(new { Id = 57L, TeamId = 9L, MatchId = 29L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 58L, TeamId = 2L, MatchId = 29L, IsTeamHost = false });
+                matchActor.HasData(new { Id = 59L, TeamId = 5L, MatchId = 30L, IsTeamHost = true });
+                matchActor.HasData(new { Id = 60L, TeamId = 6L, MatchId = 30L, IsTeamHost = false });
+            });
+            #endregion
+
         }
     }
 }

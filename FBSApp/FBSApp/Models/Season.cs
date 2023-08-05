@@ -10,5 +10,6 @@ namespace FBSApp.Models
         public League League { get; set; }
         public long LeagueId { get; set; }
         public IEnumerable<Team> Teams { get; set; }
+        public IEnumerable<Match> Matches { get; set; }
     }
 }
