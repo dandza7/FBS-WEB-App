@@ -1,7 +1,11 @@
 ﻿using AutoMapper;
 using FBSApp.Models.DTOs;
+using FBSApp.Models.DTOs.Match;
+using FBSApp.Models.DTOs.Season;
 using FBSApp.Models.DTOs.Team;
 using FBSApp.Repositories;
+using FBSApp.SupportClasses.GlobalExceptionHandler.CustomExceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace FBSApp.Services
 {
@@ -37,6 +41,54 @@ namespace FBSApp.Services
             {
                 TotalCount = count,
                 Entities = teamsList
+            };
+        }
+
+        public PaginationWrapper<MatchListPreviewDTO> GetMatchesByTeam(long teamId, int page, int pageSize)
+        {
+            if (!_unitOfWork.TeamRepository.GetAll().Where(t => t.Id == teamId).Any())
+            {
+                throw new NotFoundException($"Team with ID {teamId} does not exist.");
+            }
+            var matchesRaw = _unitOfWork.MatchRepository.GetAll(m => m.Season)
+                                                    .Include(m => m.MatchActors).ThenInclude(ma => ma.Team).ThenInclude(t => t.Country)
+                                                    .Where(m => m.MatchActors.Where(ma => ma.TeamId == teamId).Any()).OrderBy(m => m.Date);
+            var totalCount = matchesRaw.Count();
+            var matches = matchesRaw.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            return new PaginationWrapper<MatchListPreviewDTO>
+            {
+                Entities = matches.Select(m => new MatchListPreviewDTO
+                {
+                    Id = m.Id,
+                    Date = m.Date,
+                    HomeTeamGoals = 0, // TO-DO
+                    AwayTeamGoals = 0, // TO-DO
+                    HomeTeam = m.MatchActors.First().IsTeamHost ? _mapper.Map<TeamListPreviewDTO>(m.MatchActors.First().Team) : _mapper.Map<TeamListPreviewDTO>(m.MatchActors.Last().Team),
+                    AwayTeam = m.MatchActors.First().IsTeamHost ? _mapper.Map<TeamListPreviewDTO>(m.MatchActors.Last().Team) : _mapper.Map<TeamListPreviewDTO>(m.MatchActors.First().Team),
+                }),
+                TotalCount = totalCount
+            };
+        }
+
+        public TeamDetailedDTO GetTeamDetailed(long teamId)
+        {
+            var team = _unitOfWork.TeamRepository.GetAll(t => t.Country)
+                                                .Include(t => t.Stadium).ThenInclude(s => s.Address).ThenInclude(a => a.Country)
+                                                .Include(t => t.Seasons).ThenInclude(s => s.League)
+                                                .Where(t => t.Id == teamId).FirstOrDefault();
+            if (team == null)
+            {
+                throw new NotFoundException($"Team with ID {teamId} does not exist.");
+            }
+            return new TeamDetailedDTO
+            {
+                Id = team.Id,
+                Name = team.Name,
+                Logo = Convert.ToBase64String(team.Logo),
+                Flag = Convert.ToBase64String(team.Country.Flag),
+                StadiumName = team.Stadium.Name,
+                StadiumAddress = $"{team.Stadium.Address.Street}{(team.Stadium.Address.Number != null ? " " + team.Stadium.Address.Number : "")}, {team.Stadium.Address.Country.Name}",
+                Seasons = _mapper.Map<IEnumerable<SeasonDTO>>(team.Seasons),
             };
         }
     }

@@ -13,6 +13,8 @@ namespace FBSApp.Repositories
         IGenericRepository<Player> PlayerRepository { get; }
         IGenericRepository<League> LeagueRepository { get; }
         IGenericRepository<Season> SeasonRepository { get; }
+        IGenericRepository<Match> MatchRepository { get; }
+        IGenericRepository<MatchActor> MatchActorRepository { get; }
         void SaveChanges();
     }
 }

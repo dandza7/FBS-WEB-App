@@ -1,4 +1,6 @@
-﻿using FBSApp.Models.DTOs.Season;
+﻿using FBSApp.Models.DTOs;
+using FBSApp.Models.DTOs.Match;
+using FBSApp.Models.DTOs.Season;
 using FBSApp.Models.DTOs.Team;
 using FBSApp.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -44,6 +46,16 @@ namespace FBSApp.Controllers
         public ActionResult<IEnumerable<TeamListPreviewDTO>> GetTeamsInSeason(long id)
         {
             return Ok(_seasonService.GetTeamsInSeason(id));
+        }
+
+        /// <summary>
+        /// [Admin] Gets matches in season
+        /// </summary>
+        [HttpGet("{id}/matches/{page}/{pageSize}", Name = "GetMatchesInSeason")]
+        [AllowAnonymous]
+        public ActionResult<PaginationWrapper<MatchListPreviewDTO>> GetMatchesInSeason(long id, int page, int pageSize)
+        {
+            return Ok(_seasonService.GetMatchesInSeason(id, page, pageSize));
         }
     }
 }

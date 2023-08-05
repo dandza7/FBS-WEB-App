@@ -16,6 +16,8 @@ namespace FBSApp.Repositories
         private IGenericRepository<Player> _playerRepository;
         private IGenericRepository<League> _leagueRepository;
         private IGenericRepository<Season> _seasonRepository;
+        private IGenericRepository<Match> _matchRepository;
+        private IGenericRepository<MatchActor> _matchActorRepository;
         public UnitOfWork(DbContext FBS_DB_Context)
         {
             _FBS_DB_Context = FBS_DB_Context;
@@ -83,6 +85,22 @@ namespace FBSApp.Repositories
             {
                 _seasonRepository ??= new GenericRepository<Season>(_FBS_DB_Context);
                 return _seasonRepository;
+            }
+        }
+        public IGenericRepository<Match> MatchRepository
+        {
+            get
+            {
+                _matchRepository ??= new GenericRepository<Match>(_FBS_DB_Context);
+                return _matchRepository;
+            }
+        }
+        public IGenericRepository<MatchActor> MatchActorRepository
+        {
+            get
+            {
+                _matchActorRepository ??= new GenericRepository<MatchActor>(_FBS_DB_Context);
+                return _matchActorRepository;
             }
         }
 

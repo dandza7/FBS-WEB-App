@@ -2,7 +2,7 @@
 {
     public class PaginationWrapper<T>
     {
-        public List<T> Entities { get; set; }
+        public IEnumerable<T> Entities { get; set; }
         public int TotalCount { get; set; }
     }
 }
