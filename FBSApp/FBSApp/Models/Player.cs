@@ -12,5 +12,6 @@ namespace FBSApp.Models
         public DateTime BirthDate { get; set; }
         public Country Country { get; set; }
         public long CountryId { get; set; }
+        public IEnumerable<TeamEngagement> Engagements { get; set; }
     }
 }

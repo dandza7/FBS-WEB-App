@@ -2,6 +2,8 @@
 using FBSApp.Models.DTOs;
 using FBSApp.Models.DTOs.Team;
 using FBSApp.Repositories;
+using FBSApp.SupportClasses.GlobalExceptionHandler.CustomExceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace FBSApp.Services
 {
@@ -42,6 +44,25 @@ namespace FBSApp.Services
                 TotalCount = count,
                 Entities = playersList
             };
+        }
+
+        public IEnumerable<TeamEngagementDTO> GetPlayersEngagements(long playerId)
+        {
+            if (!_unitOfWork.PlayerRepository.GetAll().Where(p => p.Id == playerId).Any())
+            {
+                throw new NotFoundException($"Player with ID {playerId} does not exist!");
+            }
+            var teamEngagements = _unitOfWork.TeamEngagementRepository.GetAll().Where(te => te.PlayerId == playerId)
+                                                                               .Include(te => te.Team).ThenInclude(t => t.Country);
+            return teamEngagements.Select(te => new TeamEngagementDTO
+            {
+                Id = te.Id,
+                Name = te.Team.Name,
+                Logo = te.Team.Logo,
+                Flag = te.Team.Country.Flag,
+                StartDate = te.StartDate,
+                EndDate = te.EndDate,
+            });
         }
     }
 }

@@ -46,5 +46,15 @@ namespace FBSApp.Controllers
         {
             return Ok(_teamService.GetTeamDetailed(id));
         }
+
+        /// <summary>
+        /// [Anonymous] Gets teams squad by season
+        /// </summary>
+        [HttpGet("{id}/squad/{seasonId}", Name = "GetTeamsSquad")]
+        [AllowAnonymous]
+        public ActionResult<PaginationWrapper<MatchListPreviewDTO>> GetTeamsSquad(long id, long seasonId)
+        {
+            return Ok(_teamService.GetTeamsSquad(id, seasonId));
+        }
     }
 }

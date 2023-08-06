@@ -25,5 +25,15 @@ namespace FBSApp.Controllers
         {
             return Ok(_playerService.GetListed(query));
         }
+
+        /// <summary>
+        /// [Anonymous] Gets players team engagements
+        /// </summary>
+        [HttpGet("{id}/engagements", Name = "GetPlayersEngagements")]
+        [AllowAnonymous]
+        public ActionResult<PaginationWrapper<PlayerListPreviewDTO>> GetPlayersEngagements(long id)
+        {
+            return Ok(_playerService.GetPlayersEngagements(id));
+        }
     }
 }
