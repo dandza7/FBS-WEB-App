@@ -91,5 +91,29 @@ namespace FBSApp.Services
                 Seasons = _mapper.Map<IEnumerable<SeasonDTO>>(team.Seasons),
             };
         }
+
+        public IEnumerable<PlayerListPreviewDTO> GetTeamsSquad(long teamId, long seasonId)
+        {
+            var season = _unitOfWork.SeasonRepository.GetAll().Where(s => s.Id == seasonId).FirstOrDefault();
+            if (season == null)
+            {
+                throw new NotFoundException($"Season with ID {seasonId} does not exist.");
+            }
+            var teamEngagements = _unitOfWork.TeamEngagementRepository.GetAll()
+                                             .Where(te => !((season.StartDate < te.StartDate && season.EndDate < te.StartDate)
+                                                         || (season.StartDate > te.EndDate && season.EndDate > te.EndDate))
+                                                         && te.TeamId == teamId)
+                                             .Include(te => te.Player).ThenInclude(p => p.Country);
+            return teamEngagements.Select(te => new PlayerListPreviewDTO
+            {
+                Id = te.PlayerId,
+                Name = te.Player.Name,
+                Position = te.Player.Position,
+                Photo = te.Player.Photo,
+                CountryName = te.Player.Country.Name,
+                CountryFlag = te.Player.Country.Flag,
+                BirthDate = te.Player.BirthDate,
+            });
+        }
     }
 }

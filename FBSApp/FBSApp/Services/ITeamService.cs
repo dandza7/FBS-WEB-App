@@ -9,5 +9,6 @@ namespace FBSApp.Services
         public PaginationWrapper<TeamListPreviewDTO> GetListed(TeamFilterQuery query);
         public PaginationWrapper<MatchListPreviewDTO> GetMatchesByTeam(long teamId, int page, int pageSize);
         public TeamDetailedDTO GetTeamDetailed(long teamId);
+        public IEnumerable<PlayerListPreviewDTO> GetTeamsSquad(long teamId, long seasonId);
     }
 }

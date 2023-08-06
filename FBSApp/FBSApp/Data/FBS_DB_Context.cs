@@ -16,6 +16,7 @@ namespace FBSApp.Data
         public DbSet<Season> Seasons { get; set; }
         public DbSet<Match> Matches { get; set; }
         public DbSet<MatchActor> MatchActors { get; set; }
+        public DbSet<TeamEngagement> TeamEngagements { get; set; }
         public FBS_DB_Context(DbContextOptions options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -624,6 +625,7 @@ namespace FBSApp.Data
             modelBuilder.Entity<Season>(season =>
             {
                 season.HasData(new { Id = 1L, Year = "2018/19 Big6Only", LeagueId = 1L, StartDate = DateTime.Parse("01/12/2018 16:00:00"), EndDate = DateTime.Parse("03/02/2019 15:00:00") });
+                season.HasData(new { Id = 2L, Year = "2019/20   [TEST]", LeagueId = 1L, StartDate = DateTime.Parse("01/12/2019 16:00:00"), EndDate = DateTime.Parse("03/02/2020 15:00:00") });
             });
             #endregion
             modelBuilder.Entity<Match>().HasKey(m => m.Id);
@@ -752,11 +754,22 @@ namespace FBSApp.Data
             modelBuilder.Entity<TeamEngagement>().HasKey(ta => ta.Id);
             modelBuilder.Entity<TeamEngagement>().Property(ta => ta.StartDate);
             modelBuilder.Entity<TeamEngagement>().Property(ta => ta.EndDate);
-            modelBuilder.Entity<TeamEngagement>().HasOne(ta => ta.Team).WithMany(t => t.Engagements).HasForeignKey(ta => ta.TeamId).IsRequired();
-            modelBuilder.Entity<TeamEngagement>().HasOne(ta => ta.Player).WithMany(p => p.Engagements).HasForeignKey(ta => ta.PlayerId).IsRequired();
+            modelBuilder.Entity<TeamEngagement>().HasOne(ta => ta.Team).WithMany(t => t.Engagements).HasForeignKey(ta => ta.TeamId).IsRequired().OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<TeamEngagement>().HasOne(ta => ta.Player).WithMany(p => p.Engagements).HasForeignKey(ta => ta.PlayerId).IsRequired().OnDelete(DeleteBehavior.NoAction);
             #region TeamEngagementData
             modelBuilder.Entity<TeamEngagement>(teamEngagement =>
             {
+                teamEngagement.HasData(new { Id = 1L, PlayerId = 110L, TeamId = 1L, StartDate = DateTime.Parse("01/12/2019 16:00:00"), EndDate = DateTime.Parse("03/02/2020 15:00:00") });
+                teamEngagement.HasData(new { Id = 2L, PlayerId = 129L, TeamId = 1L, StartDate = DateTime.Parse("01/12/2018 16:00:00"), EndDate = DateTime.Parse("03/02/2020 15:00:00") });
+                teamEngagement.HasData(new { Id = 3L, PlayerId = 113L, TeamId = 1L, StartDate = DateTime.Parse("01/12/2018 16:00:00"), EndDate = DateTime.Parse("03/02/2020 15:00:00") });
+                teamEngagement.HasData(new { Id = 4L, PlayerId = 123L, TeamId = 1L, StartDate = DateTime.Parse("01/12/2018 16:00:00"), EndDate = DateTime.Parse("03/02/2020 15:00:00") });
+                teamEngagement.HasData(new { Id = 5L, PlayerId = 131L, TeamId = 1L, StartDate = DateTime.Parse("01/12/2018 16:00:00"), EndDate = DateTime.Parse("03/02/2019 15:00:00") });
+                teamEngagement.HasData(new { Id = 6L, PlayerId = 131L, TeamId = 9L, StartDate = DateTime.Parse("01/12/2019 16:00:00"), EndDate = DateTime.Parse("03/02/2020 15:00:00") });
+                teamEngagement.HasData(new { Id = 7L, PlayerId = 905L, TeamId = 9L, StartDate = DateTime.Parse("01/12/2018 16:00:00"), EndDate = DateTime.Parse("03/02/2020 15:00:00") });
+                teamEngagement.HasData(new { Id = 8L, PlayerId = 918L, TeamId = 9L, StartDate = DateTime.Parse("01/12/2018 16:00:00"), EndDate = DateTime.Parse("03/02/2019 15:00:00") });
+                teamEngagement.HasData(new { Id = 9L, PlayerId = 929L, TeamId = 9L, StartDate = DateTime.Parse("01/12/2019 16:00:00"), EndDate = DateTime.Parse("03/02/2020 15:00:00") });
+
+
                 //teamEngagement.HasData(new { Id = 101L, PlayerId = 101L, TeamId = 1L, StartDate = DateTime.Parse(""), EndDate = DateTime.Parse(""), Name = "Alexis Sanchez" });
                 //teamEngagement.HasData(new { Id = 102L, PlayerId = 102L, TeamId = 1L, StartDate = DateTime.Parse(""), EndDate = DateTime.Parse(""), Name = "Ander Herrera" });
                 //teamEngagement.HasData(new { Id = 100L, PlayerId = 100L, TeamId = 1L, StartDate = DateTime.Parse(""), EndDate = DateTime.Parse(""), Name = "Aaron Wan Bissaka" });

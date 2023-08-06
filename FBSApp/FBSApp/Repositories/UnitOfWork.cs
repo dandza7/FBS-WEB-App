@@ -18,6 +18,7 @@ namespace FBSApp.Repositories
         private IGenericRepository<Season> _seasonRepository;
         private IGenericRepository<Match> _matchRepository;
         private IGenericRepository<MatchActor> _matchActorRepository;
+        private IGenericRepository<TeamEngagement> _teamEngagementRepository;
         public UnitOfWork(DbContext FBS_DB_Context)
         {
             _FBS_DB_Context = FBS_DB_Context;
@@ -101,6 +102,14 @@ namespace FBSApp.Repositories
             {
                 _matchActorRepository ??= new GenericRepository<MatchActor>(_FBS_DB_Context);
                 return _matchActorRepository;
+            }
+        }
+        public IGenericRepository<TeamEngagement> TeamEngagementRepository
+        {
+            get
+            {
+                _teamEngagementRepository ??= new GenericRepository<TeamEngagement>(_FBS_DB_Context);
+                return _teamEngagementRepository;
             }
         }
 
