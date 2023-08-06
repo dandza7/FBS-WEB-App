@@ -2,16 +2,15 @@
 
 namespace FBSApp.Models
 {
-    public class Season : IEntity
+    public class TeamEngagement : IEntity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
-        public string Year { get; set; }
-        public League League { get; set; }
-        public long LeagueId { get; set; }
+        public Team Team { get; set; }
+        public long TeamId { get; set; }
+        public Player Player { get; set; }
+        public long PlayerId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public IEnumerable<Team> Teams { get; set; }
-        public IEnumerable<Match> Matches { get; set; }
     }
 }
