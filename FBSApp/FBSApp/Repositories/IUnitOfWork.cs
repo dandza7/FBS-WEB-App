@@ -16,6 +16,7 @@ namespace FBSApp.Repositories
         IGenericRepository<Match> MatchRepository { get; }
         IGenericRepository<MatchActor> MatchActorRepository { get; }
         IGenericRepository<TeamEngagement> TeamEngagementRepository { get; }
+        IGenericRepository<Staff> StaffRepository { get; }
         void SaveChanges();
     }
 }

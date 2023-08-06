@@ -17,6 +17,7 @@ namespace FBSApp.Data
         public DbSet<Match> Matches { get; set; }
         public DbSet<MatchActor> MatchActors { get; set; }
         public DbSet<TeamEngagement> TeamEngagements { get; set; }
+        public DbSet<Staff> Staff { get; set; }
         public FBS_DB_Context(DbContextOptions options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -357,6 +358,7 @@ namespace FBSApp.Data
             modelBuilder.Entity<Player>().HasKey(p => p.Id);
             modelBuilder.Entity<Player>().Property(p => p.Name).IsRequired();
             modelBuilder.Entity<Player>().Property(p => p.Position).IsRequired();
+            modelBuilder.Entity<Player>().Property(p => p.BirthDate).IsRequired();
             modelBuilder.Entity<Player>().Property(p => p.Photo).IsRequired(false);
             modelBuilder.Entity<Player>().HasOne(p => p.Country).WithMany().HasForeignKey(p => p.CountryId).IsRequired();
             #region PlayerData
@@ -993,6 +995,35 @@ namespace FBSApp.Data
                 //teamEngagement.HasData(new { Id = 940L, PlayerId = 940L, TeamId = 9L, StartDate = DateTime.Parse(""), EndDate = DateTime.Parse(""), Name = "Tino Anjorin" });
                 //teamEngagement.HasData(new { Id = 942L, PlayerId = 942L, TeamId = 9L, StartDate = DateTime.Parse(""), EndDate = DateTime.Parse(""), Name = "Willian" });
                 //teamEngagement.HasData(new { Id = 942L, PlayerId = 942L, TeamId = 9L, StartDate = DateTime.Parse(""), EndDate = DateTime.Parse(""), Name = "Willy Caballero" });
+
+            });
+            #endregion
+            modelBuilder.Entity<Staff>().HasKey(s => s.Id);
+            modelBuilder.Entity<Staff>().Property(s => s.Name).IsRequired();
+            modelBuilder.Entity<Staff>().Property(s => s.BirthDate).IsRequired();
+            modelBuilder.Entity<Staff>().HasOne(s => s.Boss).WithMany().HasForeignKey(s => s.BossId).IsRequired(false);
+            modelBuilder.Entity<Staff>().Property(s => s.BossId).IsRequired(false);
+            modelBuilder.Entity<Staff>().HasOne(s => s.Country).WithMany().HasForeignKey(s => s.CountryId).IsRequired();
+            #region StaffData
+            modelBuilder.Entity<Staff>(staff =>
+            {
+                staff.HasData(new { Id = 1L, Name = "Jose Mourinho", CountryId = 141L, BirthDate = DateTime.Parse("Jan 26, 1963") });
+                staff.HasData(new { Id = 2L, Name = "Rue Faria", BossId = 1L, CountryId = 141L, BirthDate = DateTime.Parse("Jun 14, 1975") });
+
+                staff.HasData(new { Id = 3L, Name = "Mauricio Pochettino", CountryId = 7L, BirthDate = DateTime.Parse("Mar 2, 1972") });
+                staff.HasData(new { Id = 4L, Name = "Jesus Perez", BossId = 3L, CountryId = 167L, BirthDate = DateTime.Parse("Oct 5, 1971") });
+
+                staff.HasData(new { Id = 5L, Name = "Unai Emery", CountryId = 167L, BirthDate = DateTime.Parse("Nov 3, 1971") });
+                staff.HasData(new { Id = 6L, Name = "Pako Ayestaran", BossId = 5L, CountryId = 167L, BirthDate = DateTime.Parse("Feb 5, 1963") });
+
+                staff.HasData(new { Id = 7L, Name = "Josep Guardiola", CountryId = 167L, BirthDate = DateTime.Parse("Jan 18, 1971") });
+                staff.HasData(new { Id = 8L, Name = "Mikel Arteta", BossId = 7L, CountryId = 167L, BirthDate = DateTime.Parse("Mar 26, 1982") });
+
+                staff.HasData(new { Id = 9L, Name = "Jurgen Klopp", CountryId = 65L, BirthDate = DateTime.Parse("June 16, 1967") });
+                staff.HasData(new { Id = 10L, Name = "Zeljko Buvac", BossId = 9L, CountryId = 22L, BirthDate = DateTime.Parse("Jun 14, 1975") });
+
+                staff.HasData(new { Id = 11L, Name = "Maurizio Sarri", CountryId = 83L, BirthDate = DateTime.Parse("Jan 10, 1959") });
+                staff.HasData(new { Id = 12L, Name = "Gianfranco Zola", BossId = 11L, CountryId = 83L, BirthDate = DateTime.Parse("Jul 5, 1966") });
 
             });
             #endregion
