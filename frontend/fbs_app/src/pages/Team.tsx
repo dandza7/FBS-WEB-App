@@ -17,7 +17,7 @@ const seasons = [
 
 const Team = () => {
   const [tab, setTab] = useState("Stats");
-  const [selectedSeason, setSelectedSeason] = useState(null);
+
   const [team, setTeam] = useState(null);
   const [squad, setSquad] = useState<any[]>([]);
   const [staff, setStaff] = useState<any[]>([]);
@@ -27,6 +27,7 @@ const Team = () => {
   const navigate = useNavigate();
   const [totalMatchCount, setTotalMatchCount] = useState(null);
   const [selectedPage, setSelectedPage] = useState(1);
+  const [selectedSeason, setSelectedSeason] = useState(null);
   const pageSize = 5;
   const viewAllMatchesHandler = () => {
     navigate("/team/" + id + "/matches");
@@ -100,7 +101,7 @@ const Team = () => {
         return res.json();
       })
       .then((data) => {
-        setStaff(data);
+        setStaff(data[0]);
       })
       .catch((error) => {
         alert(error);
@@ -120,15 +121,16 @@ const Team = () => {
       .then((data) => {
         console.log(data);
         setTeam(data);
-        let allSeasons = [];
+        let seasons = [];
         data.seasons.map((season) => {
-          allSeasons.push({
+          seasons.push({
             value: season.id,
             label: season.league + " " + season.year,
           });
         });
-
-        setAllSeasons(allSeasons);
+        console.log("prva sezona " + seasons[0].value);
+        setSelectedSeason(seasons[0]);
+        setAllSeasons(seasons);
       })
       .catch((error) => {
         alert(error);

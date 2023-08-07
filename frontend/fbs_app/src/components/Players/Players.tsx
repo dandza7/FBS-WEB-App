@@ -56,6 +56,12 @@ const Players = (props) => {
               players={attackers}
             ></TeamPositionPlayers>
           </div>
+          <div className={classes.positionContainer}>
+            <TeamPositionPlayers
+              position={"Staff"}
+              players={attackers}
+            ></TeamPositionPlayers>
+          </div>
         </div>
       ) : (
         <div>asd</div>
