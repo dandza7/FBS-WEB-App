@@ -1,5 +1,7 @@
 .nav {
   background-color: var(--darkBlue);
+  position: fixed;
+  width: 100%;
 }
 
 .navbar {

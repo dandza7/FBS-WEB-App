@@ -30,6 +30,7 @@ const Teams = () => {
 
   const changePage = (page: number) => {
     setSelectedPage(page);
+    window.scrollTo({ top: 0, left: 0 });
   };
 
   const changeCountryHandler = (value: any) => {

@@ -7,43 +7,106 @@ import { useParams } from "react-router";
 import Teams from "./Teams";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router";
+import Pagination from "../components/Utils/Pagination";
 
 const seasons = [
-  { value: "2020/2021", label: "2020/2021" },
-  { value: "2021/2022", label: "2021/2022" },
-  { value: "2022/2023", label: "2022/2023" },
+  { value: "1", label: "2020/2021" },
+  { value: "2", label: "2021/2022" },
+  { value: "3", label: "2022/2023" },
 ];
 
 const Team = () => {
   const [tab, setTab] = useState("Stats");
-  const [selectedSeason, setSelectedSeason] = useState(null);
+
   const [team, setTeam] = useState(null);
+  const [squad, setSquad] = useState<any[]>([]);
+  const [staff, setStaff] = useState<any[]>([]);
   const { id } = useParams();
   const [matches, setMatches] = useState<any[]>([]);
+  const [allSeasons, setAllSeasons] = useState<any[]>([]);
   const navigate = useNavigate();
-
+  const [totalMatchCount, setTotalMatchCount] = useState(null);
+  const [selectedPage, setSelectedPage] = useState(1);
+  const [selectedSeason, setSelectedSeason] = useState(null);
+  const pageSize = 5;
   const viewAllMatchesHandler = () => {
     navigate("/team/" + id + "/matches");
   };
 
   const getTeamMatches = () => {
-    fetch(`http://localhost:5271/api/teams/${id}/matches/1/5`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    fetch(
+      `http://localhost:5271/api/teams/${id}/matches/${selectedPage}/${pageSize}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
       .then((res) => {
         return res.json();
       })
       .then((data) => {
         console.log(data);
         setMatches(data.entities);
+        setTotalMatchCount(data.totalCount);
       })
       .catch((error) => {
         alert(error);
       });
   };
+
+  useEffect(() => {
+    getTeamMatches();
+  }, [selectedPage]);
+
+  useEffect(() => {
+    fetch(
+      "http://localhost:5271/api/teams/" +
+        id +
+        "/squad/" +
+        selectedSeason?.value,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setSquad(data);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }, [selectedSeason]);
+
+  useEffect(() => {
+    fetch(
+      "http://localhost:5271/api/teams/" +
+        id +
+        "/staff/" +
+        selectedSeason?.value,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setStaff(data[0]);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }, [selectedSeason]);
 
   useEffect(() => {
     fetch("http://localhost:5271/api/teams/" + id + "/detailed", {
@@ -58,11 +121,25 @@ const Team = () => {
       .then((data) => {
         console.log(data);
         setTeam(data);
+        let seasons = [];
+        data.seasons.map((season) => {
+          seasons.push({
+            value: season.id,
+            label: season.league + " " + season.year,
+          });
+        });
+        console.log("prva sezona " + seasons[0].value);
+        setSelectedSeason(seasons[0]);
+        setAllSeasons(seasons);
       })
       .catch((error) => {
         alert(error);
       });
   }, []);
+
+  const changePage = (page: number) => {
+    setSelectedPage(page);
+  };
 
   return (
     <div className={classes.team}>
@@ -103,8 +180,7 @@ const Team = () => {
           <Select
             defaultValue={selectedSeason}
             onChange={setSelectedSeason}
-            options={seasons}
-            isClearable
+            options={allSeasons}
             placeholder="Select season"
           />
         </div>
@@ -116,7 +192,15 @@ const Team = () => {
           <div className={classes.statistics}></div>
         </div>
       )}
-      {tab === "Squad" && <Players></Players>}
+      {tab === "Squad" && (
+        <div className={classes.whiteContainerInfo}>
+          {selectedSeason ? (
+            <Players squad={squad} staff={staff}></Players>
+          ) : (
+            <div>Select season</div>
+          )}
+        </div>
+      )}
       {tab === "Matches" && (
         <div className={classes.whiteContainerInfo}>
           <h3>Matches</h3>
@@ -167,14 +251,12 @@ const Team = () => {
               </div>
             ))}
           </div>
-          <div className={classes.containerCenter}>
-            <button
-              className={classes.viewAllMatchesButton}
-              onClick={viewAllMatchesHandler}
-            >
-              View all
-            </button>
-          </div>
+          <Pagination
+            change={changePage}
+            totalCount={totalMatchCount}
+            pageSize={pageSize}
+            currentPage={selectedPage}
+          ></Pagination>
         </div>
       )}
     </div>

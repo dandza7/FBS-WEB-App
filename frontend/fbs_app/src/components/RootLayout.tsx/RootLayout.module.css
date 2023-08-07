@@ -1,6 +1,7 @@
 .main {
   background-color: var(--ligtGrey);
   padding: 1rem;
+  padding-top: 5.2rem;
 }
 .outletContainer {
   width: 50%;

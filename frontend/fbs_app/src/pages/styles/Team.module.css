@@ -181,3 +181,11 @@
   color: white;
   cursor: pointer;
 }
+
+@media only screen and (max-width: 650px) {
+  .teamImage {
+    width: 100px;
+    height: 105px;
+    border-radius: 1rem;
+  }
+}
