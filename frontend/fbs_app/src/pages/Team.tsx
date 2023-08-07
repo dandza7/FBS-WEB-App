@@ -1,8 +1,12 @@
 import React from "react";
 import classes from "./styles/Team.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Players from "../components/Players/Players";
 import Select from "react-select";
+import { useParams } from "react-router";
+import Teams from "./Teams";
+import dayjs from "dayjs";
+import { useNavigate } from "react-router";
 
 const seasons = [
   { value: "2020/2021", label: "2020/2021" },
@@ -13,34 +17,82 @@ const seasons = [
 const Team = () => {
   const [tab, setTab] = useState("Stats");
   const [selectedSeason, setSelectedSeason] = useState(null);
+  const [team, setTeam] = useState(null);
+  const { id } = useParams();
+  const [matches, setMatches] = useState<any[]>([]);
+  const navigate = useNavigate();
+
+  const viewAllMatchesHandler = () => {
+    navigate("/team/" + id + "/matches");
+  };
+
+  const getTeamMatches = () => {
+    fetch(`http://localhost:5271/api/teams/${id}/matches/1/5`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setMatches(data.entities);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+
+  useEffect(() => {
+    fetch("http://localhost:5271/api/teams/" + id + "/detailed", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setTeam(data);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }, []);
 
   return (
-    <div className={classes.player}>
+    <div className={classes.team}>
       <div className={classes.whiteContainerTitle}>
-        <div className={classes.playerInfo}>
+        <div className={classes.teamInfo}>
           <div>
             <img
-              className={classes.playerImage}
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Juventus_FC_2017_icon_%28black%29.svg/800px-Juventus_FC_2017_icon_%28black%29.svg.png"
+              className={classes.teamImage}
+              src={`data:image/png;base64,${team?.logo}`}
             ></img>
           </div>
           <div className={classes.basicInfo}>
-            <h2>Juventus FC</h2>
-            <p>Country: Italy</p>
-            <p>League: Serie A</p>
+            <h2>{team?.name}</h2>
+            <p>Stadium : {team?.stadiumName}</p>
           </div>
         </div>
       </div>
-      <div className={classes.playerMenu}>
-        <div className={classes.playerMenuItem} onClick={() => setTab("Stats")}>
+      <div className={classes.teamMenu}>
+        <div className={classes.teamMenuItem} onClick={() => setTab("Stats")}>
           Stats
         </div>
-        <div className={classes.playerMenuItem} onClick={() => setTab("Squad")}>
+        <div className={classes.teamMenuItem} onClick={() => setTab("Squad")}>
           Squad
         </div>
         <div
-          className={classes.playerMenuItem}
-          onClick={() => setTab("Matches")}
+          className={classes.teamMenuItem}
+          onClick={() => {
+            setTab("Matches");
+            getTeamMatches();
+          }}
         >
           Matches
         </div>
@@ -70,54 +122,58 @@ const Team = () => {
           <h3>Matches</h3>
           <br></br>
           <div className={classes.results}>
-            <div className={classes.result}>
-              <div className={classes.teamsDateContainer}>
-                <div>
-                  <p>25.08.2023.</p>
+            {matches.map((match) => (
+              <div className={classes.result}>
+                <div className={classes.teamsDateContainer}>
+                  <div>
+                    <p>{dayjs(match.date).format("DD.MM")}</p>
+                  </div>
+                  <div className={classes.resultTeamsContainer}>
+                    <div className={classes.matchTeam}>
+                      <img
+                        className={classes.matchTeamLogo}
+                        src={`data:image/png;base64,${match.homeTeam.logo}`}
+                      ></img>
+                      <span
+                        className={
+                          match.homeTeamGoals > match.awayTeamGoals &&
+                          classes.winner
+                        }
+                      >
+                        {match.homeTeam.name}
+                      </span>
+                    </div>
+                    <div className={classes.matchTeam}>
+                      <img
+                        className={classes.matchTeamLogo}
+                        src={`data:image/png;base64,${match.awayTeam.logo}`}
+                      ></img>
+                      <span
+                        className={
+                          match.homeTeamGoals < match.awayTeamGoals &&
+                          classes.winner
+                        }
+                      >
+                        {match.awayTeam.name}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <p>Tim1</p>
-                  <p className={classes.winner}>Tim1</p>
-                </div>
-              </div>
 
-              <div className={classes.score}>
-                <p>2</p>
-                <p>1</p>
-              </div>
-            </div>
-            <div className={classes.result}>
-              <div className={classes.teamsDateContainer}>
-                <div>
-                  <p>25.08.2023.</p>
-                </div>
-                <div>
-                  <p className={classes.winner}>Tim1</p>
-                  <p>Tim1</p>
+                <div className={classes.score}>
+                  <p>{match.homeTeamGoals}</p>
+                  <p>{match.awayTeamGoals}</p>
                 </div>
               </div>
-
-              <div className={classes.score}>
-                <p>2</p>
-                <p>1</p>
-              </div>
-            </div>
-            <div className={classes.result}>
-              <div className={classes.teamsDateContainer}>
-                <div>
-                  <p>25.08.2023.</p>
-                </div>
-                <div>
-                  <p className={classes.winner}>Tim1</p>
-                  <p>Tim1</p>
-                </div>
-              </div>
-
-              <div className={classes.score}>
-                <p>2</p>
-                <p>1</p>
-              </div>
-            </div>
+            ))}
+          </div>
+          <div className={classes.containerCenter}>
+            <button
+              className={classes.viewAllMatchesButton}
+              onClick={viewAllMatchesHandler}
+            >
+              View all
+            </button>
           </div>
         </div>
       )}

@@ -33,7 +33,8 @@ const Navbar = () => {
                   to="/leagues"
                   className={classes.NavLink}
                   style={({ isActive }) => ({
-                    color: isActive ? "#45FF93" : "#fff",
+                    color: isActive ? "#59b7d9" : "#fff",
+                    fontWeight: isActive ? "600" : "500",
                   })}
                 >
                   Leagues
@@ -44,7 +45,8 @@ const Navbar = () => {
                   to="/teams"
                   className={classes.NavLink}
                   style={({ isActive }) => ({
-                    color: isActive ? "#45FF93" : "#fff",
+                    color: isActive ? "#59b7d9" : "#fff",
+                    fontWeight: isActive ? "600" : "500",
                   })}
                 >
                   Teams
@@ -55,7 +57,8 @@ const Navbar = () => {
                   to="/players"
                   className={classes.NavLink}
                   style={({ isActive }) => ({
-                    color: isActive ? "#45FF93" : "#fff",
+                    color: isActive ? "#59b7d9" : "#fff",
+                    fontWeight: isActive ? "600" : "500",
                   })}
                 >
                   Players

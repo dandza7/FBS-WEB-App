@@ -1,11 +1,11 @@
-.player {
+.team {
   padding-top: 1rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.playerMenu {
+.teamMenu {
   display: flex;
   gap: 1rem;
   align-items: center;
@@ -17,7 +17,7 @@
   border-radius: 0rem 0rem 1rem 1rem;
 }
 
-.playerMenuItem {
+.teamMenuItem {
   cursor: pointer;
   font-weight: 600;
 }
@@ -35,17 +35,27 @@
 .results {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
 }
 
 .result {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgb(225, 225, 225);
+  border-bottom: 1px solid rgb(215, 214, 214);
 
-  padding: 0.5rem 3rem;
+  padding: 0.5rem 1rem;
   cursor: pointer;
+  background-color: rgb(239, 240, 240);
+  border-radius: 0.5rem;
 }
+
+.resultTeamsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .resultDate {
   display: flex;
   align-items: flex-end;
@@ -58,12 +68,18 @@
   justify-content: center;
 }
 
+.winner {
+  font-weight: 600;
+}
 .score {
   font-weight: 600;
 }
 
-.winner {
-  font-weight: 600;
+.matchTeam {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
 }
 
 .scoreboardTable thead tr {
@@ -110,9 +126,10 @@
   font-size: 14px;
 }
 
-.playerInfo {
+.teamInfo {
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
+  padding: 1rem;
 }
 .basicInfo {
   display: flex;
@@ -120,9 +137,9 @@
   gap: 0.3rem;
 }
 
-.playerImage {
-  width: 150px;
-  height: 200px;
+.teamImage {
+  width: 145px;
+  height: 150px;
   border-radius: 1rem;
 }
 .seasonContainer {
@@ -144,4 +161,23 @@
   background-color: white;
   padding: 1rem;
   border-radius: 0rem 0rem 1rem 1rem;
+}
+.matchTeamLogo {
+  width: 20px;
+  height: 18px;
+}
+
+.containerCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.viewAllMatchesButton {
+  background-color: var(--darkBlue);
+  padding: 0.5rem;
+  border: 1px solid var(--darkBlue);
+  border-radius: 0.5rem;
+  color: white;
+  cursor: pointer;
 }

@@ -19,28 +19,39 @@ const Filters = (props) => {
   const [playerPos, setPlayerPos] = useState(
     props.selectedPos?.value === "ALL" ? null : props.selectedPos
   );
+  const [firstRenderCountry, setFirstRenderCountry] = useState(true);
+  const [firstRenderPos, setFirstRenderPos] = useState(true);
 
   useEffect(() => {
-    if (!selectedCountry) {
-      props.onChange({
-        value: "0",
-        label: "",
-        image: "",
-      });
-    } else {
-      props.onChange(selectedCountry);
+    if (firstRenderCountry) setFirstRenderCountry(false);
+    if (!firstRenderCountry) {
+      setFirstRenderCountry(true);
+      props.setPage1();
+      if (!selectedCountry) {
+        props.onChange({
+          value: "0",
+          label: "",
+          image: "",
+        });
+      } else {
+        props.onChange(selectedCountry);
+      }
     }
   }, [selectedCountry]);
 
   useEffect(() => {
-    if (props.filters.includes("playerPos")) {
-      if (!playerPos) {
-        props.onChangePlayerPos({
-          value: "ALL",
-          label: "",
-        });
-      } else {
-        props.onChangePlayerPos(playerPos);
+    if (firstRenderPos) setFirstRenderPos(false);
+    if (!firstRenderPos) {
+      props.setPage1();
+      if (props.filters.includes("playerPos")) {
+        if (!playerPos) {
+          props.onChangePlayerPos({
+            value: "ALL",
+            label: "",
+          });
+        } else {
+          props.onChangePlayerPos(playerPos);
+        }
       }
     }
   }, [playerPos]);

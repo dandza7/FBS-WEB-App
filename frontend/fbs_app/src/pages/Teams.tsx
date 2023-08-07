@@ -9,6 +9,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Filters from "../components/Utils/Filters";
 import TeamCard from "../components/Teams/TeamCard";
 import Pagination from "../components/Utils/Pagination";
+import { useNavigate } from "react-router";
 
 const Teams = () => {
   const [teams, setTeams] = useState<any[]>([]);
@@ -20,6 +21,12 @@ const Teams = () => {
   const pageSize = 10;
   const [totalCount, setTotalCount] = useState(null);
   const [selectedPage, setSelectedPage] = useState(1);
+  const navigate = useNavigate();
+
+  const setPage1 = () => {
+    console.log("promenjeno");
+    setSelectedPage(1);
+  };
 
   const changePage = (page: number) => {
     setSelectedPage(page);
@@ -30,6 +37,7 @@ const Teams = () => {
   };
 
   const changeNameHandler = (value: any) => {
+    setSelectedPage(1);
     setTeamName(value);
   };
 
@@ -87,6 +95,9 @@ const Teams = () => {
       });
   }, [selectedCountry, teamName, selectedPage]);
 
+  const viewTeamHandler = (id: number) => {
+    navigate("/team/" + id);
+  };
   return (
     <div>
       {teams.length > 0 ? (
@@ -113,12 +124,17 @@ const Teams = () => {
                 selected={selectedCountry}
                 onChangeTeamName={changeNameHandler}
                 selectedName={teamName}
+                setPage1={setPage1}
               ></Filters>
             )}
           </div>
           <div className={classes.teams}>
             {teams?.map((team) => (
-              <TeamCard team={team} key={team.id}></TeamCard>
+              <TeamCard
+                team={team}
+                key={team.id}
+                onClick={viewTeamHandler}
+              ></TeamCard>
             ))}
           </div>
 
@@ -126,6 +142,7 @@ const Teams = () => {
             change={changePage}
             totalCount={totalCount}
             pageSize={pageSize}
+            currentPage={selectedPage}
           ></Pagination>
         </div>
       ) : (

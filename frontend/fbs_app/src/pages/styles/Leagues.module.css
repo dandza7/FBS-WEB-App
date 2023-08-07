@@ -1,21 +1,28 @@
 .leaguesTable thead tr {
-  background-color: rgb(218, 218, 218);
-  color: #272727;
+  background-color: var(--darkBlue);
+  color: #ffffff;
   text-align: left;
 }
 
 .leaguesTable th,
 .leaguesTable td {
-  padding: 0.5rem 2rem;
+  padding: 1rem 2rem;
 }
 .leaguesTable th {
   font-size: 1rem;
   font-weight: 400;
-  font-size: 13px;
+  font-size: 1rem;
 }
 
 .leaguesTable tbody tr {
   border-bottom: 1px solid #dddddd;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.leaguesTable tbody tr {
+  border-bottom: 1px solid #dddddd;
+  cursor: pointer;
 }
 
 .leaguesTable tbody tr:nth-of-type(even) {
@@ -27,7 +34,13 @@
 }
 
 .leaguesTable tbody tr:last-of-type {
-  border-bottom: 1px solid var(--darkGreen);
+  border-bottom: 1px solid rgb(43, 18, 18);
+}
+
+.leaguesTable tbody tr:hover {
+  border-bottom: 1px solid #dddddd;
+  color: white;
+  background-color: rgb(137, 152, 190);
 }
 
 .leaguesTable {
