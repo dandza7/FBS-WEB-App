@@ -21,6 +21,7 @@ const Players = () => {
 
   const changePage = (page: number) => {
     setSelectedPage(page);
+    window.scrollTo({ top: 0, left: 0 });
   };
 
   const setPage1 = () => {

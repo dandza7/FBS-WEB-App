@@ -21,7 +21,6 @@ const Pagination = (props) => {
       props.change(selectedPage);
     }
     setSelectedPageGo("");
-    window.scrollTo({ top: 0, left: 0 });
   }, [selectedPage]);
 
   return (
