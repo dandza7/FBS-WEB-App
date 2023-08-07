@@ -1,5 +1,6 @@
 ﻿using FBSApp.Models.DTOs;
 using FBSApp.Models.DTOs.Match;
+using FBSApp.Models.DTOs.Staff;
 using FBSApp.Models.DTOs.Team;
 using FBSApp.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -52,9 +53,19 @@ namespace FBSApp.Controllers
         /// </summary>
         [HttpGet("{id}/squad/{seasonId}", Name = "GetTeamsSquad")]
         [AllowAnonymous]
-        public ActionResult<PaginationWrapper<MatchListPreviewDTO>> GetTeamsSquad(long id, long seasonId)
+        public ActionResult<IEnumerable<PlayerListPreviewDTO>> GetTeamsSquad(long id, long seasonId)
         {
             return Ok(_teamService.GetTeamsSquad(id, seasonId));
+        }
+
+        /// <summary>
+        /// [Anonymous] Gets teams staff by season
+        /// </summary>
+        [HttpGet("{id}/staff/{seasonId}", Name = "GetTeamsStaff")]
+        [AllowAnonymous]
+        public ActionResult<IEnumerable<TeamEmploymentDTO>> GetTeamsStaff(long id, long seasonId)
+        {
+            return Ok(_teamService.GetTeamsStaff(id, seasonId));
         }
     }
 }

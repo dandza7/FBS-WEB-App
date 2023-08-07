@@ -1,4 +1,5 @@
-﻿using FBSApp.Models.DTOs.Staff;
+﻿using FBSApp.Models.DTOs;
+using FBSApp.Models.DTOs.Staff;
 using FBSApp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,13 +17,23 @@ namespace FBSApp.Controllers
         }
 
         /// <summary>
-        /// [Anonymous] Gets players in list view
+        /// [Anonymous] Gets staff in list view
         /// </summary>
-        [HttpPost(Name = "GetAllStaff")]
+        [HttpGet("{page}/{pageSize}", Name = "GetAllStaff")]
         [AllowAnonymous]
-        public ActionResult<IEnumerable<StaffGroupDTO>> GetAllStaff()
+        public ActionResult<PaginationWrapper<StaffDTO>> GetAllStaff(int page, int pageSize)
         {
-            return Ok(_staffService.GetAll());
+            return Ok(_staffService.GetAll(page, pageSize));
+        }
+
+        /// <summary>
+        /// [Anonymous] Gets staff employments
+        /// </summary>
+        [HttpGet("{id}/employments", Name = "GetAllStaffEmployments")]
+        [AllowAnonymous]
+        public ActionResult<IEnumerable<TeamEmploymentDTO>> GetAllStaffEmployments(long id)
+        {
+            return Ok(_staffService.GetEmployments(id));
         }
     }
 }

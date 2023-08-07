@@ -15,5 +15,6 @@ namespace FBSApp.Models
         public IEnumerable<Season> Seasons { get; set; }
         public IEnumerable<MatchActor> PlayedMatches { get; set; }
         public IEnumerable<TeamEngagement> Engagements { get; set; }
+        public IEnumerable<TeamEmployment> Employments { get; set; }
     }
 }

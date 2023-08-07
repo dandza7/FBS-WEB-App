@@ -8,11 +8,319 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FBSApp.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedTestData : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Countries",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Flag = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Countries", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Leagues",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Leagues", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Salt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Addresses",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Number = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CountryId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Addresses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Addresses_Countries_CountryId",
+                        column: x => x.CountryId,
+                        principalTable: "Countries",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Players",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Position = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Photo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CountryId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Players", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Players_Countries_CountryId",
+                        column: x => x.CountryId,
+                        principalTable: "Countries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Staff",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    BossId = table.Column<long>(type: "bigint", nullable: true),
+                    CountryId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Staff", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Staff_Countries_CountryId",
+                        column: x => x.CountryId,
+                        principalTable: "Countries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Staff_Staff_BossId",
+                        column: x => x.BossId,
+                        principalTable: "Staff",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Seasons",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Year = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LeagueId = table.Column<long>(type: "bigint", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Seasons", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Seasons_Leagues_LeagueId",
+                        column: x => x.LeagueId,
+                        principalTable: "Leagues",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Stadiums",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AddressId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stadiums", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Stadiums_Addresses_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Addresses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Matches",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Gameweek = table.Column<int>(type: "int", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SeasonId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Matches", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Matches_Seasons_SeasonId",
+                        column: x => x.SeasonId,
+                        principalTable: "Seasons",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Teams",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StadiumId = table.Column<long>(type: "bigint", nullable: false),
+                    CountryId = table.Column<long>(type: "bigint", nullable: false),
+                    Logo = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Teams", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Teams_Countries_CountryId",
+                        column: x => x.CountryId,
+                        principalTable: "Countries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Teams_Stadiums_StadiumId",
+                        column: x => x.StadiumId,
+                        principalTable: "Stadiums",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MatchActors",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MatchId = table.Column<long>(type: "bigint", nullable: false),
+                    TeamId = table.Column<long>(type: "bigint", nullable: false),
+                    IsTeamHost = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MatchActors", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MatchActors_Matches_MatchId",
+                        column: x => x.MatchId,
+                        principalTable: "Matches",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MatchActors_Teams_TeamId",
+                        column: x => x.TeamId,
+                        principalTable: "Teams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TeamEmployments",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TeamId = table.Column<long>(type: "bigint", nullable: false),
+                    StaffId = table.Column<long>(type: "bigint", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TeamEmployments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TeamEmployments_Staff_StaffId",
+                        column: x => x.StaffId,
+                        principalTable: "Staff",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_TeamEmployments_Teams_TeamId",
+                        column: x => x.TeamId,
+                        principalTable: "Teams",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TeamEngagements",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TeamId = table.Column<long>(type: "bigint", nullable: false),
+                    PlayerId = table.Column<long>(type: "bigint", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TeamEngagements", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TeamEngagements_Players_PlayerId",
+                        column: x => x.PlayerId,
+                        principalTable: "Players",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_TeamEngagements_Teams_TeamId",
+                        column: x => x.TeamId,
+                        principalTable: "Teams",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TeamSeason",
+                columns: table => new
+                {
+                    SeasonId = table.Column<long>(type: "bigint", nullable: false),
+                    TeamId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TeamSeason", x => new { x.SeasonId, x.TeamId });
+                    table.ForeignKey(
+                        name: "FK_TeamSeason_Seasons_SeasonId",
+                        column: x => x.SeasonId,
+                        principalTable: "Seasons",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TeamSeason_Teams_TeamId",
+                        column: x => x.TeamId,
+                        principalTable: "Teams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Countries",
                 columns: new[] { "Id", "Flag", "Name" },
@@ -230,12 +538,10 @@ namespace FBSApp.Migrations
                     { 5L, "Seria A" }
                 });
 
-            migrationBuilder.UpdateData(
+            migrationBuilder.InsertData(
                 table: "Users",
-                keyColumn: "Id",
-                keyValue: 1L,
-                columns: new[] { "Password", "Salt" },
-                values: new object[] { "72E510DC6BF5EDF6ECE1697B07C2E02254A0182EC74E29ACC570CB22DFDA7390417AEE7540C8A93509E46499629D6F42E55707D06A0D129ED91134827C634AA5", new byte[] { 30, 20, 84, 155, 208, 208, 132, 30, 152, 113, 21, 236, 148, 82, 86, 253, 233, 231, 94, 1, 87, 71, 71, 180, 225, 41, 134, 211, 101, 201, 239, 17, 220, 118, 156, 169, 51, 51, 162, 86, 208, 176, 11, 198, 103, 13, 253, 83, 23, 43, 41, 18, 137, 135, 65, 232, 18, 127, 234, 44, 247, 184, 132, 106 } });
+                columns: new[] { "Id", "Email", "Password", "Role", "Salt" },
+                values: new object[] { 1L, "admin@gmail.com", "B6200C0031CB3B23DD4DEECA1F325463DE9CD768C0579363DB08BF3E60DEC18B1CDAEB7D7AAC5BD302F5F5C261DACCF1D729EF95B6266F5395E99D644CF7F608", "ADMIN", new byte[] { 138, 210, 45, 63, 120, 239, 10, 23, 176, 184, 156, 100, 181, 240, 236, 135, 211, 135, 210, 214, 180, 122, 146, 98, 48, 10, 48, 20, 50, 1, 246, 32, 254, 212, 130, 21, 238, 55, 62, 147, 5, 18, 26, 65, 201, 139, 113, 123, 185, 85, 167, 17, 139, 148, 255, 23, 100, 0, 250, 106, 35, 7, 215, 159 } });
 
             migrationBuilder.InsertData(
                 table: "Addresses",
@@ -494,8 +800,26 @@ namespace FBSApp.Migrations
 
             migrationBuilder.InsertData(
                 table: "Seasons",
-                columns: new[] { "Id", "LeagueId", "Year" },
-                values: new object[] { 1L, 1L, "2018/19 Big6Only" });
+                columns: new[] { "Id", "EndDate", "LeagueId", "StartDate", "Year" },
+                values: new object[,]
+                {
+                    { 1L, new DateTime(2019, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 1L, new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), "2018/19 Big6Only" },
+                    { 2L, new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 1L, new DateTime(2019, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), "2019/20   [TEST]" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Staff",
+                columns: new[] { "Id", "BirthDate", "BossId", "CountryId", "Name" },
+                values: new object[,]
+                {
+                    { 1L, new DateTime(1963, 1, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 141L, "Jose Mourinho" },
+                    { 3L, new DateTime(1972, 3, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 7L, "Mauricio Pochettino" },
+                    { 5L, new DateTime(1971, 11, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 167L, "Unai Emery" },
+                    { 7L, new DateTime(1971, 1, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 167L, "Josep Guardiola" },
+                    { 9L, new DateTime(1967, 6, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 65L, "Jurgen Klopp" },
+                    { 12L, new DateTime(1959, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 83L, "Maurizio Sarri" },
+                    { 14L, new DateTime(1978, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 53L, "Frank Lampard" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Matches",
@@ -531,7 +855,7 @@ namespace FBSApp.Migrations
                     { 27L, new DateTime(2019, 1, 27, 15, 0, 0, 0, DateTimeKind.Unspecified), 9, 1L },
                     { 28L, new DateTime(2019, 2, 2, 16, 0, 0, 0, DateTimeKind.Unspecified), 10, 1L },
                     { 29L, new DateTime(2019, 2, 2, 18, 30, 0, 0, DateTimeKind.Unspecified), 10, 1L },
-                    { 30L, new DateTime(2019, 1, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 10, 1L }
+                    { 30L, new DateTime(2019, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 10, 1L }
                 });
 
             migrationBuilder.InsertData(
@@ -562,6 +886,22 @@ namespace FBSApp.Migrations
                     { 21L, 21L, "Vicarage Road" },
                     { 22L, 22L, "Kirklees Stadium" },
                     { 23L, 23L, "Carrow Road" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Staff",
+                columns: new[] { "Id", "BirthDate", "BossId", "CountryId", "Name" },
+                values: new object[,]
+                {
+                    { 2L, new DateTime(1975, 6, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 1L, 141L, "Rue Faria" },
+                    { 4L, new DateTime(1971, 10, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 3L, 167L, "Jesus Perez" },
+                    { 6L, new DateTime(1963, 2, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 5L, 167L, "Pako Ayestaran" },
+                    { 8L, new DateTime(1982, 3, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), 7L, 167L, "Mikel Arteta" },
+                    { 10L, new DateTime(1975, 6, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 9L, 22L, "Zeljko Buvac" },
+                    { 11L, new DateTime(1980, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), 9L, 53L, "Steven Gerrard" },
+                    { 13L, new DateTime(1966, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 12L, 83L, "Gianfranco Zola" },
+                    { 15L, new DateTime(2019, 1, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), 14L, 53L, "Ashley Cole" },
+                    { 16L, new DateTime(1976, 9, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), 15L, 65L, "Michael Ballack" }
                 });
 
             migrationBuilder.InsertData(
@@ -662,6 +1002,45 @@ namespace FBSApp.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "TeamEmployments",
+                columns: new[] { "Id", "EndDate", "StaffId", "StartDate", "TeamId" },
+                values: new object[,]
+                {
+                    { 1L, new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 1L, new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 1L },
+                    { 2L, new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 2L, new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 1L },
+                    { 3L, new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 3L, new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 2L },
+                    { 4L, new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 4L, new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 2L },
+                    { 5L, new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 5L, new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 4L },
+                    { 6L, new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 6L, new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 4L },
+                    { 7L, new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 7L, new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 5L },
+                    { 8L, new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 8L, new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 5L },
+                    { 9L, new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 9L, new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 6L },
+                    { 10L, new DateTime(2019, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 10L, new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 6L },
+                    { 11L, new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 11L, new DateTime(2019, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 6L },
+                    { 12L, new DateTime(2019, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 12L, new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 9L },
+                    { 13L, new DateTime(2019, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 13L, new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 9L },
+                    { 14L, new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 14L, new DateTime(2019, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 9L },
+                    { 15L, new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 15L, new DateTime(2019, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 9L },
+                    { 16L, new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 16L, new DateTime(2019, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 9L }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TeamEngagements",
+                columns: new[] { "Id", "EndDate", "PlayerId", "StartDate", "TeamId" },
+                values: new object[,]
+                {
+                    { 1L, new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 110L, new DateTime(2019, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 1L },
+                    { 2L, new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 129L, new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 1L },
+                    { 3L, new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 113L, new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 1L },
+                    { 4L, new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 123L, new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 1L },
+                    { 5L, new DateTime(2019, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 131L, new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 1L },
+                    { 6L, new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 131L, new DateTime(2019, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 9L },
+                    { 7L, new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 905L, new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 9L },
+                    { 8L, new DateTime(2019, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 918L, new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 9L },
+                    { 9L, new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 929L, new DateTime(2019, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified), 9L }
+                });
+
+            migrationBuilder.InsertData(
                 table: "TeamSeason",
                 columns: new[] { "SeasonId", "TeamId" },
                 values: new object[,]
@@ -673,2952 +1052,132 @@ namespace FBSApp.Migrations
                     { 1L, 6L },
                     { 1L, 9L }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Addresses_CountryId",
+                table: "Addresses",
+                column: "CountryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MatchActors_MatchId",
+                table: "MatchActors",
+                column: "MatchId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MatchActors_TeamId",
+                table: "MatchActors",
+                column: "TeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Matches_SeasonId",
+                table: "Matches",
+                column: "SeasonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Players_CountryId",
+                table: "Players",
+                column: "CountryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Seasons_LeagueId",
+                table: "Seasons",
+                column: "LeagueId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Stadiums_AddressId",
+                table: "Stadiums",
+                column: "AddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Staff_BossId",
+                table: "Staff",
+                column: "BossId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Staff_CountryId",
+                table: "Staff",
+                column: "CountryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TeamEmployments_StaffId",
+                table: "TeamEmployments",
+                column: "StaffId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TeamEmployments_TeamId",
+                table: "TeamEmployments",
+                column: "TeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TeamEngagements_PlayerId",
+                table: "TeamEngagements",
+                column: "PlayerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TeamEngagements_TeamId",
+                table: "TeamEngagements",
+                column: "TeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Teams_CountryId",
+                table: "Teams",
+                column: "CountryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Teams_StadiumId",
+                table: "Teams",
+                column: "StadiumId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TeamSeason_TeamId",
+                table: "TeamSeason",
+                column: "TeamId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 1L);
+            migrationBuilder.DropTable(
+                name: "MatchActors");
 
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 4L);
+            migrationBuilder.DropTable(
+                name: "TeamEmployments");
 
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 5L);
+            migrationBuilder.DropTable(
+                name: "TeamEngagements");
 
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 6L);
+            migrationBuilder.DropTable(
+                name: "TeamSeason");
 
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 9L);
+            migrationBuilder.DropTable(
+                name: "Users");
 
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 10L);
+            migrationBuilder.DropTable(
+                name: "Matches");
 
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 11L);
+            migrationBuilder.DropTable(
+                name: "Staff");
 
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 12L);
+            migrationBuilder.DropTable(
+                name: "Players");
 
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 13L);
+            migrationBuilder.DropTable(
+                name: "Teams");
 
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 14L);
+            migrationBuilder.DropTable(
+                name: "Seasons");
 
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 15L);
+            migrationBuilder.DropTable(
+                name: "Stadiums");
 
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 16L);
+            migrationBuilder.DropTable(
+                name: "Leagues");
 
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 18L);
+            migrationBuilder.DropTable(
+                name: "Addresses");
 
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 19L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 20L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 21L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 23L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 25L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 26L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 27L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 28L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 29L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 30L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 32L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 33L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 34L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 36L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 38L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 39L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 42L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 43L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 46L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 47L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 48L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 49L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 50L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 52L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 54L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 55L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 56L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 57L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 58L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 59L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 60L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 63L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 64L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 66L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 68L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 69L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 70L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 72L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 73L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 74L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 75L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 76L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 77L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 78L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 79L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 80L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 82L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 84L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 86L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 87L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 89L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 90L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 91L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 92L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 93L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 94L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 95L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 96L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 97L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 98L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 99L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 100L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 101L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 102L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 103L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 104L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 105L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 106L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 107L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 108L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 109L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 110L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 111L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 112L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 113L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 114L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 115L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 116L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 117L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 118L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 119L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 120L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 121L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 123L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 124L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 125L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 127L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 128L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 129L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 130L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 131L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 132L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 133L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 134L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 135L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 136L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 137L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 138L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 139L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 142L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 143L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 144L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 145L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 146L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 147L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 148L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 149L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 150L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 151L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 152L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 153L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 157L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 158L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 159L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 160L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 161L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 162L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 163L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 164L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 166L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 168L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 169L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 170L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 173L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 174L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 175L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 176L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 177L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 178L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 179L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 180L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 181L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 182L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 183L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 184L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 185L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 187L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 190L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 191L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 192L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 193L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 194L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 196L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 197L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 198L);
-
-            migrationBuilder.DeleteData(
-                table: "Leagues",
-                keyColumn: "Id",
-                keyValue: 2L);
-
-            migrationBuilder.DeleteData(
-                table: "Leagues",
-                keyColumn: "Id",
-                keyValue: 3L);
-
-            migrationBuilder.DeleteData(
-                table: "Leagues",
-                keyColumn: "Id",
-                keyValue: 4L);
-
-            migrationBuilder.DeleteData(
-                table: "Leagues",
-                keyColumn: "Id",
-                keyValue: 5L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 1L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 2L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 3L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 4L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 5L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 6L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 7L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 8L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 9L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 10L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 11L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 12L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 13L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 14L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 15L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 16L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 17L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 18L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 19L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 20L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 21L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 22L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 23L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 24L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 25L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 26L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 27L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 28L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 29L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 30L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 31L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 32L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 33L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 34L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 35L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 36L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 37L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 38L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 39L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 40L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 41L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 42L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 43L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 44L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 45L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 46L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 47L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 48L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 49L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 50L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 51L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 52L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 53L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 54L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 55L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 56L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 57L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 58L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 59L);
-
-            migrationBuilder.DeleteData(
-                table: "MatchActors",
-                keyColumn: "Id",
-                keyValue: 60L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 100L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 101L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 102L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 103L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 104L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 105L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 106L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 107L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 108L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 109L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 110L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 111L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 112L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 113L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 114L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 115L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 116L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 117L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 118L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 119L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 120L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 121L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 122L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 123L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 124L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 125L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 126L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 127L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 128L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 129L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 130L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 131L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 132L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 133L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 134L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 135L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 200L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 201L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 202L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 203L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 204L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 205L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 206L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 207L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 208L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 209L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 210L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 211L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 212L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 213L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 214L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 215L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 216L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 217L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 218L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 219L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 220L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 221L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 222L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 223L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 224L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 225L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 226L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 227L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 228L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 229L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 230L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 231L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 232L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 233L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 400L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 401L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 402L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 403L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 404L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 405L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 406L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 407L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 408L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 409L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 410L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 411L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 412L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 413L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 414L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 415L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 416L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 417L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 418L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 419L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 420L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 421L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 422L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 423L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 424L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 425L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 426L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 427L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 428L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 429L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 430L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 431L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 432L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 433L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 434L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 435L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 436L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 437L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 438L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 439L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 500L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 501L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 502L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 503L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 504L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 505L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 506L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 507L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 508L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 509L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 510L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 511L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 512L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 513L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 514L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 515L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 516L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 517L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 518L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 519L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 520L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 521L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 522L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 523L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 524L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 525L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 526L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 527L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 528L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 529L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 600L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 601L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 602L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 603L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 604L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 605L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 606L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 607L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 608L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 609L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 610L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 611L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 612L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 613L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 614L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 615L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 616L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 617L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 618L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 619L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 620L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 621L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 622L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 623L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 624L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 625L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 626L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 627L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 628L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 629L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 630L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 631L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 632L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 633L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 634L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 900L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 901L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 902L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 903L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 904L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 905L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 906L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 907L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 908L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 909L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 910L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 911L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 912L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 913L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 914L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 915L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 916L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 917L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 918L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 919L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 920L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 921L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 922L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 923L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 924L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 925L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 926L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 927L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 928L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 929L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 930L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 931L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 932L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 933L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 934L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 935L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 936L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 937L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 938L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 939L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 940L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 941L);
-
-            migrationBuilder.DeleteData(
-                table: "Players",
-                keyColumn: "Id",
-                keyValue: 942L);
-
-            migrationBuilder.DeleteData(
-                table: "TeamSeason",
-                keyColumns: new[] { "SeasonId", "TeamId" },
-                keyValues: new object[] { 1L, 1L });
-
-            migrationBuilder.DeleteData(
-                table: "TeamSeason",
-                keyColumns: new[] { "SeasonId", "TeamId" },
-                keyValues: new object[] { 1L, 2L });
-
-            migrationBuilder.DeleteData(
-                table: "TeamSeason",
-                keyColumns: new[] { "SeasonId", "TeamId" },
-                keyValues: new object[] { 1L, 4L });
-
-            migrationBuilder.DeleteData(
-                table: "TeamSeason",
-                keyColumns: new[] { "SeasonId", "TeamId" },
-                keyValues: new object[] { 1L, 5L });
-
-            migrationBuilder.DeleteData(
-                table: "TeamSeason",
-                keyColumns: new[] { "SeasonId", "TeamId" },
-                keyValues: new object[] { 1L, 6L });
-
-            migrationBuilder.DeleteData(
-                table: "TeamSeason",
-                keyColumns: new[] { "SeasonId", "TeamId" },
-                keyValues: new object[] { 1L, 9L });
-
-            migrationBuilder.DeleteData(
-                table: "Teams",
-                keyColumn: "Id",
-                keyValue: 3L);
-
-            migrationBuilder.DeleteData(
-                table: "Teams",
-                keyColumn: "Id",
-                keyValue: 7L);
-
-            migrationBuilder.DeleteData(
-                table: "Teams",
-                keyColumn: "Id",
-                keyValue: 8L);
-
-            migrationBuilder.DeleteData(
-                table: "Teams",
-                keyColumn: "Id",
-                keyValue: 10L);
-
-            migrationBuilder.DeleteData(
-                table: "Teams",
-                keyColumn: "Id",
-                keyValue: 11L);
-
-            migrationBuilder.DeleteData(
-                table: "Teams",
-                keyColumn: "Id",
-                keyValue: 12L);
-
-            migrationBuilder.DeleteData(
-                table: "Teams",
-                keyColumn: "Id",
-                keyValue: 13L);
-
-            migrationBuilder.DeleteData(
-                table: "Teams",
-                keyColumn: "Id",
-                keyValue: 14L);
-
-            migrationBuilder.DeleteData(
-                table: "Teams",
-                keyColumn: "Id",
-                keyValue: 15L);
-
-            migrationBuilder.DeleteData(
-                table: "Teams",
-                keyColumn: "Id",
-                keyValue: 16L);
-
-            migrationBuilder.DeleteData(
-                table: "Teams",
-                keyColumn: "Id",
-                keyValue: 17L);
-
-            migrationBuilder.DeleteData(
-                table: "Teams",
-                keyColumn: "Id",
-                keyValue: 18L);
-
-            migrationBuilder.DeleteData(
-                table: "Teams",
-                keyColumn: "Id",
-                keyValue: 19L);
-
-            migrationBuilder.DeleteData(
-                table: "Teams",
-                keyColumn: "Id",
-                keyValue: 20L);
-
-            migrationBuilder.DeleteData(
-                table: "Teams",
-                keyColumn: "Id",
-                keyValue: 21L);
-
-            migrationBuilder.DeleteData(
-                table: "Teams",
-                keyColumn: "Id",
-                keyValue: 22L);
-
-            migrationBuilder.DeleteData(
-                table: "Teams",
-                keyColumn: "Id",
-                keyValue: 23L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 2L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 3L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 7L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 8L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 17L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 22L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 24L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 31L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 35L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 37L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 40L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 41L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 44L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 45L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 51L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 61L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 62L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 65L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 67L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 71L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 81L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 83L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 85L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 88L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 122L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 126L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 140L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 141L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 154L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 155L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 156L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 165L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 167L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 171L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 172L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 186L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 188L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 189L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 1L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 2L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 3L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 4L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 5L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 6L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 7L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 8L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 9L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 10L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 11L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 12L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 13L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 14L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 15L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 16L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 17L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 18L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 19L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 20L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 21L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 22L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 23L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 24L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 25L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 26L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 27L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 28L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 29L);
-
-            migrationBuilder.DeleteData(
-                table: "Matches",
-                keyColumn: "Id",
-                keyValue: 30L);
-
-            migrationBuilder.DeleteData(
-                table: "Stadiums",
-                keyColumn: "Id",
-                keyValue: 3L);
-
-            migrationBuilder.DeleteData(
-                table: "Stadiums",
-                keyColumn: "Id",
-                keyValue: 7L);
-
-            migrationBuilder.DeleteData(
-                table: "Stadiums",
-                keyColumn: "Id",
-                keyValue: 8L);
-
-            migrationBuilder.DeleteData(
-                table: "Stadiums",
-                keyColumn: "Id",
-                keyValue: 10L);
-
-            migrationBuilder.DeleteData(
-                table: "Stadiums",
-                keyColumn: "Id",
-                keyValue: 11L);
-
-            migrationBuilder.DeleteData(
-                table: "Stadiums",
-                keyColumn: "Id",
-                keyValue: 12L);
-
-            migrationBuilder.DeleteData(
-                table: "Stadiums",
-                keyColumn: "Id",
-                keyValue: 13L);
-
-            migrationBuilder.DeleteData(
-                table: "Stadiums",
-                keyColumn: "Id",
-                keyValue: 14L);
-
-            migrationBuilder.DeleteData(
-                table: "Stadiums",
-                keyColumn: "Id",
-                keyValue: 15L);
-
-            migrationBuilder.DeleteData(
-                table: "Stadiums",
-                keyColumn: "Id",
-                keyValue: 16L);
-
-            migrationBuilder.DeleteData(
-                table: "Stadiums",
-                keyColumn: "Id",
-                keyValue: 17L);
-
-            migrationBuilder.DeleteData(
-                table: "Stadiums",
-                keyColumn: "Id",
-                keyValue: 18L);
-
-            migrationBuilder.DeleteData(
-                table: "Stadiums",
-                keyColumn: "Id",
-                keyValue: 19L);
-
-            migrationBuilder.DeleteData(
-                table: "Stadiums",
-                keyColumn: "Id",
-                keyValue: 20L);
-
-            migrationBuilder.DeleteData(
-                table: "Stadiums",
-                keyColumn: "Id",
-                keyValue: 21L);
-
-            migrationBuilder.DeleteData(
-                table: "Stadiums",
-                keyColumn: "Id",
-                keyValue: 22L);
-
-            migrationBuilder.DeleteData(
-                table: "Stadiums",
-                keyColumn: "Id",
-                keyValue: 23L);
-
-            migrationBuilder.DeleteData(
-                table: "Teams",
-                keyColumn: "Id",
-                keyValue: 1L);
-
-            migrationBuilder.DeleteData(
-                table: "Teams",
-                keyColumn: "Id",
-                keyValue: 2L);
-
-            migrationBuilder.DeleteData(
-                table: "Teams",
-                keyColumn: "Id",
-                keyValue: 4L);
-
-            migrationBuilder.DeleteData(
-                table: "Teams",
-                keyColumn: "Id",
-                keyValue: 5L);
-
-            migrationBuilder.DeleteData(
-                table: "Teams",
-                keyColumn: "Id",
-                keyValue: 6L);
-
-            migrationBuilder.DeleteData(
-                table: "Teams",
-                keyColumn: "Id",
-                keyValue: 9L);
-
-            migrationBuilder.DeleteData(
-                table: "Addresses",
-                keyColumn: "Id",
-                keyValue: 3L);
-
-            migrationBuilder.DeleteData(
-                table: "Addresses",
-                keyColumn: "Id",
-                keyValue: 7L);
-
-            migrationBuilder.DeleteData(
-                table: "Addresses",
-                keyColumn: "Id",
-                keyValue: 8L);
-
-            migrationBuilder.DeleteData(
-                table: "Addresses",
-                keyColumn: "Id",
-                keyValue: 10L);
-
-            migrationBuilder.DeleteData(
-                table: "Addresses",
-                keyColumn: "Id",
-                keyValue: 11L);
-
-            migrationBuilder.DeleteData(
-                table: "Addresses",
-                keyColumn: "Id",
-                keyValue: 12L);
-
-            migrationBuilder.DeleteData(
-                table: "Addresses",
-                keyColumn: "Id",
-                keyValue: 13L);
-
-            migrationBuilder.DeleteData(
-                table: "Addresses",
-                keyColumn: "Id",
-                keyValue: 14L);
-
-            migrationBuilder.DeleteData(
-                table: "Addresses",
-                keyColumn: "Id",
-                keyValue: 15L);
-
-            migrationBuilder.DeleteData(
-                table: "Addresses",
-                keyColumn: "Id",
-                keyValue: 16L);
-
-            migrationBuilder.DeleteData(
-                table: "Addresses",
-                keyColumn: "Id",
-                keyValue: 17L);
-
-            migrationBuilder.DeleteData(
-                table: "Addresses",
-                keyColumn: "Id",
-                keyValue: 18L);
-
-            migrationBuilder.DeleteData(
-                table: "Addresses",
-                keyColumn: "Id",
-                keyValue: 19L);
-
-            migrationBuilder.DeleteData(
-                table: "Addresses",
-                keyColumn: "Id",
-                keyValue: 20L);
-
-            migrationBuilder.DeleteData(
-                table: "Addresses",
-                keyColumn: "Id",
-                keyValue: 21L);
-
-            migrationBuilder.DeleteData(
-                table: "Addresses",
-                keyColumn: "Id",
-                keyValue: 22L);
-
-            migrationBuilder.DeleteData(
-                table: "Addresses",
-                keyColumn: "Id",
-                keyValue: 23L);
-
-            migrationBuilder.DeleteData(
-                table: "Seasons",
-                keyColumn: "Id",
-                keyValue: 1L);
-
-            migrationBuilder.DeleteData(
-                table: "Stadiums",
-                keyColumn: "Id",
-                keyValue: 1L);
-
-            migrationBuilder.DeleteData(
-                table: "Stadiums",
-                keyColumn: "Id",
-                keyValue: 2L);
-
-            migrationBuilder.DeleteData(
-                table: "Stadiums",
-                keyColumn: "Id",
-                keyValue: 4L);
-
-            migrationBuilder.DeleteData(
-                table: "Stadiums",
-                keyColumn: "Id",
-                keyValue: 5L);
-
-            migrationBuilder.DeleteData(
-                table: "Stadiums",
-                keyColumn: "Id",
-                keyValue: 6L);
-
-            migrationBuilder.DeleteData(
-                table: "Stadiums",
-                keyColumn: "Id",
-                keyValue: 9L);
-
-            migrationBuilder.DeleteData(
-                table: "Addresses",
-                keyColumn: "Id",
-                keyValue: 1L);
-
-            migrationBuilder.DeleteData(
-                table: "Addresses",
-                keyColumn: "Id",
-                keyValue: 2L);
-
-            migrationBuilder.DeleteData(
-                table: "Addresses",
-                keyColumn: "Id",
-                keyValue: 4L);
-
-            migrationBuilder.DeleteData(
-                table: "Addresses",
-                keyColumn: "Id",
-                keyValue: 5L);
-
-            migrationBuilder.DeleteData(
-                table: "Addresses",
-                keyColumn: "Id",
-                keyValue: 6L);
-
-            migrationBuilder.DeleteData(
-                table: "Addresses",
-                keyColumn: "Id",
-                keyValue: 9L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 195L);
-
-            migrationBuilder.DeleteData(
-                table: "Leagues",
-                keyColumn: "Id",
-                keyValue: 1L);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 53L);
-
-            migrationBuilder.UpdateData(
-                table: "Users",
-                keyColumn: "Id",
-                keyValue: 1L,
-                columns: new[] { "Password", "Salt" },
-                values: new object[] { "690F9A0DB2B3DB7E3E3B5C4B877F9D76B673DD3B5579F7140D6F4E0A0201B3729CCD5AAD91FC99D77A169D934E746C63A337005CE1FE56986E78474D15905C67", new byte[] { 204, 136, 147, 115, 59, 165, 246, 108, 63, 70, 121, 224, 108, 210, 120, 153, 187, 120, 251, 238, 87, 227, 85, 149, 194, 152, 137, 158, 176, 237, 242, 24, 242, 180, 162, 213, 31, 67, 221, 157, 106, 31, 131, 118, 245, 153, 67, 147, 133, 237, 13, 101, 128, 201, 135, 78, 70, 14, 128, 151, 254, 181, 234, 89 } });
+            migrationBuilder.DropTable(
+                name: "Countries");
         }
     }
 }

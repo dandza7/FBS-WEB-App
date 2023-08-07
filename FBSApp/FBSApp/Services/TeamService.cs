@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using FBSApp.Models;
 using FBSApp.Models.DTOs;
 using FBSApp.Models.DTOs.Match;
 using FBSApp.Models.DTOs.Season;
+using FBSApp.Models.DTOs.Staff;
 using FBSApp.Models.DTOs.Team;
 using FBSApp.Repositories;
 using FBSApp.SupportClasses.GlobalExceptionHandler.CustomExceptions;
@@ -114,6 +116,45 @@ namespace FBSApp.Services
                 CountryFlag = te.Player.Country.Flag,
                 BirthDate = te.Player.BirthDate,
             });
+        }
+
+        public IEnumerable<HeadStaffDTO> GetTeamsStaff(long teamId, long seasonId)
+        {
+            var season = _unitOfWork.SeasonRepository.GetAll().Where(s => s.Id == seasonId).FirstOrDefault();
+            if (season == null)
+            {
+                throw new NotFoundException($"Season with ID {seasonId} does not exist.");
+            }
+            var teamEmployments = _unitOfWork.TeamEmploymentRepository.GetAll()
+                                             .Where(te => !((season.StartDate < te.StartDate && season.EndDate < te.StartDate)
+                                                         || (season.StartDate > te.EndDate && season.EndDate > te.EndDate))
+                                                         && te.TeamId == teamId && te.Staff.Boss == null)
+                                             .Include(te => te.Staff).ThenInclude(p => p.Country).ToList();
+            return teamEmployments.Select(te => new HeadStaffDTO
+            {
+                Staff = new StaffDTO { Id = te.Staff.Id, BirthDate = te.Staff.BirthDate, Name = te.Staff.Name, Flag = "" },
+                StartOfEmployment = te.StartDate,
+                EndOfEmployment = te.EndDate,
+                Empolyees = MakeStaffHierarchy(te, season)
+            });
+        }
+
+        private IEnumerable<StaffEmployeeDTO> MakeStaffHierarchy(TeamEmployment employment, Season season)
+        {
+            var employments = _unitOfWork.TeamEmploymentRepository.GetAll().Include(te => te.Staff).ThenInclude(s => s.Country)
+                                                                           .Include(te => te.Staff).ThenInclude(s => s.Employments)
+                                                   .Where(te => te.Staff.BossId == employment.Staff.Id)
+                                                   .Where(te => te.Staff.Employments.Where(e => !((employment.StartDate <= e.StartDate && employment.EndDate <= e.StartDate)
+                                                                                   || (employment.StartDate >= e.EndDate && employment.EndDate >= e.EndDate))
+                                                                                   && !((season.StartDate <= e.StartDate && season.EndDate <= e.StartDate)
+                                                                                   || (season.StartDate >= e.EndDate && season.EndDate >= e.EndDate))).Any()).ToList();
+            var x = 1;
+            return employments.Select(e => new StaffEmployeeDTO
+            {
+                Staff = new StaffDTO { Id = e.Staff.Id, BirthDate = e.Staff.BirthDate, Name = e.Staff.Name, Flag = "" },
+                Empolyees = MakeStaffHierarchy(e, season)
+            });
+
         }
     }
 }

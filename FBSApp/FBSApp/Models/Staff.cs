@@ -12,5 +12,6 @@ namespace FBSApp.Models
         public long? BossId { get; set; }
         public Country Country { get; set; }
         public long CountryId { get; set; }
+        public IEnumerable<TeamEmployment> Employments { get; set; }
     }
 }
