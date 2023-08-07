@@ -8,7 +8,10 @@ namespace FBSApp.SupportClasses.AutoMapper
     {
         public LeagueProfile()
         {
-            CreateMap<League, LeagueDTO>();
+            CreateMap<League, LeagueDTO>()
+                .ForMember(l => l.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(l => l.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(l => l.Flag, opt => opt.MapFrom(src => src.Country.Flag));
             CreateMap<NewLeagueDTO, League>();
         }
     }

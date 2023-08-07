@@ -23,14 +23,23 @@ namespace FBSApp.Services
             {
                 throw new DuplicateItemException($"League with name {newLeague.Name} already exists!");
             }
-            var league = _unitOfWork.LeagueRepository.Create(_mapper.Map<League>(newLeague));
+            var country = _unitOfWork.CountryRepository.GetAll().Where(c => c.Id == newLeague.CountryId).FirstOrDefault();
+            if (country == null)
+            {
+                throw new NotFoundException($"Country with ID {newLeague.CountryId} does not exist!");
+            }
+            var league = _unitOfWork.LeagueRepository.Create(new League
+            {
+                Name = newLeague.Name,
+                Country = country
+            });
             _unitOfWork.SaveChanges();
             return league.Id;
         }
 
         public IEnumerable<LeagueDTO> GetAll()
         {
-            return _mapper.Map<IEnumerable<LeagueDTO>>(_unitOfWork.LeagueRepository.GetAll());
+            return _mapper.Map<IEnumerable<LeagueDTO>>(_unitOfWork.LeagueRepository.GetAll(l => l.Country));
         }
     }
 }
