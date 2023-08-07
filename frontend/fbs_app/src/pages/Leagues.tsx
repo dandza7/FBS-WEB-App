@@ -1,7 +1,28 @@
 import React from "react";
 import classes from "./styles/Leagues.module.css";
+import { useState, useEffect } from "react";
 
 const Leagues = () => {
+  const [leagues, setLeagues] = useState<any[]>();
+
+  useEffect(() => {
+    fetch("http://localhost:5271/api/leagues", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setLeagues(data);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }, []);
+
   return (
     <div>
       <div className={classes.whiteContainer}>
@@ -12,22 +33,14 @@ const Leagues = () => {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Country</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Serie A</td>
-                <td>Italy</td>
-              </tr>
-              <tr>
-                <td>Premier League</td>
-                <td>England</td>
-              </tr>
-              <tr>
-                <td>Bundesliga</td>
-                <td>Germany</td>
-              </tr>
+              {leagues?.map((league) => (
+                <tr key={league.id}>
+                  <td>{league.name}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

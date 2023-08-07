@@ -23,6 +23,11 @@ const Players = () => {
     setSelectedPage(page);
   };
 
+  const setPage1 = () => {
+    console.log("promenjeno");
+    setSelectedPage(1);
+  };
+
   const changeCountryHandler = (value: any) => {
     setSelectedCountry(value);
   };
@@ -117,6 +122,7 @@ const Players = () => {
               selectedName={playerName}
               selectedPos={playerPos}
               onChangePlayerPos={changePositionHandler}
+              setPage1={setPage1}
             ></Filters>
           )}
         </div>
@@ -129,6 +135,7 @@ const Players = () => {
           change={changePage}
           totalCount={totalCount}
           pageSize={pageSize}
+          currentPage={selectedPage}
         ></Pagination>
       </div>
     </div>

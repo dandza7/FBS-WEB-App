@@ -3,7 +3,12 @@ import classes from "./TeamCard.module.css";
 
 const TeamCard = (props) => {
   return (
-    <div className={classes.team}>
+    <div
+      className={classes.team}
+      onClick={() => {
+        props.onClick(props.team.id);
+      }}
+    >
       <img
         src={`data:image/png;base64,${props.team.logo}`}
         className={classes.logo}

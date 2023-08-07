@@ -5,11 +5,17 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 
 const Pagination = (props) => {
-  const [selectedPage, setSelectedPage] = useState(1);
+  const pag = props.currentPage;
+  const [selectedPage, setSelectedPage] = useState(pag);
   const numberOfPages = Math.ceil(props.totalCount / props.pageSize);
   const [selectedPageGo, setSelectedPageGo] = useState("");
 
   useEffect(() => {
+    setSelectedPage(props.currentPage);
+  }, [props.currentPage]);
+
+  useEffect(() => {
+    console.log("Trenutna stranica " + selectedPage);
     if (selectedPage <= 0 || !selectedPage) {
     } else {
       props.change(selectedPage);
