@@ -2,19 +2,16 @@
 
 namespace FBSApp.Models
 {
-    public class Team : IEntity
+    public class Staff : IEntity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public string Name { get; set; }
-        public Stadium Stadium { get; set; }
-        public long StadiumId { get; set; }
+        public DateTime BirthDate { get; set; }
+        public Staff Boss { get; set; }
+        public long? BossId { get; set; }
         public Country Country { get; set; }
         public long CountryId { get; set; }
-        public string Logo { get; set; }
-        public IEnumerable<Season> Seasons { get; set; }
-        public IEnumerable<MatchActor> PlayedMatches { get; set; }
-        public IEnumerable<TeamEngagement> Engagements { get; set; }
         public IEnumerable<TeamEmployment> Employments { get; set; }
     }
 }

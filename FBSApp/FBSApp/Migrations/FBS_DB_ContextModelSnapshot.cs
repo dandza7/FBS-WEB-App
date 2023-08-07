@@ -4357,6 +4357,159 @@ namespace FBSApp.Migrations
                         });
                 });
 
+            modelBuilder.Entity("FBSApp.Models.Staff", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("BossId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("CountryId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BossId");
+
+                    b.HasIndex("CountryId");
+
+                    b.ToTable("Staff");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            BirthDate = new DateTime(1963, 1, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CountryId = 141L,
+                            Name = "Jose Mourinho"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            BirthDate = new DateTime(1975, 6, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            BossId = 1L,
+                            CountryId = 141L,
+                            Name = "Rue Faria"
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            BirthDate = new DateTime(1972, 3, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CountryId = 7L,
+                            Name = "Mauricio Pochettino"
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            BirthDate = new DateTime(1971, 10, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            BossId = 3L,
+                            CountryId = 167L,
+                            Name = "Jesus Perez"
+                        },
+                        new
+                        {
+                            Id = 5L,
+                            BirthDate = new DateTime(1971, 11, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CountryId = 167L,
+                            Name = "Unai Emery"
+                        },
+                        new
+                        {
+                            Id = 6L,
+                            BirthDate = new DateTime(1963, 2, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            BossId = 5L,
+                            CountryId = 167L,
+                            Name = "Pako Ayestaran"
+                        },
+                        new
+                        {
+                            Id = 7L,
+                            BirthDate = new DateTime(1971, 1, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CountryId = 167L,
+                            Name = "Josep Guardiola"
+                        },
+                        new
+                        {
+                            Id = 8L,
+                            BirthDate = new DateTime(1982, 3, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            BossId = 7L,
+                            CountryId = 167L,
+                            Name = "Mikel Arteta"
+                        },
+                        new
+                        {
+                            Id = 9L,
+                            BirthDate = new DateTime(1967, 6, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CountryId = 65L,
+                            Name = "Jurgen Klopp"
+                        },
+                        new
+                        {
+                            Id = 10L,
+                            BirthDate = new DateTime(1975, 6, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            BossId = 9L,
+                            CountryId = 22L,
+                            Name = "Zeljko Buvac"
+                        },
+                        new
+                        {
+                            Id = 11L,
+                            BirthDate = new DateTime(1980, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            BossId = 9L,
+                            CountryId = 53L,
+                            Name = "Steven Gerrard"
+                        },
+                        new
+                        {
+                            Id = 12L,
+                            BirthDate = new DateTime(1959, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CountryId = 83L,
+                            Name = "Maurizio Sarri"
+                        },
+                        new
+                        {
+                            Id = 13L,
+                            BirthDate = new DateTime(1966, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            BossId = 12L,
+                            CountryId = 83L,
+                            Name = "Gianfranco Zola"
+                        },
+                        new
+                        {
+                            Id = 14L,
+                            BirthDate = new DateTime(1978, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CountryId = 53L,
+                            Name = "Frank Lampard"
+                        },
+                        new
+                        {
+                            Id = 15L,
+                            BirthDate = new DateTime(2019, 1, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            BossId = 14L,
+                            CountryId = 53L,
+                            Name = "Ashley Cole"
+                        },
+                        new
+                        {
+                            Id = 16L,
+                            BirthDate = new DateTime(1976, 9, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            BossId = 15L,
+                            CountryId = 65L,
+                            Name = "Michael Ballack"
+                        });
+                });
+
             modelBuilder.Entity("FBSApp.Models.Team", b =>
                 {
                     b.Property<long>("Id")
@@ -4573,6 +4726,165 @@ namespace FBSApp.Migrations
                         });
                 });
 
+            modelBuilder.Entity("FBSApp.Models.TeamEmployment", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("StaffId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("TeamId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StaffId");
+
+                    b.HasIndex("TeamId");
+
+                    b.ToTable("TeamEmployments");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            EndDate = new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            StaffId = 1L,
+                            StartDate = new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 1L
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            EndDate = new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            StaffId = 2L,
+                            StartDate = new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 1L
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            EndDate = new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            StaffId = 3L,
+                            StartDate = new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 2L
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            EndDate = new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            StaffId = 4L,
+                            StartDate = new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 2L
+                        },
+                        new
+                        {
+                            Id = 5L,
+                            EndDate = new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            StaffId = 5L,
+                            StartDate = new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 4L
+                        },
+                        new
+                        {
+                            Id = 6L,
+                            EndDate = new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            StaffId = 6L,
+                            StartDate = new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 4L
+                        },
+                        new
+                        {
+                            Id = 7L,
+                            EndDate = new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            StaffId = 7L,
+                            StartDate = new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 5L
+                        },
+                        new
+                        {
+                            Id = 8L,
+                            EndDate = new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            StaffId = 8L,
+                            StartDate = new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 5L
+                        },
+                        new
+                        {
+                            Id = 9L,
+                            EndDate = new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            StaffId = 9L,
+                            StartDate = new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 6L
+                        },
+                        new
+                        {
+                            Id = 10L,
+                            EndDate = new DateTime(2019, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            StaffId = 10L,
+                            StartDate = new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 6L
+                        },
+                        new
+                        {
+                            Id = 11L,
+                            EndDate = new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            StaffId = 11L,
+                            StartDate = new DateTime(2019, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 6L
+                        },
+                        new
+                        {
+                            Id = 12L,
+                            EndDate = new DateTime(2019, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            StaffId = 12L,
+                            StartDate = new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 9L
+                        },
+                        new
+                        {
+                            Id = 13L,
+                            EndDate = new DateTime(2019, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            StaffId = 13L,
+                            StartDate = new DateTime(2018, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 9L
+                        },
+                        new
+                        {
+                            Id = 14L,
+                            EndDate = new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            StaffId = 14L,
+                            StartDate = new DateTime(2019, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 9L
+                        },
+                        new
+                        {
+                            Id = 15L,
+                            EndDate = new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            StaffId = 15L,
+                            StartDate = new DateTime(2019, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 9L
+                        },
+                        new
+                        {
+                            Id = 16L,
+                            EndDate = new DateTime(2020, 2, 3, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            StaffId = 16L,
+                            StartDate = new DateTime(2019, 12, 1, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 9L
+                        });
+                });
+
             modelBuilder.Entity("FBSApp.Models.TeamEngagement", b =>
                 {
                     b.Property<long>("Id")
@@ -4709,9 +5021,9 @@ namespace FBSApp.Migrations
                         {
                             Id = 1L,
                             Email = "admin@gmail.com",
-                            Password = "F097BC750DCEA5D27D183E62BDE8E974E6E827DC1504716E8148381C901EA62BC96F9058B5B74B27CB125570FA2A9787177E7718C949535A2F2528EABFC2CB6A",
+                            Password = "B6200C0031CB3B23DD4DEECA1F325463DE9CD768C0579363DB08BF3E60DEC18B1CDAEB7D7AAC5BD302F5F5C261DACCF1D729EF95B6266F5395E99D644CF7F608",
                             Role = "ADMIN",
-                            Salt = new byte[] { 202, 25, 40, 144, 32, 40, 44, 147, 123, 34, 127, 198, 172, 123, 190, 30, 74, 18, 45, 29, 242, 195, 129, 229, 171, 128, 120, 201, 193, 105, 94, 239, 10, 84, 24, 153, 83, 33, 76, 229, 254, 5, 30, 51, 190, 58, 222, 197, 229, 89, 153, 36, 38, 59, 41, 42, 6, 115, 203, 103, 2, 214, 118, 189 }
+                            Salt = new byte[] { 138, 210, 45, 63, 120, 239, 10, 23, 176, 184, 156, 100, 181, 240, 236, 135, 211, 135, 210, 214, 180, 122, 146, 98, 48, 10, 48, 20, 50, 1, 246, 32, 254, 212, 130, 21, 238, 55, 62, 147, 5, 18, 26, 65, 201, 139, 113, 123, 185, 85, 167, 17, 139, 148, 255, 23, 100, 0, 250, 106, 35, 7, 215, 159 }
                         });
                 });
 
@@ -4834,6 +5146,23 @@ namespace FBSApp.Migrations
                     b.Navigation("Address");
                 });
 
+            modelBuilder.Entity("FBSApp.Models.Staff", b =>
+                {
+                    b.HasOne("FBSApp.Models.Staff", "Boss")
+                        .WithMany()
+                        .HasForeignKey("BossId");
+
+                    b.HasOne("FBSApp.Models.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Boss");
+
+                    b.Navigation("Country");
+                });
+
             modelBuilder.Entity("FBSApp.Models.Team", b =>
                 {
                     b.HasOne("FBSApp.Models.Country", "Country")
@@ -4851,6 +5180,25 @@ namespace FBSApp.Migrations
                     b.Navigation("Country");
 
                     b.Navigation("Stadium");
+                });
+
+            modelBuilder.Entity("FBSApp.Models.TeamEmployment", b =>
+                {
+                    b.HasOne("FBSApp.Models.Staff", "Staff")
+                        .WithMany("Employments")
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("FBSApp.Models.Team", "Team")
+                        .WithMany("Employments")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Staff");
+
+                    b.Navigation("Team");
                 });
 
             modelBuilder.Entity("FBSApp.Models.TeamEngagement", b =>
@@ -4902,8 +5250,15 @@ namespace FBSApp.Migrations
                     b.Navigation("Matches");
                 });
 
+            modelBuilder.Entity("FBSApp.Models.Staff", b =>
+                {
+                    b.Navigation("Employments");
+                });
+
             modelBuilder.Entity("FBSApp.Models.Team", b =>
                 {
+                    b.Navigation("Employments");
+
                     b.Navigation("Engagements");
 
                     b.Navigation("PlayedMatches");
