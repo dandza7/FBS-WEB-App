@@ -96,6 +96,15 @@ namespace FBSApp.Services
 
         public IEnumerable<PlayerListPreviewDTO> GetTeamsSquad(long teamId, long seasonId)
         {
+            var team = _unitOfWork.TeamRepository.GetAll(t => t.Seasons).Where(t => t.Id == teamId).FirstOrDefault();
+            if (team == null)
+            {
+                throw new NotFoundException($"Team with ID {teamId} does not exist.");
+            }
+            if (!team.Seasons.Where(s => s.Id == seasonId).Any())
+            {
+                throw new NotFoundException($"There is no squad for team '{team.Name}', because it didn't play season with ID {seasonId}");
+            }
             var season = _unitOfWork.SeasonRepository.GetAll().Where(s => s.Id == seasonId).FirstOrDefault();
             if (season == null)
             {
@@ -120,6 +129,15 @@ namespace FBSApp.Services
 
         public IEnumerable<HeadStaffDTO> GetTeamsStaff(long teamId, long seasonId)
         {
+            var team = _unitOfWork.TeamRepository.GetAll(t => t.Seasons).Where(t => t.Id == teamId).FirstOrDefault();
+            if (team == null)
+            {
+                throw new NotFoundException($"Team with ID {teamId} does not exist.");
+            }
+            if (!team.Seasons.Where(s => s.Id == seasonId).Any())
+            {
+                throw new NotFoundException($"There is no staff for team '{team.Name}', because it didn't play season with ID {seasonId}");
+            }
             var season = _unitOfWork.SeasonRepository.GetAll().Where(s => s.Id == seasonId).FirstOrDefault();
             if (season == null)
             {
@@ -132,7 +150,7 @@ namespace FBSApp.Services
                                              .Include(te => te.Staff).ThenInclude(p => p.Country).ToList();
             return teamEmployments.Select(te => new HeadStaffDTO
             {
-                Staff = new StaffDTO { Id = te.Staff.Id, BirthDate = te.Staff.BirthDate, Name = te.Staff.Name, Flag = "" },
+                Staff = new StaffDTO { Id = te.Staff.Id, BirthDate = te.Staff.BirthDate, Name = te.Staff.Name, Flag = te.Staff.Country.Flag },
                 StartOfEmployment = te.StartDate,
                 EndOfEmployment = te.EndDate,
                 Empolyees = MakeStaffHierarchy(te, season)
@@ -151,7 +169,7 @@ namespace FBSApp.Services
             var x = 1;
             return employments.Select(e => new StaffEmployeeDTO
             {
-                Staff = new StaffDTO { Id = e.Staff.Id, BirthDate = e.Staff.BirthDate, Name = e.Staff.Name, Flag = "" },
+                Staff = new StaffDTO { Id = e.Staff.Id, BirthDate = e.Staff.BirthDate, Name = e.Staff.Name, Flag = e.Staff.Country.Flag },
                 Empolyees = MakeStaffHierarchy(e, season)
             });
 
