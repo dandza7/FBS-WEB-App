@@ -26,7 +26,7 @@ const Players = (props) => {
     setDefenders(defend);
     setMidfielders(mid);
     setAttackers(attack);
-  }, []);
+  }, [props]);
 
   return (
     <>
@@ -59,12 +59,14 @@ const Players = (props) => {
           <div className={classes.positionContainer}>
             <TeamPositionPlayers
               position={"Staff"}
-              players={attackers}
+              players={props.staff}
             ></TeamPositionPlayers>
           </div>
         </div>
       ) : (
-        <div>asd</div>
+        <div>
+          <span>There is no data for this season.</span>
+        </div>
       )}
     </>
   );

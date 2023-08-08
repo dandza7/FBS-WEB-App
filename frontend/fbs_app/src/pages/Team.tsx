@@ -9,12 +9,6 @@ import dayjs from "dayjs";
 import { useNavigate } from "react-router";
 import Pagination from "../components/Utils/Pagination";
 
-const seasons = [
-  { value: "1", label: "2020/2021" },
-  { value: "2", label: "2021/2022" },
-  { value: "3", label: "2022/2023" },
-];
-
 const Team = () => {
   const [tab, setTab] = useState("Stats");
 
@@ -29,9 +23,6 @@ const Team = () => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [selectedSeason, setSelectedSeason] = useState(null);
   const pageSize = 5;
-  const viewAllMatchesHandler = () => {
-    navigate("/team/" + id + "/matches");
-  };
 
   const getTeamMatches = () => {
     fetch(
@@ -47,7 +38,6 @@ const Team = () => {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
         setMatches(data.entities);
         setTotalMatchCount(data.totalCount);
       })
@@ -101,7 +91,9 @@ const Team = () => {
         return res.json();
       })
       .then((data) => {
-        setStaff(data[0]);
+        const a = [];
+        a.push(data[0]?.staff);
+        setStaff(a);
       })
       .catch((error) => {
         alert(error);
@@ -119,7 +111,6 @@ const Team = () => {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
         setTeam(data);
         let seasons = [];
         data.seasons.map((season) => {
@@ -128,7 +119,7 @@ const Team = () => {
             label: season.league + " " + season.year,
           });
         });
-        console.log("prva sezona " + seasons[0].value);
+
         setSelectedSeason(seasons[0]);
         setAllSeasons(seasons);
       })
@@ -146,10 +137,12 @@ const Team = () => {
       <div className={classes.whiteContainerTitle}>
         <div className={classes.teamInfo}>
           <div>
-            <img
-              className={classes.teamImage}
-              src={`data:image/png;base64,${team?.logo}`}
-            ></img>
+            {team?.logo && (
+              <img
+                className={classes.teamImage}
+                src={`data:image/png;base64,${team?.logo}`}
+              ></img>
+            )}
           </div>
           <div className={classes.basicInfo}>
             <h2>{team?.name}</h2>
@@ -158,14 +151,32 @@ const Team = () => {
         </div>
       </div>
       <div className={classes.teamMenu}>
-        <div className={classes.teamMenuItem} onClick={() => setTab("Stats")}>
+        <div
+          className={
+            tab === "Stats"
+              ? classes.teamMenuItemSelected
+              : classes.teamMenuItem
+          }
+          onClick={() => setTab("Stats")}
+        >
           Stats
         </div>
-        <div className={classes.teamMenuItem} onClick={() => setTab("Squad")}>
+        <div
+          className={
+            tab === "Squad"
+              ? classes.teamMenuItemSelected
+              : classes.teamMenuItem
+          }
+          onClick={() => setTab("Squad")}
+        >
           Squad
         </div>
         <div
-          className={classes.teamMenuItem}
+          className={
+            tab === "Matches"
+              ? classes.teamMenuItemSelected
+              : classes.teamMenuItem
+          }
           onClick={() => {
             setTab("Matches");
             getTeamMatches();
@@ -216,7 +227,7 @@ const Team = () => {
                     <div className={classes.matchTeam}>
                       <img
                         className={classes.matchTeamLogo}
-                        src={`data:image/png;base64,${match.homeTeam.logo}`}
+                        src={`data:image/png;base64,${match.homeTeam?.logo}`}
                       ></img>
                       <span
                         className={
@@ -230,7 +241,7 @@ const Team = () => {
                     <div className={classes.matchTeam}>
                       <img
                         className={classes.matchTeamLogo}
-                        src={`data:image/png;base64,${match.awayTeam.logo}`}
+                        src={`data:image/png;base64,${match.awayTeam?.logo}`}
                       ></img>
                       <span
                         className={

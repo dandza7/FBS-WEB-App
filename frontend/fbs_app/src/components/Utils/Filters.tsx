@@ -22,49 +22,38 @@ const Filters = (props) => {
   const [firstRenderCountry, setFirstRenderCountry] = useState(true);
   const [firstRenderPos, setFirstRenderPos] = useState(true);
 
-  useEffect(() => {
-    if (firstRenderCountry) setFirstRenderCountry(false);
-    if (!firstRenderCountry) {
-      setFirstRenderCountry(true);
-      props.setPage1();
-      if (!selectedCountry) {
-        props.onChange({
-          value: "0",
-          label: "",
-          image: "",
-        });
-      } else {
-        props.onChange(selectedCountry);
-      }
+  const handleChange = (selected) => {
+    props.setPage1();
+    if (!selected) {
+      props.onChangePlayerPos({
+        value: "ALL",
+        label: "",
+      });
+    } else {
+      props.onChangePlayerPos(selected);
     }
-  }, [selectedCountry]);
-
-  useEffect(() => {
-    if (firstRenderPos) setFirstRenderPos(false);
-    if (!firstRenderPos) {
-      props.setPage1();
-      if (props.filters.includes("playerPos")) {
-        if (!playerPos) {
-          props.onChangePlayerPos({
-            value: "ALL",
-            label: "",
-          });
-        } else {
-          props.onChangePlayerPos(playerPos);
-        }
-      }
-    }
-  }, [playerPos]);
+  };
 
   const changeCountryHandler = (value: any) => {
-    setSelectedCountry(value);
+    props.setPage1();
+    if (!value) {
+      props.onChange({
+        value: "0",
+        label: "",
+        image: "",
+      });
+    } else {
+      props.onChange(value);
+    }
   };
 
   const changeTeamNameHandler = () => {
+    props.setPage1();
     setTeamName(event?.target.value);
   };
 
   const changePlayerNameHandler = () => {
+    props.setPage1();
     setPlayerName(event?.target.value);
   };
 
@@ -110,7 +99,7 @@ const Filters = (props) => {
           <Select
             className={classes.select}
             defaultValue={playerPos}
-            onChange={setPlayerPos}
+            onChange={handleChange}
             options={positions}
             isClearable
             placeholder="Select position..."

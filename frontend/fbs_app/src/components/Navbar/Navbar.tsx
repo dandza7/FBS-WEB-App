@@ -52,6 +52,7 @@ const Navbar = () => {
                   Teams
                 </NavLink>
               </div>
+
               <div className={classes.navbarItem}>
                 <NavLink
                   to="/players"
@@ -64,10 +65,22 @@ const Navbar = () => {
                   Players
                 </NavLink>
               </div>
+              <div className={classes.navbarItem}>
+                <NavLink
+                  to="/staff"
+                  className={classes.NavLink}
+                  style={({ isActive }) => ({
+                    color: isActive ? "#59b7d9" : "#fff",
+                    fontWeight: isActive ? "600" : "500",
+                  })}
+                >
+                  Staff
+                </NavLink>
+              </div>
             </div>
           </div>
           <div>
-            <div className={classes.navbarItem}>
+            <div className={classes.loginButton}>
               <NavLink to="/login" className={classes.NavLink}>
                 <PersonIcon className={classes.icon}></PersonIcon>
               </NavLink>
@@ -107,6 +120,12 @@ const Navbar = () => {
               onClick={() => openPageHandler("/players")}
             >
               <div className={classes.NavLink}>Players</div>
+            </div>
+            <div
+              className={classes.openMenuItem}
+              onClick={() => openPageHandler("/staff")}
+            >
+              <div className={classes.NavLink}>Staff</div>
             </div>
           </div>
         </div>

@@ -8,24 +8,24 @@ const CountrySelect = (props: any) => {
     props ? props.selected : null
   );
 
-  useEffect(() => {
-    if (!selectedCountry) {
+  const handleChange = (selected) => {
+    if (!selected) {
       props.onChange({
         value: "0",
         label: "",
         image: "",
       });
     } else {
-      props.onChange(selectedCountry);
+      props.onChange(selected);
     }
-  }, [selectedCountry]);
+  };
 
   return (
     <div className={classes.countrySelectContainer}>
       <span>Country:</span>
       <Select
         defaultValue={selectedCountry}
-        onChange={setSelectedCountry}
+        onChange={handleChange}
         className={classes.select}
         options={props.countries}
         isClearable

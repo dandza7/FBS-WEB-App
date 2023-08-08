@@ -26,7 +26,7 @@
 }
 
 .leaguesTable tbody tr:nth-of-type(even) {
-  background-color: #f3f3f3;
+  background-color: #f9f9f9;
 }
 
 .leaguesTable tbody tr:nth-of-type(odd) {
@@ -40,7 +40,7 @@
 .leaguesTable tbody tr:hover {
   border-bottom: 1px solid #dddddd;
   color: white;
-  background-color: rgb(137, 152, 190);
+  background-color: rgb(155, 164, 164);
 }
 
 .leaguesTable {
@@ -59,4 +59,15 @@
   background-color: white;
   padding: 1rem;
   border-radius: 1rem;
+}
+.league {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.flag {
+  width: 35px;
+  height: 20px;
 }

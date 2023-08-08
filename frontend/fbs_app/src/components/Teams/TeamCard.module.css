@@ -24,6 +24,12 @@
   font-weight: 600;
   cursor: pointer;
 }
+.team:hover {
+  background-color: rgb(226, 231, 231);
+  color: rgb(0, 0, 0);
+  transition: 0.3s;
+}
+
 .logo {
   width: 60px;
   height: 60px;
