@@ -16,27 +16,28 @@ const TeamPositionPlayers = (props) => {
   return (
     <div className={classes.positionContainer}>
       <h3>{props.position}</h3>
+
       <div className={classes.players}>
         <table className={classes.playersTable}>
           <thead>
             <tr>
-              <th>Full Name</th>
+              <th>Name</th>
               <th>Age</th>
             </tr>
           </thead>
           <tbody>
             {props.players?.map((player) => (
-              <tr key={player.id}>
+              <tr key={player?.id}>
                 <td>
                   <div className={classes.imgNameColumn}>
                     <img
                       className={classes.tableFlag}
                       src={`data:image/png;base64,${player?.countryFlag}`}
                     ></img>
-                    {player.name}
+                    {player?.name}
                   </div>
                 </td>
-                <td>{getAge(player.birthDate)}</td>
+                <td>{getAge(player?.birthDate)}</td>
               </tr>
             ))}
           </tbody>

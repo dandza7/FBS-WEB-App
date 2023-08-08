@@ -60,3 +60,14 @@
   padding: 1rem;
   border-radius: 1rem;
 }
+.league {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.flag {
+  width: 35px;
+  height: 20px;
+}

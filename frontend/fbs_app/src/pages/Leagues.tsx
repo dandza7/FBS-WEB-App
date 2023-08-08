@@ -38,7 +38,15 @@ const Leagues = () => {
             <tbody>
               {leagues?.map((league) => (
                 <tr key={league.id}>
-                  <td>{league.name}</td>
+                  <td>
+                    <div className={classes.league}>
+                      <img
+                        src={`data:image/png;base64,${league?.flag}`}
+                        className={classes.flag}
+                      ></img>
+                      <span>{league.name}</span>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>

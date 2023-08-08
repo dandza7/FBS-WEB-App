@@ -38,7 +38,6 @@ const Teams = () => {
   };
 
   const changeNameHandler = (value: any) => {
-    setSelectedPage(1);
     setTeamName(value);
   };
 
@@ -101,54 +100,56 @@ const Teams = () => {
   };
   return (
     <div>
-      {teams.length > 0 ? (
-        <div className={classes.whiteContainer}>
-          <div className={classes.titleFiltersContainer}>
-            <h2>Teams</h2>
-            <div
-              className={classes.filterButton}
-              onClick={() => {
-                setToggleFilters((prevState) => {
-                  return !prevState;
-                });
-              }}
-            >
-              <FilterAltIcon></FilterAltIcon>
-            </div>
+      <div className={classes.whiteContainer}>
+        <div className={classes.titleFiltersContainer}>
+          <h2>Teams</h2>
+          <div
+            className={classes.filterButton}
+            onClick={() => {
+              setToggleFilters((prevState) => {
+                return !prevState;
+              });
+            }}
+          >
+            <FilterAltIcon></FilterAltIcon>
           </div>
-          <div className={classes.rightContainer}>
-            {toggleFilters && (
-              <Filters
-                filters={["teamName"]}
-                countries={countries}
-                onChange={changeCountryHandler}
-                selected={selectedCountry}
-                onChangeTeamName={changeNameHandler}
-                selectedName={teamName}
-                setPage1={setPage1}
-              ></Filters>
-            )}
-          </div>
-          <div className={classes.teams}>
-            {teams?.map((team) => (
-              <TeamCard
-                team={team}
-                key={team.id}
-                onClick={viewTeamHandler}
-              ></TeamCard>
-            ))}
-          </div>
-
-          <Pagination
-            change={changePage}
-            totalCount={totalCount}
-            pageSize={pageSize}
-            currentPage={selectedPage}
-          ></Pagination>
         </div>
-      ) : (
-        <div>asd</div>
-      )}
+        <div className={classes.rightContainer}>
+          {toggleFilters && (
+            <Filters
+              filters={["teamName"]}
+              countries={countries}
+              onChange={changeCountryHandler}
+              selected={selectedCountry}
+              onChangeTeamName={changeNameHandler}
+              selectedName={teamName}
+              setPage1={setPage1}
+            ></Filters>
+          )}
+        </div>
+        {teams.length > 0 ? (
+          <>
+            <div className={classes.teams}>
+              {teams?.map((team) => (
+                <TeamCard
+                  team={team}
+                  key={team.id}
+                  onClick={viewTeamHandler}
+                ></TeamCard>
+              ))}
+            </div>
+
+            <Pagination
+              change={changePage}
+              totalCount={totalCount}
+              pageSize={pageSize}
+              currentPage={selectedPage}
+            ></Pagination>
+          </>
+        ) : (
+          <div>There is no teams from this country.</div>
+        )}
+      </div>
     </div>
   );
 };

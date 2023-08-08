@@ -9,12 +9,6 @@ import dayjs from "dayjs";
 import { useNavigate } from "react-router";
 import Pagination from "../components/Utils/Pagination";
 
-const seasons = [
-  { value: "1", label: "2020/2021" },
-  { value: "2", label: "2021/2022" },
-  { value: "3", label: "2022/2023" },
-];
-
 const Team = () => {
   const [tab, setTab] = useState("Stats");
 
@@ -101,7 +95,9 @@ const Team = () => {
         return res.json();
       })
       .then((data) => {
-        setStaff(data[0]);
+        const a = [];
+        a.push(data[0]?.staff);
+        setStaff(a);
       })
       .catch((error) => {
         alert(error);
@@ -216,7 +212,7 @@ const Team = () => {
                     <div className={classes.matchTeam}>
                       <img
                         className={classes.matchTeamLogo}
-                        src={`data:image/png;base64,${match.homeTeam.logo}`}
+                        src={`data:image/png;base64,${match.homeTeam?.logo}`}
                       ></img>
                       <span
                         className={
@@ -230,7 +226,7 @@ const Team = () => {
                     <div className={classes.matchTeam}>
                       <img
                         className={classes.matchTeamLogo}
-                        src={`data:image/png;base64,${match.awayTeam.logo}`}
+                        src={`data:image/png;base64,${match.awayTeam?.logo}`}
                       ></img>
                       <span
                         className={
