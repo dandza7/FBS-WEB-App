@@ -80,7 +80,7 @@ const Navbar = () => {
             </div>
           </div>
           <div>
-            <div className={classes.navbarItem}>
+            <div className={classes.loginButton}>
               <NavLink to="/login" className={classes.NavLink}>
                 <PersonIcon className={classes.icon}></PersonIcon>
               </NavLink>

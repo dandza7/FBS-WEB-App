@@ -132,12 +132,14 @@ const Players = () => {
             <PlayerCard player={player} key={player.id}></PlayerCard>
           ))}
         </div>
-        <Pagination
-          change={changePage}
-          totalCount={totalCount}
-          pageSize={pageSize}
-          currentPage={selectedPage}
-        ></Pagination>
+        {totalCount > pageSize && (
+          <Pagination
+            change={changePage}
+            totalCount={totalCount}
+            pageSize={pageSize}
+            currentPage={selectedPage}
+          ></Pagination>
+        )}
       </div>
     </div>
   );

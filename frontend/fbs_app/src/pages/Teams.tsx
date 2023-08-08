@@ -138,12 +138,14 @@ const Teams = () => {
               ))}
             </div>
 
-            <Pagination
-              change={changePage}
-              totalCount={totalCount}
-              pageSize={pageSize}
-              currentPage={selectedPage}
-            ></Pagination>
+            {totalCount > pageSize && (
+              <Pagination
+                change={changePage}
+                totalCount={totalCount}
+                pageSize={pageSize}
+                currentPage={selectedPage}
+              ></Pagination>
+            )}
           </>
         ) : (
           <div>There is no teams from this country.</div>

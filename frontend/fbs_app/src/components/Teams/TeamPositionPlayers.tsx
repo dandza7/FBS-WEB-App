@@ -30,10 +30,12 @@ const TeamPositionPlayers = (props) => {
               <tr key={player?.id}>
                 <td>
                   <div className={classes.imgNameColumn}>
-                    <img
-                      className={classes.tableFlag}
-                      src={`data:image/png;base64,${player?.countryFlag}`}
-                    ></img>
+                    {player?.countryFlag && (
+                      <img
+                        className={classes.tableFlag}
+                        src={`data:image/png;base64,${player?.countryFlag}`}
+                      ></img>
+                    )}
                     {player?.name}
                   </div>
                 </td>

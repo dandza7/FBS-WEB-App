@@ -24,6 +24,13 @@
   font-weight: 600;
   cursor: pointer;
 }
+
+.player:hover {
+  background-color: rgb(226, 231, 231);
+  color: rgb(0, 0, 0);
+  transition: 0.3s;
+}
+
 .photo {
   width: 70px;
   height: 70px;
