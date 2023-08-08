@@ -35,6 +35,7 @@ const Filters = (props) => {
   };
 
   const changeCountryHandler = (value: any) => {
+    props.setPage1();
     if (!value) {
       props.onChange({
         value: "0",
