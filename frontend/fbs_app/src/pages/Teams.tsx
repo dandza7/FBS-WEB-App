@@ -24,7 +24,6 @@ const Teams = () => {
   const navigate = useNavigate();
 
   const setPage1 = () => {
-    console.log("promenjeno");
     setSelectedPage(1);
   };
 

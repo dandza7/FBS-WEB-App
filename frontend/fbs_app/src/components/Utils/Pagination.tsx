@@ -15,7 +15,6 @@ const Pagination = (props) => {
   }, [props.currentPage]);
 
   useEffect(() => {
-    console.log("Trenutna stranica " + selectedPage);
     if (selectedPage <= 0 || !selectedPage) {
     } else {
       props.change(selectedPage);
