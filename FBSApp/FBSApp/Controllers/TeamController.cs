@@ -31,11 +31,11 @@ namespace FBSApp.Controllers
         /// <summary>
         /// [Anonymous] Gets matches by team
         /// </summary>
-        [HttpGet("{id}/matches/{page}/{pageSize}", Name = "GetMatchesByTeam")]
+        [HttpGet("{id}/matches/{seasonId}/{page}/{pageSize}", Name = "GetMatchesByTeam")]
         [AllowAnonymous]
-        public ActionResult<PaginationWrapper<MatchListPreviewDTO>> GetMatchesByTeam(long id, int page, int pageSize)
+        public ActionResult<PaginationWrapper<MatchListPreviewDTO>> GetMatchesByTeam(long id, long seasonId, int page, int pageSize)
         {
-            return Ok(_teamService.GetMatchesByTeam(id, page, pageSize));
+            return Ok(_teamService.GetMatchesByTeam(id, seasonId, page, pageSize));
         }
 
         /// <summary>
