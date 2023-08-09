@@ -46,7 +46,7 @@ namespace FBSApp.Services
             };
         }
 
-        public PaginationWrapper<MatchListPreviewDTO> GetMatchesByTeam(long teamId, int page, int pageSize)
+        public PaginationWrapper<MatchListPreviewDTO> GetMatchesByTeam(long teamId, long seasonId, int page, int pageSize)
         {
             if (!_unitOfWork.TeamRepository.GetAll().Where(t => t.Id == teamId).Any())
             {
@@ -54,7 +54,9 @@ namespace FBSApp.Services
             }
             var matchesRaw = _unitOfWork.MatchRepository.GetAll(m => m.Season)
                                                     .Include(m => m.MatchActors).ThenInclude(ma => ma.Team).ThenInclude(t => t.Country)
-                                                    .Where(m => m.MatchActors.Where(ma => ma.TeamId == teamId).Any()).OrderByDescending(m => m.Date);
+                                                    .Where(m => seasonId == 0 ? true : m.SeasonId == seasonId)
+                                                    .Where(m => m.MatchActors.Where(ma => ma.TeamId == teamId).Any())
+                                                    .OrderByDescending(m => m.Date);
             var totalCount = matchesRaw.Count();
             var matches = matchesRaw.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             return new PaginationWrapper<MatchListPreviewDTO>
