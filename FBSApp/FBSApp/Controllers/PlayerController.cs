@@ -35,5 +35,13 @@ namespace FBSApp.Controllers
         {
             return Ok(_playerService.GetPlayersEngagements(id));
         }
+
+        [HttpGet("temp", Name = "Temp")]
+        [AllowAnonymous]
+        public ActionResult<IEnumerable<string>> Temp()
+        {
+            return Ok(_playerService.Temp());
+        }
+
     }
 }

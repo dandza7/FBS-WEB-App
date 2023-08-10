@@ -64,5 +64,13 @@ namespace FBSApp.Services
                 EndDate = te.EndDate,
             });
         }
+
+        public IEnumerable<string> Temp()
+        {
+            var players = _unitOfWork.PlayerRepository.GetAll();
+            return players.Select(p =>
+                $"teamEngagement.HasData(new {{ Id = {p.Id}L, PlayerId = {p.Id}L, TeamId = {p.Id / 100}L, StartDate = DateTime.Parse(\"Aug 1, 2018\"), EndDate = DateTime.Parse(\"Sep 1, 2020\"), Name = \"{p.Name}\" }});"
+            );
+        }
     }
 }
