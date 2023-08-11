@@ -86,7 +86,7 @@ const League = () => {
           <h3>Scoreboard</h3>
           <br></br>
           <div className={classes.scoreboard}>
-            <table className={classes.scoreboardTable}>
+            <table className={classes.leaguesTable}>
               <thead>
                 <tr>
                   <th>#</th>
@@ -101,7 +101,7 @@ const League = () => {
               <tbody>
                 <tr>
                   <td>1.</td>
-                  <td>Velez</td>
+                  <td>Velezsadadadad</td>
                   <td>1</td>
                   <td>0</td>
                   <td>0</td>

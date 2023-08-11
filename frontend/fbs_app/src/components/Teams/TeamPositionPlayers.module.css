@@ -3,10 +3,12 @@
   color: #272727;
   text-align: left;
 }
-
-.playersTable th,
-.playersTable td {
+.playersTable th {
   padding: 0.5rem 1rem;
+}
+
+.playersTable td {
+  padding: 0.8rem 1rem;
 }
 .playersTable th {
   font-size: 1rem;

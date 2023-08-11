@@ -127,18 +127,24 @@ const Players = () => {
             ></Filters>
           )}
         </div>
-        <div className={classes.players}>
-          {players?.map((player) => (
-            <PlayerCard player={player} key={player.id}></PlayerCard>
-          ))}
-        </div>
-        {totalCount > pageSize && (
-          <Pagination
-            change={changePage}
-            totalCount={totalCount}
-            pageSize={pageSize}
-            currentPage={selectedPage}
-          ></Pagination>
+        {players.length > 0 ? (
+          <>
+            <div className={classes.players}>
+              {players?.map((player) => (
+                <PlayerCard player={player} key={player.id}></PlayerCard>
+              ))}
+            </div>
+            {totalCount > pageSize && (
+              <Pagination
+                change={changePage}
+                totalCount={totalCount}
+                pageSize={pageSize}
+                currentPage={selectedPage}
+              ></Pagination>
+            )}{" "}
+          </>
+        ) : (
+          <div>There are no players that match your search criteria.</div>
         )}
       </div>
     </div>
