@@ -2,6 +2,8 @@
 using FBSApp.Models.DTOs;
 using FBSApp.Models.DTOs.Staff;
 using FBSApp.Repositories;
+using FBSApp.SupportClasses.GlobalExceptionHandler.CustomExceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace FBSApp.Services
 {
@@ -33,6 +35,16 @@ namespace FBSApp.Services
                 StartDate = e.StartDate,
                 EndDate = e.EndDate,
             });
+        }
+
+        public IEnumerable<AwardDTO> GetStaffAwards(long staffId)
+        {
+            if (!_unitOfWork.StaffRepository.GetAll().Where(s => s.Id == staffId).Any())
+            {
+                throw new NotFoundException($"Staff with ID {staffId} doest not exist!");
+            }
+            var awards = _unitOfWork.AwardRepository.GetAll().Where(a => a.StaffId == staffId).Include(a => a.Season).ThenInclude(s => s.League);
+            return _mapper.Map<IEnumerable<AwardDTO>>(awards);
         }
     }
 }

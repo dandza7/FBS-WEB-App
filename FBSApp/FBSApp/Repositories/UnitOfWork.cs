@@ -21,6 +21,7 @@ namespace FBSApp.Repositories
         private IGenericRepository<TeamEngagement> _teamEngagementRepository;
         private IGenericRepository<Staff> _staffRepository;
         private IGenericRepository<TeamEmployment> _teamEmploymentRepository;
+        private IGenericRepository<Award> _awardRepository;
         public UnitOfWork(DbContext FBS_DB_Context)
         {
             _FBS_DB_Context = FBS_DB_Context;
@@ -128,6 +129,14 @@ namespace FBSApp.Repositories
             {
                 _teamEmploymentRepository ??= new GenericRepository<TeamEmployment>(_FBS_DB_Context);
                 return _teamEmploymentRepository;
+            }
+        }
+        public IGenericRepository<Award> AwardRepository
+        {
+            get
+            {
+                _awardRepository ??= new GenericRepository<Award>(_FBS_DB_Context);
+                return _awardRepository;
             }
         }
 

@@ -31,9 +31,19 @@ namespace FBSApp.Controllers
         /// </summary>
         [HttpGet("{id}/engagements", Name = "GetPlayersEngagements")]
         [AllowAnonymous]
-        public ActionResult<PaginationWrapper<PlayerListPreviewDTO>> GetPlayersEngagements(long id)
+        public ActionResult<IEnumerable<TeamEngagementDTO>> GetPlayersEngagements(long id)
         {
             return Ok(_playerService.GetPlayersEngagements(id));
+        }
+
+        /// <summary>
+        /// [Anonymous] Gets players awards
+        /// </summary>
+        [HttpGet("{id}/awards", Name = "GetPlayersAwards")]
+        [AllowAnonymous]
+        public ActionResult<IEnumerable<AwardDTO>> GetPlayersAwards(long id)
+        {
+            return Ok(_playerService.GetPlayersAwards(id));
         }
 
         [HttpGet("temp", Name = "Temp")]
