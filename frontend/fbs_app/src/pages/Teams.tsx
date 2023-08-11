@@ -148,7 +148,7 @@ const Teams = () => {
             )}
           </>
         ) : (
-          <div>There is no teams from this country.</div>
+          <div>There are no teams that match your search criteria.</div>
         )}
       </div>
     </div>

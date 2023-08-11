@@ -6,9 +6,9 @@ import Select from "react-select";
 
 const positions = [
   { value: "Goalkeeper", label: "Goalkeeper" },
+  { value: "Defender", label: "Defender" },
   { value: "Midfielder", label: "Midfielder" },
   { value: "Attacker", label: "Attacker" },
-  { value: "Defender", label: "Defender" },
 ];
 const Filters = (props) => {
   const [selectedCountry, setSelectedCountry] = useState(

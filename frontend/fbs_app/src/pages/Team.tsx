@@ -25,8 +25,9 @@ const Team = () => {
   const pageSize = 5;
 
   const getTeamMatches = () => {
+    console.log(selectedSeason);
     fetch(
-      `http://localhost:5271/api/teams/${id}/matches/${selectedPage}/${pageSize}`,
+      `http://localhost:5271/api/teams/${id}/matches/${selectedSeason?.value}/${selectedPage}/${pageSize}`,
       {
         method: "GET",
         headers: {
@@ -48,9 +49,10 @@ const Team = () => {
 
   useEffect(() => {
     getTeamMatches();
-  }, [selectedPage]);
+  }, [selectedPage, selectedSeason]);
 
   useEffect(() => {
+    console.log(selectedSeason?.value);
     fetch(
       "http://localhost:5271/api/teams/" +
         id +
@@ -132,6 +134,11 @@ const Team = () => {
     setSelectedPage(page);
   };
 
+  const handleChangeSeason = (selected) => {
+    setSelectedSeason(selected);
+    setSelectedPage(1);
+  };
+
   return (
     <div className={classes.team}>
       <div className={classes.whiteContainerTitle}>
@@ -190,7 +197,7 @@ const Team = () => {
           <span>Season:</span>
           <Select
             defaultValue={selectedSeason}
-            onChange={setSelectedSeason}
+            onChange={handleChangeSeason}
             options={allSeasons}
             placeholder="Select season"
           />
@@ -216,58 +223,68 @@ const Team = () => {
         <div className={classes.whiteContainerInfo}>
           <h3>Matches</h3>
           <br></br>
-          <div className={classes.results}>
-            {matches.map((match) => (
-              <div className={classes.result}>
-                <div className={classes.teamsDateContainer}>
-                  <div>
-                    <p>{dayjs(match.date).format("DD.MM")}</p>
-                  </div>
-                  <div className={classes.resultTeamsContainer}>
-                    <div className={classes.matchTeam}>
-                      <img
-                        className={classes.matchTeamLogo}
-                        src={`data:image/png;base64,${match.homeTeam?.logo}`}
-                      ></img>
-                      <span
-                        className={
-                          match.homeTeamGoals > match.awayTeamGoals &&
-                          classes.winner
-                        }
-                      >
-                        {match.homeTeam.name}
-                      </span>
+          {matches.length > 0 ? (
+            <>
+              <div className={classes.results}>
+                {matches?.map((match) => (
+                  <div className={classes.result} key={match.id}>
+                    <div className={classes.teamsDateContainer}>
+                      <div>
+                        <p>{dayjs(match.date).format("DD.MM")}</p>
+                      </div>
+                      <div className={classes.resultTeamsContainer}>
+                        <div className={classes.matchTeam}>
+                          <img
+                            className={classes.matchTeamLogo}
+                            src={`data:image/png;base64,${match.homeTeam?.logo}`}
+                          ></img>
+                          <span
+                            className={
+                              match.homeTeamGoals > match.awayTeamGoals
+                                ? classes.winner
+                                : classes.none
+                            }
+                          >
+                            {match.homeTeam.name}
+                          </span>
+                        </div>
+                        <div className={classes.matchTeam}>
+                          <img
+                            className={classes.matchTeamLogo}
+                            src={`data:image/png;base64,${match.awayTeam?.logo}`}
+                          ></img>
+                          <span
+                            className={
+                              match.homeTeamGoals < match.awayTeamGoals
+                                ? classes.winner
+                                : classes.none
+                            }
+                          >
+                            {match.awayTeam.name}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                    <div className={classes.matchTeam}>
-                      <img
-                        className={classes.matchTeamLogo}
-                        src={`data:image/png;base64,${match.awayTeam?.logo}`}
-                      ></img>
-                      <span
-                        className={
-                          match.homeTeamGoals < match.awayTeamGoals &&
-                          classes.winner
-                        }
-                      >
-                        {match.awayTeam.name}
-                      </span>
-                    </div>
-                  </div>
-                </div>
 
-                <div className={classes.score}>
-                  <p>{match.homeTeamGoals}</p>
-                  <p>{match.awayTeamGoals}</p>
-                </div>
+                    <div className={classes.score}>
+                      <p>{match.homeTeamGoals}</p>
+                      <p>{match.awayTeamGoals}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <Pagination
-            change={changePage}
-            totalCount={totalMatchCount}
-            pageSize={pageSize}
-            currentPage={selectedPage}
-          ></Pagination>
+              {totalMatchCount > pageSize && (
+                <Pagination
+                  change={changePage}
+                  totalCount={totalMatchCount}
+                  pageSize={pageSize}
+                  currentPage={selectedPage}
+                ></Pagination>
+              )}
+            </>
+          ) : (
+            <div>There are no matches for this season.</div>
+          )}
         </div>
       )}
     </div>
