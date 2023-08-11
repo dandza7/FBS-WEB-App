@@ -55,7 +55,12 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddDbContext<FBS_DB_Context>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("ConStr")));
+builder.Services.AddDbContext<FBS_DB_Context>(x =>
+        {
+            x.UseSqlServer(builder.Configuration.GetConnectionString("ConStr"));
+            x.EnableSensitiveDataLogging();
+        }
+);
 
 builder.Services.AddScoped<DbContext, FBS_DB_Context>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));

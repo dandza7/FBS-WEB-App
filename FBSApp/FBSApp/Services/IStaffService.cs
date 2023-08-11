@@ -7,5 +7,6 @@ namespace FBSApp.Services
     {
         PaginationWrapper<StaffDTO> GetAll(int page, int pageSize);
         IEnumerable<TeamEmploymentDTO> GetEmployments(long staffId);
+        public IEnumerable<AwardDTO> GetStaffAwards(long staffId);
     }
 }

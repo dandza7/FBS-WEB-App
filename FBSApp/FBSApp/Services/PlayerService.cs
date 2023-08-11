@@ -46,6 +46,16 @@ namespace FBSApp.Services
             };
         }
 
+        public IEnumerable<AwardDTO> GetPlayersAwards(long playerId)
+        {
+            if (!_unitOfWork.PlayerRepository.GetAll().Where(s => s.Id == playerId).Any())
+            {
+                throw new NotFoundException($"Player with ID {playerId} doest not exist!");
+            }
+            var awards = _unitOfWork.AwardRepository.GetAll().Where(a => a.PlayerId == playerId).Include(a => a.Season).ThenInclude(s => s.League);
+            return _mapper.Map<IEnumerable<AwardDTO>>(awards);
+        }
+
         public IEnumerable<TeamEngagementDTO> GetPlayersEngagements(long playerId)
         {
             if (!_unitOfWork.PlayerRepository.GetAll().Where(p => p.Id == playerId).Any())
@@ -63,6 +73,14 @@ namespace FBSApp.Services
                 StartDate = te.StartDate,
                 EndDate = te.EndDate,
             });
+        }
+
+        public IEnumerable<string> Temp()
+        {
+            var players = _unitOfWork.PlayerRepository.GetAll();
+            //return players.Select(p => $"teamEngagement.HasData(new {{ Id = {p.Id}L, PlayerId = {p.Id}L, TeamId = {p.Id / 100}L, StartDate = DateTime.Parse(\"Aug 1, 2018\"), EndDate = DateTime.Parse(\"Sep 1, 2020\"), Name = \"{p.Name}\" }});");
+            var matches = _unitOfWork.MatchRepository.GetAll().Include(m => m.MatchActors).ThenInclude(ma => ma.Team).ToList();
+            return matches.Select(m => m.MatchActors.First().IsTeamHost ? $"{m.Id}: {m.MatchActors.First().Team.Name} vs {m.MatchActors.Last().Team.Name}" : $"{m.Id}: {m.MatchActors.Last().Team.Name} vs {m.MatchActors.First().Team.Name}");
         }
     }
 }

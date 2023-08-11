@@ -117,16 +117,24 @@ namespace FBSApp.Services
                                                          || (season.StartDate > te.EndDate && season.EndDate > te.EndDate))
                                                          && te.TeamId == teamId)
                                              .Include(te => te.Player).ThenInclude(p => p.Country);
-            return teamEngagements.Select(te => new PlayerListPreviewDTO
+            var retVal = new List<PlayerListPreviewDTO>();
+            foreach (var te in teamEngagements)
             {
-                Id = te.PlayerId,
-                Name = te.Player.Name,
-                Position = te.Player.Position,
-                Photo = te.Player.Photo,
-                CountryName = te.Player.Country.Name,
-                CountryFlag = te.Player.Country.Flag,
-                BirthDate = te.Player.BirthDate,
-            });
+                if (!retVal.Where(p => p.Id == te.PlayerId).Any())
+                {
+                    retVal.Add(new PlayerListPreviewDTO
+                    {
+                        Id = te.PlayerId,
+                        Name = te.Player.Name,
+                        Position = te.Player.Position,
+                        Photo = te.Player.Photo,
+                        CountryName = te.Player.Country.Name,
+                        CountryFlag = te.Player.Country.Flag,
+                        BirthDate = te.Player.BirthDate,
+                    });
+                }
+            }
+            return retVal;
         }
 
         public IEnumerable<HeadStaffDTO> GetTeamsStaff(long teamId, long seasonId)

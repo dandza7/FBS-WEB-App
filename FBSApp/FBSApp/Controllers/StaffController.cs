@@ -35,5 +35,15 @@ namespace FBSApp.Controllers
         {
             return Ok(_staffService.GetEmployments(id));
         }
+
+        /// <summary>
+        /// [Anonymous] Gets staff awards
+        /// </summary>
+        [HttpGet("{id}/awards", Name = "GetStaffAwards")]
+        [AllowAnonymous]
+        public ActionResult<IEnumerable<AwardDTO>> GetStaffAwards(long id)
+        {
+            return Ok(_staffService.GetStaffAwards(id));
+        }
     }
 }
