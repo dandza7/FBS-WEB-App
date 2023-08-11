@@ -160,7 +160,7 @@ namespace FBSApp.Services
                                              .Include(te => te.Staff).ThenInclude(p => p.Country).ToList();
             return teamEmployments.Select(te => new HeadStaffDTO
             {
-                Staff = new StaffDTO { Id = te.Staff.Id, BirthDate = te.Staff.BirthDate, Name = te.Staff.Name, Flag = te.Staff.Country.Flag },
+                Staff = new StaffDTO { Id = te.Staff.Id, BirthDate = te.Staff.BirthDate, Name = te.Staff.Name, CountryFlag = te.Staff.Country.Flag },
                 StartOfEmployment = te.StartDate,
                 EndOfEmployment = te.EndDate,
                 Empolyees = MakeStaffHierarchy(te, season)
@@ -179,7 +179,7 @@ namespace FBSApp.Services
             var x = 1;
             return employments.Select(e => new StaffEmployeeDTO
             {
-                Staff = new StaffDTO { Id = e.Staff.Id, BirthDate = e.Staff.BirthDate, Name = e.Staff.Name, Flag = e.Staff.Country.Flag },
+                Staff = new StaffDTO { Id = e.Staff.Id, BirthDate = e.Staff.BirthDate, Name = e.Staff.Name, CountryFlag = e.Staff.Country.Flag },
                 Empolyees = MakeStaffHierarchy(e, season)
             });
 
