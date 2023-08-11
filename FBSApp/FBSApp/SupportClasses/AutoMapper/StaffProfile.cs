@@ -12,7 +12,7 @@ namespace FBSApp.SupportClasses.AutoMapper
                 .ForMember(s => s.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(s => s.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(s => s.BirthDate, opt => opt.MapFrom(src => src.BirthDate))
-                .ForMember(s => s.Flag, opt => opt.MapFrom(src => src.Country.Flag));
+                .ForMember(s => s.CountryFlag, opt => opt.MapFrom(src => src.Country.Flag));
         }
     }
 }

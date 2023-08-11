@@ -46,6 +46,16 @@ namespace FBSApp.Controllers
             return Ok(_playerService.GetPlayersAwards(id));
         }
 
+        /// <summary>
+        /// [Anonymous] Gets player by id
+        /// </summary>
+        [HttpGet("{id}", Name = "GetPlayer")]
+        [AllowAnonymous]
+        public ActionResult<PlayerListPreviewDTO> GetPlayer(long id)
+        {
+            return Ok(_playerService.GetPlayer(id));
+        }
+
         [HttpGet("temp", Name = "Temp")]
         [AllowAnonymous]
         public ActionResult<IEnumerable<string>> Temp()

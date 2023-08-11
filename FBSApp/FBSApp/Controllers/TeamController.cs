@@ -43,7 +43,7 @@ namespace FBSApp.Controllers
         /// </summary>
         [HttpGet("{id}/detailed", Name = "GetTeamDetailed")]
         [AllowAnonymous]
-        public ActionResult<PaginationWrapper<MatchListPreviewDTO>> GetTeamDetailed(long id)
+        public ActionResult<TeamDetailedDTO> GetTeamDetailed(long id)
         {
             return Ok(_teamService.GetTeamDetailed(id));
         }
@@ -63,7 +63,7 @@ namespace FBSApp.Controllers
         /// </summary>
         [HttpGet("{id}/staff/{seasonId}", Name = "GetTeamsStaff")]
         [AllowAnonymous]
-        public ActionResult<IEnumerable<TeamEmploymentDTO>> GetTeamsStaff(long id, long seasonId)
+        public ActionResult<IEnumerable<HeadStaffDTO>> GetTeamsStaff(long id, long seasonId)
         {
             return Ok(_teamService.GetTeamsStaff(id, seasonId));
         }

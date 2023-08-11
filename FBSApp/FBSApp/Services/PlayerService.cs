@@ -46,6 +46,16 @@ namespace FBSApp.Services
             };
         }
 
+        public PlayerListPreviewDTO GetPlayer(long playerId)
+        {
+            var player = _unitOfWork.PlayerRepository.GetAll(p => p.Country).Where(p => p.Id == playerId).FirstOrDefault();
+            if (player == null)
+            {
+                throw new NotFoundException($"Player with ID {playerId} doest not exist!");
+            }
+            return _mapper.Map<PlayerListPreviewDTO>(player);
+        }
+
         public IEnumerable<AwardDTO> GetPlayersAwards(long playerId)
         {
             if (!_unitOfWork.PlayerRepository.GetAll().Where(s => s.Id == playerId).Any())
