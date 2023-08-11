@@ -1,9 +1,16 @@
 import React from "react";
 import classes from "./PlayerCard.module.css";
+import { useNavigate } from "react-router";
 
 const PlayerCard = (props) => {
+  const navigate = useNavigate();
   return (
-    <div className={classes.player}>
+    <div
+      className={classes.player}
+      onClick={() => {
+        navigate("/player/" + props.player.id);
+      }}
+    >
       <img
         src={
           props.player.photo

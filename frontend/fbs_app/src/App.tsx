@@ -29,7 +29,7 @@ const router = createBrowserRouter(
         <Route path="/teams" element={<Teams></Teams>}></Route>
         <Route path="/staff" element={<Staff></Staff>}></Route>
         <Route path="/players" element={<Players></Players>}></Route>
-        <Route path="/player" element={<Player></Player>}></Route>
+        <Route path="/player/:id" element={<Player></Player>}></Route>
         <Route path="/team/:id" element={<Team></Team>}></Route>
       </Route>
     </Route>

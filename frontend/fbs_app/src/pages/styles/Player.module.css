@@ -76,7 +76,7 @@
 
 .scoreboardTable th,
 .scoreboardTable td {
-  padding: 0.5rem 2rem;
+  padding: 0.5rem 1rem;
 }
 .scoreboardTable th {
   font-size: 1rem;
@@ -106,7 +106,6 @@
   margin: 0;
   padding: 0;
   width: 100%;
-  table-layout: fixed;
   border-radius: 1rem;
   overflow: hidden;
   font-size: 14px;
@@ -123,7 +122,7 @@
 }
 
 .playerImage {
-  width: 150px;
+  width: 175px;
   height: 200px;
   border-radius: 1rem;
 }
@@ -131,4 +130,31 @@
 .playerMenuItemSelected {
   color: rgb(40, 54, 131);
   font-weight: bold;
+}
+@media only screen and (max-width: 650px) {
+  .playerImage {
+    width: 130px;
+    height: 150px;
+    border-radius: 1rem;
+  }
+}
+.imgNameColumn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+}
+.tableFlag {
+  width: 20px;
+  height: 18px;
+}
+.flagImage {
+  width: 23px;
+  height: 16px;
+}
+.playerCountry {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
