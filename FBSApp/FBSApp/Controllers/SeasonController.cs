@@ -57,5 +57,15 @@ namespace FBSApp.Controllers
         {
             return Ok(_seasonService.GetMatchesInSeason(id, page, pageSize));
         }
+
+        /// <summary>
+        /// [Anonymous] Gets seasons table
+        /// </summary>
+        [HttpGet("{seasonId}/table", Name = "GetDefaultTable")]
+        [AllowAnonymous]
+        public ActionResult<IEnumerable<TeamTableViewDTO>> GetDefaultTable(long seasonId)
+        {
+            return Ok(_seasonService.GetDefaultTable(seasonId));
+        }
     }
 }

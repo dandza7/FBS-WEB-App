@@ -76,5 +76,29 @@ namespace FBSApp.Services
             }
             return _mapper.Map<List<TeamListPreviewDTO>>(season.Teams.OrderBy(t => t.Name));
         }
+
+        public IEnumerable<TeamTableViewDTO> GetDefaultTable(long seasonId)
+        {
+            var season = _unitOfWork.SeasonRepository.GetAll().Include(s => s.Teams).ThenInclude(t => t.Country)
+                                                              .Where(s => s.Id == seasonId).FirstOrDefault();
+            if (season == null)
+            {
+                throw new NotFoundException($"Season with ID {seasonId} does not exist.");
+            }
+            var teams = season.Teams;
+            return teams.Select(t => new TeamTableViewDTO
+            {
+                Name = t.Name,
+                Logo = t.Logo,
+                Flag = t.Country.Flag,
+                Wins = 0,
+                Draws = 0,
+                Losses = 0,
+                MatchesPlayed = 0,
+                GoalsScored = 0,
+                GoalsConceded = 0,
+                Points = 0
+            }).OrderBy(t => t.Points);
+        }
     }
 }
