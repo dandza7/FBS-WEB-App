@@ -13,5 +13,6 @@ namespace FBSApp.Models
         public Country Country { get; set; }
         public long CountryId { get; set; }
         public IEnumerable<TeamEngagement> Engagements { get; set; }
+        public IEnumerable<PlayedMatch> MatchesEvidention { get; set; }
     }
 }

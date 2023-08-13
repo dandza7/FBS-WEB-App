@@ -54,6 +54,7 @@ namespace FBSApp.Services
             }
             var matchesRaw = _unitOfWork.MatchRepository.GetAll(m => m.Season)
                                                     .Include(m => m.MatchActors).ThenInclude(ma => ma.Team).ThenInclude(t => t.Country)
+                                                    .Include(m => m.PlayersEvidention.Where(pe => pe.Goals.Any())).ThenInclude(pm => pm.Goals)
                                                     .Where(m => seasonId == 0 ? true : m.SeasonId == seasonId)
                                                     .Where(m => m.MatchActors.Where(ma => ma.TeamId == teamId).Any())
                                                     .OrderByDescending(m => m.Date);
@@ -65,8 +66,8 @@ namespace FBSApp.Services
                 {
                     Id = m.Id,
                     Date = m.Date,
-                    HomeTeamGoals = 0, // TO-DO
-                    AwayTeamGoals = 0, // TO-DO
+                    HomeTeamGoals = CalculateTeamGoals(m, "home"),
+                    AwayTeamGoals = CalculateTeamGoals(m, "away"),
                     HomeTeam = m.MatchActors.First().IsTeamHost ? _mapper.Map<TeamListPreviewDTO>(m.MatchActors.First().Team) : _mapper.Map<TeamListPreviewDTO>(m.MatchActors.Last().Team),
                     AwayTeam = m.MatchActors.First().IsTeamHost ? _mapper.Map<TeamListPreviewDTO>(m.MatchActors.Last().Team) : _mapper.Map<TeamListPreviewDTO>(m.MatchActors.First().Team),
                 }),
@@ -183,6 +184,33 @@ namespace FBSApp.Services
                 Empolyees = MakeStaffHierarchy(e, season)
             });
 
+        }
+
+        private int CalculateTeamGoals(Match match, string teamtype = "home")
+        {
+            var team = teamtype == "home" ? match.MatchActors.Where(ma => ma.IsTeamHost).First().Team : match.MatchActors.Where(ma => !ma.IsTeamHost).First().Team;
+
+            var goals = 0;
+
+            foreach (var pe in match.PlayersEvidention)
+            {
+                var check = _unitOfWork.TeamEngagementRepository.GetAll().Where(te => te.PlayerId == pe.PlayerId)
+                                                                         .Where(te => te.TeamId == team.Id)
+                                                                         .Where(te => te.EndDate > match.Date && te.StartDate < match.Date)
+                                                                         .Any();
+                if (check)
+                {
+                    foreach (var goal in pe.Goals)
+                    {
+                        if (!goal.IsOwnGoal)
+                        {
+                            goals++;
+                        }
+                    }
+                }
+
+            }
+            return goals;
         }
     }
 }

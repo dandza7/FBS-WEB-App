@@ -11,5 +11,6 @@ namespace FBSApp.Services
         IEnumerable<TeamListPreviewDTO> GetTeamsInSeason(long seasonId);
         PaginationWrapper<MatchListPreviewDTO> GetMatchesInSeason(long seasonId, int page, int pageSize);
         long Create(NewSeasonDTO newSeason);
+        IEnumerable<TeamTableViewDTO> GetDefaultTable(long seasonId);
     }
 }
