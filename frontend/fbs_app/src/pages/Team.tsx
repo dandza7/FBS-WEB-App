@@ -93,9 +93,10 @@ const Team = () => {
         return res.json();
       })
       .then((data) => {
-        const a = [];
-        a.push(data[0]?.staff);
-        setStaff(a);
+        const staff = [];
+        console.log(data);
+        staff.push(data[0]?.staff);
+        setStaff(staff);
       })
       .catch((error) => {
         alert(error);

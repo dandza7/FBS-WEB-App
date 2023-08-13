@@ -1,9 +1,62 @@
 import React from "react";
 import classes from "./styles/Player.module.css";
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import { useParams } from "react-router";
+import dayjs from "dayjs";
 const Player = () => {
   const [showMatches, setshowMaches] = useState(true);
+  const [player, setPlayer] = useState(null);
+  const [playerEngagements, setPlayerEngagements] = useState(null);
+
+  const { id } = useParams();
+
+  function getAge(dateString: Date) {
+    var today = new Date();
+    var birthDate = new Date(dayjs(dateString).format("MMM D, YYYY"));
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  }
+
+  useEffect(() => {
+    fetch("http://localhost:5271/api/players/" + id, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setPlayer(data);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:5271/api/players/" + id + "/engagements", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setPlayerEngagements(data);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }, []);
 
   return (
     <div className={classes.player}>
@@ -12,15 +65,24 @@ const Player = () => {
           <div>
             <img
               className={classes.playerImage}
-              src="https://img.a.transfermarkt.technology/portrait/big/88755-1684245748.jpg?lm=1"
+              src={`data:image/png;base64,${player?.photo}`}
             ></img>
           </div>
           <div className={classes.basicInfo}>
-            <h2>Kevin De Bruyne</h2>
-            <p>Age: 32</p>
-            <p>Nation: Belgium</p>
-            <p>Team: Manchester City</p>
-            <p>Position: Midfielder</p>
+            <h2>{player?.name}</h2>
+            <div className={classes.playerCountry}>
+              <img
+                className={classes.flagImage}
+                src={`data:image/png;base64,${player?.countryFlag}`}
+              ></img>
+              {player?.countryName}
+            </div>
+
+            <p>
+              Age: {getAge(player?.birthDate)} (
+              {dayjs(player?.birthDate).format("DD.MM.YYYY")})
+            </p>
+            <p>Position: {player?.position}</p>
           </div>
         </div>
       </div>
@@ -67,38 +129,6 @@ const Player = () => {
                 <p>1</p>
               </div>
             </div>
-            <div className={classes.result}>
-              <div className={classes.teamsDateContainer}>
-                <div>
-                  <p>25.08.2023.</p>
-                </div>
-                <div>
-                  <p className={classes.winner}>Tim1</p>
-                  <p>Tim1</p>
-                </div>
-              </div>
-
-              <div className={classes.score}>
-                <p>2</p>
-                <p>1</p>
-              </div>
-            </div>
-            <div className={classes.result}>
-              <div className={classes.teamsDateContainer}>
-                <div>
-                  <p>25.08.2023.</p>
-                </div>
-                <div>
-                  <p className={classes.winner}>Tim1</p>
-                  <p>Tim1</p>
-                </div>
-              </div>
-
-              <div className={classes.score}>
-                <p>2</p>
-                <p>1</p>
-              </div>
-            </div>
           </div>
         </div>
       )}
@@ -112,29 +142,28 @@ const Player = () => {
                 <tr>
                   <th>Team</th>
                   <th>Season</th>
-                  <th>MP</th>
-                  <th>G</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Velez</td>
-                  <td>2022/2023</td>
-                  <td>0</td>
-                  <td>0</td>
-                </tr>
-                <tr>
-                  <td>Velez</td>
-                  <td>2022/2023</td>
-                  <td>0</td>
-                  <td>0</td>
-                </tr>
-                <tr>
-                  <td>Velez</td>
-                  <td>2022/2023</td>
-                  <td>0</td>
-                  <td>0</td>
-                </tr>
+                {playerEngagements?.map((engagament: any) => (
+                  <tr>
+                    <td>
+                      <div className={classes.imgNameColumn}>
+                        {engagament?.logo && (
+                          <img
+                            className={classes.tableFlag}
+                            src={`data:image/png;base64,${engagament?.logo}`}
+                          ></img>
+                        )}
+                        {engagament?.name}
+                      </div>
+                    </td>
+                    <td>
+                      {dayjs(engagament.startDate).format("YYYY")}/
+                      {dayjs(engagament.endDate).format("YYYY")}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

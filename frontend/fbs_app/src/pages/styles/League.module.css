@@ -86,38 +86,6 @@
   white-space: nowrap;
 }
 
-.leaguesTable td:nth-of-type(2) {
-  width: 70px;
-}
-.leaguesTable th:nth-of-type(2) {
-  width: 70px;
-}
-
-.leaguesTable td:nth-of-type(3) {
-  min-width: 15px;
-}
-.leaguesTable th:nth-of-type(3) {
-  min-width: 15px;
-}
-.leaguesTable td:nth-of-type(4) {
-  min-width: 15px;
-}
-.leaguesTable th:nth-of-type(4) {
-  min-width: 15px;
-}
-.leaguesTable td:nth-of-type(5) {
-  min-width: 15px;
-}
-.leaguesTable th:nth-of-type(5) {
-  min-width: 15px;
-}
-.leaguesTable td:nth-of-type(6) {
-  min-width: 35px;
-}
-.leaguesTable th:nth-of-type(6) {
-  min-width: 35px;
-}
-
 .leaguesTable th {
   font-weight: 400;
 }
@@ -153,4 +121,10 @@
   overflow: hidden;
 }
 @media only screen and (max-width: 400px) {
+}
+.leaguesTable td:nth-of-type(2) {
+  width: 100px;
+}
+.leaguesTable th:nth-of-type(2) {
+  width: 100px;
 }

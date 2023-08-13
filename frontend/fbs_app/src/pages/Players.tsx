@@ -6,6 +6,7 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Filters from "../components/Utils/Filters";
 import PlayerCard from "../components/Players/PlayerCard";
 import Pagination from "../components/Utils/Pagination";
+import { useNavigate } from "react-router";
 
 const Players = () => {
   const pageSize = 10;
@@ -18,6 +19,7 @@ const Players = () => {
   const [playerPos, setPlayerPos] = useState({ value: "ALL", label: "" });
   const [totalCount, setTotalCount] = useState(null);
   const [selectedPage, setSelectedPage] = useState(1);
+  const navigate = useNavigate();
 
   const changePage = (page: number) => {
     setSelectedPage(page);

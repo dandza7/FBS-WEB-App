@@ -101,7 +101,7 @@ const League = () => {
               <tbody>
                 <tr>
                   <td>1.</td>
-                  <td>Velezsadadadad</td>
+                  <td>Velezsadadadadsdasdsadasdad</td>
                   <td>1</td>
                   <td>0</td>
                   <td>0</td>
@@ -118,12 +118,12 @@ const League = () => {
                   <td>3</td>
                 </tr>
                 <tr>
-                  <td>3.</td>
+                  <td>21.</td>
                   <td>Velez</td>
                   <td>1</td>
                   <td>0</td>
                   <td>0</td>
-                  <td>2:0</td>
+                  <td>55:33</td>
                   <td>3</td>
                 </tr>
               </tbody>
