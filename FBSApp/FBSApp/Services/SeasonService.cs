@@ -80,13 +80,16 @@ namespace FBSApp.Services
         public IEnumerable<TeamTableViewDTO> GetDefaultTable(long seasonId)
         {
             var season = _unitOfWork.SeasonRepository.GetAll().Include(s => s.Teams).ThenInclude(t => t.Country)
+                                                              .Include(s => s.Matches).ThenInclude(m => m.MatchActors).ThenInclude(ma => ma.Team)
+                                                              .Include(s => s.Matches).ThenInclude(m => m.PlayersEvidention.Where(pe => pe.Goals.Any())).ThenInclude(pm => pm.Goals)
+                                                              //.Include(s => s.Matches).ThenInclude(m => m.PlayersEvidention.Where(pe => pe.Goals.Any())).ThenInclude(pm => pm.Player)
                                                               .Where(s => s.Id == seasonId).FirstOrDefault();
             if (season == null)
             {
                 throw new NotFoundException($"Season with ID {seasonId} does not exist.");
             }
             var teams = season.Teams;
-            return teams.Select(t => new TeamTableViewDTO
+            Dictionary<string, TeamTableViewDTO> table = teams.ToDictionary(t => t.Name, t => new TeamTableViewDTO
             {
                 Name = t.Name,
                 Logo = t.Logo,
@@ -94,11 +97,84 @@ namespace FBSApp.Services
                 Wins = 0,
                 Draws = 0,
                 Losses = 0,
-                MatchesPlayed = 0,
                 GoalsScored = 0,
                 GoalsConceded = 0,
-                Points = 0
-            }).OrderBy(t => t.Points);
+            });
+            var matches = season.Matches.Where(m => m.PlayersEvidention.Any());
+            foreach (var match in matches)
+            {
+                CalculateMatchWinner(match, table);
+            }
+
+
+            return table.Select(t => t.Value).OrderByDescending(t => (3 * t.Wins + t.Draws))
+                                             .ThenBy(t => t.Wins + t.Draws + t.Losses)
+                                             .ThenByDescending(t => t.GoalsScored - t.GoalsConceded)
+                                             .ThenByDescending(t => t.GoalsScored)
+                                             .ThenByDescending(t => t.Wins);
+        }
+        private void CalculateMatchWinner(Match match, Dictionary<string, TeamTableViewDTO> table)
+        {
+            var homeTeam = match.MatchActors.Where(ma => ma.IsTeamHost).First().Team;
+            var awayTeam = match.MatchActors.Where(ma => !ma.IsTeamHost).First().Team;
+
+            var homeGoals = 0;
+            var awayGoals = 0;
+
+            foreach (var pe in match.PlayersEvidention)
+            {
+                var teamName = _unitOfWork.TeamEngagementRepository.GetAll(te => te.Team).Where(te => te.PlayerId == pe.PlayerId)
+                                                                                  .Where(te => te.EndDate > match.Date && te.StartDate < match.Date)
+                                                                                  .First().Team.Name;
+                if (teamName == homeTeam.Name)
+                {
+                    foreach (var goal in pe.Goals)
+                    {
+                        if (goal.IsOwnGoal)
+                        {
+                            awayGoals++;
+                        }
+                        else
+                        {
+                            homeGoals++;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var goal in pe.Goals)
+                    {
+                        if (!goal.IsOwnGoal)
+                        {
+                            awayGoals++;
+                        }
+                        else
+                        {
+                            homeGoals++;
+                        }
+                    }
+                }
+            }
+            table[homeTeam.Name].GoalsScored += homeGoals;
+            table[homeTeam.Name].GoalsConceded += awayGoals;
+            table[awayTeam.Name].GoalsScored += awayGoals;
+            table[awayTeam.Name].GoalsConceded += homeGoals;
+            if (homeGoals > awayGoals)
+            {
+                table[homeTeam.Name].Wins++;
+                table[awayTeam.Name].Losses++;
+            }
+            else if (homeGoals < awayGoals)
+            {
+                table[homeTeam.Name].Losses++;
+                table[awayTeam.Name].Wins++;
+            }
+            else
+            {
+                table[homeTeam.Name].Draws++;
+                table[awayTeam.Name].Draws++;
+            }
+            return;
         }
     }
 }

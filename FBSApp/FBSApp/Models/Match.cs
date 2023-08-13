@@ -11,5 +11,6 @@ namespace FBSApp.Models
         public Season Season { get; set; }
         public long SeasonId { get; set; }
         public IEnumerable<MatchActor> MatchActors { get; set; }
+        public IEnumerable<PlayedMatch> PlayersEvidention { get; set; }
     }
 }
