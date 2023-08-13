@@ -8,6 +8,7 @@ namespace FBSApp.Models
         public long Id { get; set; }
         public bool IsOwnGoal { get; set; }
         public int Minute { get; set; }
+        public bool IsExtraTime { get; set; }
         public PlayedMatch GoalInfo { get; set; }
         public long GoalInfoId { get; set; }
     }
