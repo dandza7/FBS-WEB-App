@@ -7,6 +7,7 @@ namespace FBSApp.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public string Name { get; set; }
+        public string Photo { get; set; }
         public DateTime BirthDate { get; set; }
         public Staff Boss { get; set; }
         public long? BossId { get; set; }
