@@ -20,7 +20,7 @@ namespace FBSApp.Services
 
         public PaginationWrapper<StaffDTO> GetAll(int page, int pageSize)
         {
-            var staff = _unitOfWork.StaffRepository.GetAll(s => s.Country);
+            var staff = _unitOfWork.StaffRepository.GetAll(s => s.Country).OrderBy(s => s.BossId);
             var totalCount = staff.Count();
             return new PaginationWrapper<StaffDTO> { Entities = _mapper.Map<IEnumerable<StaffDTO>>(staff.Skip((page - 1) * pageSize).Take(pageSize)), TotalCount = totalCount };
         }
