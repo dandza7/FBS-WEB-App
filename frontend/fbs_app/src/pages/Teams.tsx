@@ -10,6 +10,7 @@ import Filters from "../components/Utils/Filters";
 import TeamCard from "../components/Teams/TeamCard";
 import Pagination from "../components/Utils/Pagination";
 import { useNavigate } from "react-router";
+import ReactLoading from "react-loading";
 
 const Teams = () => {
   const [teams, setTeams] = useState<any[]>([]);
@@ -22,6 +23,7 @@ const Teams = () => {
   const [totalCount, setTotalCount] = useState(null);
   const [selectedPage, setSelectedPage] = useState(1);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const setPage1 = () => {
     setSelectedPage(1);
@@ -40,6 +42,7 @@ const Teams = () => {
     setTeamName(value);
   };
 
+  //gets all countries for filters
   useEffect(() => {
     fetch("http://localhost:5271/api/countries", {
       method: "GET",
@@ -67,7 +70,9 @@ const Teams = () => {
       });
   }, []);
 
+  //fetches teams based on filters
   useEffect(() => {
+    setIsLoading(true);
     fetch("http://localhost:5271/api/teams", {
       method: "POST",
       body: JSON.stringify({
@@ -88,6 +93,7 @@ const Teams = () => {
       .then((data) => {
         setTotalCount(data.totalCount);
         setTeams(data.entities);
+        setIsLoading(false);
       })
       .catch((error) => {
         alert(error);
@@ -97,6 +103,7 @@ const Teams = () => {
   const viewTeamHandler = (id: number) => {
     navigate("/team/" + id);
   };
+
   return (
     <div>
       <div className={classes.whiteContainer}>
@@ -126,7 +133,16 @@ const Teams = () => {
             ></Filters>
           )}
         </div>
-        {teams.length > 0 ? (
+        {isLoading ? (
+          <div className={classes.loadingContainer}>
+            <ReactLoading
+              type={"spin"}
+              color={"#1f2466"}
+              height={30}
+              width={30}
+            />
+          </div>
+        ) : teams?.length > 0 ? (
           <>
             <div className={classes.teams}>
               {teams?.map((team) => (

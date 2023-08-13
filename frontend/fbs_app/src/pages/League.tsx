@@ -1,9 +1,45 @@
 import React from "react";
 import classes from "./styles/League.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Select from "react-select";
+import ReactLoading from "react-loading";
+
+const allSeasons = [{ value: 1, label: "1" }];
 
 const League = () => {
   const [isScoreboard, setIsScoreboard] = useState(false);
+  const [selectedSeason, setSelectedSeason] = useState(null);
+  const [scoreBoard, setScoreBoard] = useState<any[]>([]);
+  const [teamCount, setTeamCount] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const handleChangeSeason = (selected) => {
+    setSelectedSeason(selected);
+  };
+
+  useEffect(() => {
+    console.log(selectedSeason?.value);
+    setIsLoading(true);
+    fetch(
+      "http://localhost:5271/api/seasons/" + selectedSeason?.value + "/table",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setScoreBoard(data);
+        setTeamCount(data.length);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }, [selectedSeason]);
 
   return (
     <div className={classes.league}>
@@ -23,6 +59,17 @@ const League = () => {
           onClick={() => setIsScoreboard(true)}
         >
           Scoreboard
+        </div>
+      </div>
+      <div className={classes.seasonContainer}>
+        <div className={classes.seasonSelectContainer}>
+          <span>Season:</span>
+          <Select
+            defaultValue={selectedSeason}
+            onChange={handleChangeSeason}
+            options={allSeasons}
+            placeholder="Select season"
+          />
         </div>
       </div>
       {!isScoreboard && (
@@ -83,52 +130,79 @@ const League = () => {
       )}
       {isScoreboard && (
         <div className={classes.whiteContainer}>
-          <h3>Scoreboard</h3>
-          <br></br>
-          <div className={classes.scoreboard}>
-            <table className={classes.leaguesTable}>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Team</th>
-                  <th>W</th>
-                  <th>D</th>
-                  <th>L</th>
-                  <th>GD</th>
-                  <th>P</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1.</td>
-                  <td>Velezsadadadadsdasdsadasdad</td>
-                  <td>1</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>2:0</td>
-                  <td>3</td>
-                </tr>
-                <tr>
-                  <td>2.</td>
-                  <td>Velez</td>
-                  <td>1</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>2:0</td>
-                  <td>3</td>
-                </tr>
-                <tr>
-                  <td>21.</td>
-                  <td>Velez</td>
-                  <td>1</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>55:33</td>
-                  <td>3</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          {isLoading ? (
+            <div className={classes.loadingContainer}>
+              <ReactLoading
+                type={"spin"}
+                color={"#1f2466"}
+                height={30}
+                width={30}
+              />
+            </div>
+          ) : scoreBoard.length > 0 ? (
+            <>
+              <h3>Scoreboard</h3>
+              <br></br>
+
+              <div className={classes.scoreboard}>
+                <table className={classes.leaguesTable}>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Team</th>
+                      <th>PG</th>
+                      <th>W</th>
+                      <th>D</th>
+                      <th>L</th>
+                      <th>GD</th>
+                      <th>P</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {scoreBoard?.map((team, index) => (
+                      <tr>
+                        <td>
+                          <span
+                            className={
+                              index === 0
+                                ? classes.first
+                                : index === 1 || index === 2
+                                ? classes.second
+                                : classes.other
+                            }
+                          >
+                            {`${index + 1}.`}{" "}
+                          </span>
+                        </td>
+                        <td>
+                          <div className={classes.imgNameColumn}>
+                            {team?.logo && (
+                              <img
+                                className={classes.teamLogo}
+                                src={`data:image/png;base64,${team?.logo}`}
+                              ></img>
+                            )}
+                            <span>{team?.name}</span>
+                          </div>
+                        </td>
+
+                        <td>{team.wins + team.draws + team.losses}</td>
+                        <td>{team.wins}</td>
+                        <td>{team.draws}</td>
+                        <td>{team.losses}</td>
+                        <td>
+                          {team.goalsScored}:{team.goalsScored}
+                        </td>
+                        <td>{team.wins * 3 + team.draws}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          ) : (
+            <div>There is no data for this season.</div>
+          )}
         </div>
       )}
     </div>

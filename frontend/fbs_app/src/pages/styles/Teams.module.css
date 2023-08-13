@@ -48,3 +48,8 @@
   color: rgb(241, 241, 241);
   transition: 0.3s;
 }
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

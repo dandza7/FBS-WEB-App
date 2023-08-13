@@ -8,6 +8,7 @@ import Teams from "./Teams";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router";
 import Pagination from "../components/Utils/Pagination";
+import ResultCard from "../components/Results/ResultCard";
 
 const Team = () => {
   const [tab, setTab] = useState("Stats");
@@ -122,7 +123,7 @@ const Team = () => {
             label: season.league + " " + season.year,
           });
         });
-
+        console.log(seasons[0]);
         setSelectedSeason(seasons[0]);
         setAllSeasons(seasons);
       })
@@ -196,12 +197,14 @@ const Team = () => {
       <div className={classes.seasonContainer}>
         <div className={classes.seasonSelectContainer}>
           <span>Season:</span>
-          <Select
-            defaultValue={selectedSeason}
-            onChange={handleChangeSeason}
-            options={allSeasons}
-            placeholder="Select season"
-          />
+          {selectedSeason && (
+            <Select
+              defaultValue={selectedSeason}
+              onChange={handleChangeSeason}
+              options={allSeasons}
+              placeholder="Select season"
+            />
+          )}
         </div>
       </div>
       {tab === "Stats" && (
@@ -224,54 +227,11 @@ const Team = () => {
         <div className={classes.whiteContainerInfo}>
           <h3>Matches</h3>
           <br></br>
-          {matches.length > 0 ? (
+          {matches?.length > 0 ? (
             <>
               <div className={classes.results}>
                 {matches?.map((match) => (
-                  <div className={classes.result} key={match.id}>
-                    <div className={classes.teamsDateContainer}>
-                      <div>
-                        <p>{dayjs(match.date).format("DD.MM")}</p>
-                      </div>
-                      <div className={classes.resultTeamsContainer}>
-                        <div className={classes.matchTeam}>
-                          <img
-                            className={classes.matchTeamLogo}
-                            src={`data:image/png;base64,${match.homeTeam?.logo}`}
-                          ></img>
-                          <span
-                            className={
-                              match.homeTeamGoals > match.awayTeamGoals
-                                ? classes.winner
-                                : classes.none
-                            }
-                          >
-                            {match.homeTeam.name}
-                          </span>
-                        </div>
-                        <div className={classes.matchTeam}>
-                          <img
-                            className={classes.matchTeamLogo}
-                            src={`data:image/png;base64,${match.awayTeam?.logo}`}
-                          ></img>
-                          <span
-                            className={
-                              match.homeTeamGoals < match.awayTeamGoals
-                                ? classes.winner
-                                : classes.none
-                            }
-                          >
-                            {match.awayTeam.name}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className={classes.score}>
-                      <p>{match.homeTeamGoals}</p>
-                      <p>{match.awayTeamGoals}</p>
-                    </div>
-                  </div>
+                  <ResultCard match={match}></ResultCard>
                 ))}
               </div>
               {totalMatchCount > pageSize && (
