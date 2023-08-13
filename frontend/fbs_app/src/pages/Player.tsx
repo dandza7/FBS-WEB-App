@@ -145,10 +145,9 @@ const Player = () => {
                 </tr>
               </thead>
               <tbody>
-                {playerEngagements?.map((engagament) => (
+                {playerEngagements?.map((engagament: any) => (
                   <tr>
                     <td>
-                      {" "}
                       <div className={classes.imgNameColumn}>
                         {engagament?.logo && (
                           <img
