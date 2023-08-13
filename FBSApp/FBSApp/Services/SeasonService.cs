@@ -139,7 +139,7 @@ namespace FBSApp.Services
                         }
                     }
                 }
-                else if (teamName == awayTeam.Name)
+                else
                 {
                     foreach (var goal in pe.Goals)
                     {
@@ -152,10 +152,6 @@ namespace FBSApp.Services
                             homeGoals++;
                         }
                     }
-                }
-                else
-                {
-                    throw new Exception($"ERROR Calculating match winner, player with ID {pe.PlayerId} scored a goal on match with ID {match.Id}, but apparently didn't played for either of team at the time.");
                 }
             }
             table[homeTeam.Name].GoalsScored += homeGoals;

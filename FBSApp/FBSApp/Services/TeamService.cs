@@ -194,32 +194,21 @@ namespace FBSApp.Services
 
             foreach (var pe in match.PlayersEvidention)
             {
-                var teamEngagement = _unitOfWork.TeamEngagementRepository.GetAll(te => te.Team).Where(te => te.PlayerId == pe.PlayerId)
-                                                                                      .Where(te => te.TeamId == team.Id)
-                                                                                      .Where(te => te.EndDate > match.Date && te.StartDate < match.Date)
-                                                                                      .FirstOrDefault();
-
-                foreach (var goal in pe.Goals)
+                var check = _unitOfWork.TeamEngagementRepository.GetAll().Where(te => te.PlayerId == pe.PlayerId)
+                                                                         .Where(te => te.TeamId == team.Id)
+                                                                         .Where(te => te.EndDate > match.Date && te.StartDate < match.Date)
+                                                                         .Any();
+                if (check)
                 {
-                    if (teamEngagement == null) // If team engagement is null, it is goal scored by opposing team
-                    {
-                        if (goal.IsOwnGoal)
-                        {
-                            goals++;
-                        }
-                    }
-                    else if (teamEngagement.Team.Name == team.Name) // Checking if team engagement is valid
+                    foreach (var goal in pe.Goals)
                     {
                         if (!goal.IsOwnGoal)
                         {
                             goals++;
                         }
                     }
-                    else // Otherwise there is problem with data in Database
-                    {
-                        throw new Exception($"ERROR Calculating match winner, player with ID {pe.PlayerId} scored a goal on match with ID {match.Id}, but apparently didn't played for either of team at the time.");
-                    }
                 }
+
             }
             return goals;
         }
