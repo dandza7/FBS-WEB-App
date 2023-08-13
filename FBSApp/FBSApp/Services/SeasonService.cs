@@ -82,7 +82,6 @@ namespace FBSApp.Services
             var season = _unitOfWork.SeasonRepository.GetAll().Include(s => s.Teams).ThenInclude(t => t.Country)
                                                               .Include(s => s.Matches).ThenInclude(m => m.MatchActors).ThenInclude(ma => ma.Team)
                                                               .Include(s => s.Matches).ThenInclude(m => m.PlayersEvidention.Where(pe => pe.Goals.Any())).ThenInclude(pm => pm.Goals)
-                                                              //.Include(s => s.Matches).ThenInclude(m => m.PlayersEvidention.Where(pe => pe.Goals.Any())).ThenInclude(pm => pm.Player)
                                                               .Where(s => s.Id == seasonId).FirstOrDefault();
             if (season == null)
             {
