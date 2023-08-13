@@ -164,10 +164,15 @@ const League = () => {
                         <td>
                           <span
                             className={
-                              index === 0
+                              index === 0 ||
+                              index === 1 ||
+                              index === 2 ||
+                              index === 3
                                 ? classes.first
-                                : index === 1 || index === 2
+                                : index === 4
                                 ? classes.second
+                                : index === 17 || index === 18 || index === 19
+                                ? classes.last
                                 : classes.other
                             }
                           >
@@ -191,7 +196,7 @@ const League = () => {
                         <td>{team.draws}</td>
                         <td>{team.losses}</td>
                         <td>
-                          {team.goalsScored}:{team.goalsScored}
+                          {team.goalsScored}:{team.goalsConceded}
                         </td>
                         <td>{team.wins * 3 + team.draws}</td>
                       </tr>

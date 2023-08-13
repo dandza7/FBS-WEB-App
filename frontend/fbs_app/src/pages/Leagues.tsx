@@ -6,6 +6,7 @@ import ReactLoading from "react-loading";
 const Leagues = () => {
   const [leagues, setLeagues] = useState<any[]>();
   const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     setIsLoading(true);
     fetch("http://localhost:5271/api/leagues", {

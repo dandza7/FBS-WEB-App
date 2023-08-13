@@ -9,10 +9,12 @@ const TeamCard = (props) => {
         props.onClick(props.team.id);
       }}
     >
-      <img
-        src={`data:image/png;base64,${props.team.logo}`}
-        className={classes.logo}
-      ></img>
+      <div className={classes.teamImageContainer}>
+        <img
+          src={`data:image/png;base64,${props.team.logo}`}
+          className={classes.logo}
+        ></img>
+      </div>
       <p>{props.team.name}</p>
       <img
         src={`data:image/png;base64,${props.team.flag}`}
