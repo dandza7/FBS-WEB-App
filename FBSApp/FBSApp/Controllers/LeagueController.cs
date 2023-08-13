@@ -26,6 +26,16 @@ namespace FBSApp.Controllers
         }
 
         /// <summary>
+        /// [Anonymous] Gets by league Id
+        /// </summary>
+        [HttpGet("{id}", Name = "GetById")]
+        [AllowAnonymous]
+        public ActionResult<LeagueDTO> GetById(long id)
+        {
+            return Ok(_leagueService.GetById(id));
+        }
+
+        /// <summary>
         /// [Admin] Creates new league
         /// </summary>
         [HttpPost(Name = "CreateNewLeague")]
