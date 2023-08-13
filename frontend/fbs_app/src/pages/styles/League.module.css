@@ -5,6 +5,17 @@
   gap: 1rem;
   width: 100%;
 }
+.whiteContainer {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 0rem 0rem 1rem 1rem;
+}
+.seasonContainer {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 1rem 1rem 0rem 0rem;
+  margin-bottom: -1rem;
+}
 
 .leagueMenu {
   display: flex;
@@ -28,11 +39,7 @@
   padding: 1rem;
   border-radius: 1rem 1rem 0rem 0rem;
 }
-.whiteContainer {
-  background-color: white;
-  padding: 1rem;
-  border-radius: 1rem;
-}
+
 .results {
   display: flex;
   flex-direction: column;
@@ -65,6 +72,10 @@
 }
 .scoreboard {
   width: 100%;
+
+  overflow: auto;
+  border-radius: 1rem;
+  white-space: nowrap;
 }
 
 .winner {
@@ -81,9 +92,6 @@
 .leaguesTable td {
   padding: 1rem 0.5rem;
   font-size: 0.8rem;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
 }
 
 .leaguesTable th {
@@ -104,27 +112,120 @@
   background-color: #ffffff;
 }
 
-.leaguesTable tbody tr:hover {
-  border-bottom: 1px solid #dddddd;
-  color: white;
-  background-color: rgb(155, 164, 164);
+.leaguesTable th:nth-child(1) {
+  max-width: 25px;
+  min-width: 25px;
+  width: 25px;
+}
+.leaguesTable td:nth-child(1) {
+  max-width: 25px;
+  min-width: 25px;
+  width: 25px;
+  background-color: white;
+  color: black;
 }
 
 .leaguesTable {
-  border: 1px solid #ccc;
   border-collapse: collapse;
   margin: 0;
   padding: 0;
   width: 100%;
-  table-layout: fixed;
+  border: none;
   border-radius: 1rem;
-  overflow: hidden;
 }
-@media only screen and (max-width: 400px) {
+
+.imgNameColumn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
 }
-.leaguesTable td:nth-of-type(2) {
-  width: 100px;
+.teamLogo {
+  width: 20px;
+  height: 18px;
 }
-.leaguesTable th:nth-of-type(2) {
-  width: 100px;
+
+@media only screen and (max-width: 500px) {
+  .leaguesTable th:nth-child(1) {
+    position: sticky;
+    position: -webkit-sticky;
+    background-color: var(--darkBlue);
+
+    width: 15px;
+    min-width: 15px;
+    max-width: 15px;
+    left: 0px;
+  }
+  .leaguesTable td:nth-child(1) {
+    position: sticky;
+    position: -webkit-sticky;
+    width: 15px;
+    min-width: 15px;
+    background-color: white;
+    color: black;
+    max-width: 15px;
+    left: 0px;
+  }
+  .leaguesTable td:nth-child(2) {
+    position: sticky;
+    position: -webkit-sticky;
+    max-width: 150px;
+    left: 32px;
+    color: black;
+    background-color: white;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .leaguesTable th:nth-child(2) {
+    position: sticky;
+    position: -webkit-sticky;
+    max-width: 150px;
+    background-color: var(--darkBlue);
+    left: 32px;
+    overflow: hidden;
+  }
+  .imgNameColumn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+  }
+  .imgNameColumn span {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100px;
+  }
+}
+
+.first {
+  background-color: rgb(31, 120, 188);
+  color: rgb(229, 229, 229);
+  padding: 0.3rem;
+  border-radius: 0.3rem;
+}
+.second {
+  padding: 0.3rem;
+  border-radius: 0.3rem;
+  background-color: rgb(22, 42, 98);
+  color: rgb(229, 229, 229);
+}
+
+.other {
+  padding: 0.3rem;
+  border-radius: 0.3rem;
+}
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.seasonSelectContainer {
+  margin: auto;
+  width: 30%;
+  min-width: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }

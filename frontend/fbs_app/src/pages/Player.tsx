@@ -136,12 +136,12 @@ const Player = () => {
         <div className={classes.whiteContainer}>
           <h3>Teams</h3>
           <br></br>
-          <div className={classes.scoreboard}>
-            <table className={classes.scoreboardTable}>
+          <div className={classes.engagaments}>
+            <table className={classes.engagamentsTable}>
               <thead>
                 <tr>
                   <th>Team</th>
-                  <th>Season</th>
+                  <th>Time in team</th>
                 </tr>
               </thead>
               <tbody>
@@ -159,8 +159,8 @@ const Player = () => {
                       </div>
                     </td>
                     <td>
-                      {dayjs(engagament.startDate).format("YYYY")}/
-                      {dayjs(engagament.endDate).format("YYYY")}
+                      {dayjs(engagament.startDate).format("MM.YYYY")}-
+                      {dayjs(engagament.endDate).format("MM.YYYY")}
                     </td>
                   </tr>
                 ))}

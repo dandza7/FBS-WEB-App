@@ -68,39 +68,39 @@
   font-weight: 600;
 }
 
-.scoreboardTable thead tr {
+.engagamentsTable thead tr {
   background-color: rgb(218, 218, 218);
   color: #272727;
   text-align: left;
 }
 
-.scoreboardTable th,
-.scoreboardTable td {
+.engagamentsTable th,
+.engagamentsTable td {
   padding: 0.5rem 1rem;
 }
-.scoreboardTable th {
+.engagamentsTable th {
   font-size: 1rem;
   font-weight: 400;
   font-size: 13px;
 }
 
-.scoreboardTable tbody tr {
+.engagamentsTable tbody tr {
   border-bottom: 1px solid #dddddd;
 }
 
-.scoreboardTable tbody tr:nth-of-type(even) {
+.engagamentsTable tbody tr:nth-of-type(even) {
   background-color: #f3f3f3;
 }
 
-.scoreboardTable tbody tr:nth-of-type(odd) {
+.engagamentsTable tbody tr:nth-of-type(odd) {
   background-color: #ffffff;
 }
 
-.scoreboardTable tbody tr:last-of-type {
+.engagamentsTable tbody tr:last-of-type {
   border-bottom: 1px solid var(--darkGreen);
 }
 
-.scoreboardTable {
+.engagamentsTable {
   border: 1px solid #ccc;
   border-collapse: collapse;
   margin: 0;

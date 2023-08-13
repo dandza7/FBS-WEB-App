@@ -7,6 +7,7 @@ import Filters from "../components/Utils/Filters";
 import PlayerCard from "../components/Players/PlayerCard";
 import Pagination from "../components/Utils/Pagination";
 import { useNavigate } from "react-router";
+import ReactLoading from "react-loading";
 
 const Players = () => {
   const pageSize = 10;
@@ -20,6 +21,7 @@ const Players = () => {
   const [totalCount, setTotalCount] = useState(null);
   const [selectedPage, setSelectedPage] = useState(1);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const changePage = (page: number) => {
     setSelectedPage(page);
@@ -71,6 +73,7 @@ const Players = () => {
   }, []);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch("http://localhost:5271/api/players", {
       method: "POST",
       body: JSON.stringify({
@@ -92,6 +95,7 @@ const Players = () => {
       .then((data) => {
         setTotalCount(data.totalCount);
         setPlayers(data.entities);
+        setIsLoading(false);
       })
       .catch((error) => {
         alert(error);
@@ -129,7 +133,16 @@ const Players = () => {
             ></Filters>
           )}
         </div>
-        {players.length > 0 ? (
+        {isLoading ? (
+          <div className={classes.loadingContainer}>
+            <ReactLoading
+              type={"spin"}
+              color={"#1f2466"}
+              height={30}
+              width={30}
+            />
+          </div>
+        ) : players.length > 0 ? (
           <>
             <div className={classes.players}>
               {players?.map((player) => (
