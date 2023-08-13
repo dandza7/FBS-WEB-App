@@ -41,5 +41,15 @@ namespace FBSApp.Services
         {
             return _mapper.Map<IEnumerable<LeagueDTO>>(_unitOfWork.LeagueRepository.GetAll(l => l.Country));
         }
+
+        public LeagueDTO GetById(long id)
+        {
+            var league = _unitOfWork.LeagueRepository.GetAll(l => l.Country).Where(l => l.Id == id).FirstOrDefault();
+            if (league == null)
+            {
+                throw new NotFoundException($"League with ID {id} does not exist!");
+            }
+            return _mapper.Map<LeagueDTO>(league);
+        }
     }
 }
