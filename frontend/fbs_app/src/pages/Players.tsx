@@ -29,7 +29,6 @@ const Players = () => {
   };
 
   const setPage1 = () => {
-    console.log("promenjeno");
     setSelectedPage(1);
   };
 

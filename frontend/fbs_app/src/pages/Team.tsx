@@ -124,8 +124,9 @@ const Team = () => {
           });
         });
         console.log(seasons[0]);
-        setSelectedSeason(seasons[0]);
+
         setAllSeasons(seasons);
+        setSelectedSeason(seasons[0]);
       })
       .catch((error) => {
         alert(error);

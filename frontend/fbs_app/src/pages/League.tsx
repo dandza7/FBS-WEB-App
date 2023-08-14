@@ -3,49 +3,98 @@ import classes from "./styles/League.module.css";
 import { useState, useEffect } from "react";
 import Select from "react-select";
 import ReactLoading from "react-loading";
-
-const allSeasons = [{ value: 1, label: "1" }];
+import { useParams } from "react-router";
 
 const League = () => {
   const [isScoreboard, setIsScoreboard] = useState(false);
   const [selectedSeason, setSelectedSeason] = useState(null);
   const [scoreBoard, setScoreBoard] = useState<any[]>([]);
   const [teamCount, setTeamCount] = useState(null);
+  const [league, setLeague] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [seasons, setSeasons] = useState<any[]>([]);
+
+  const { id } = useParams();
   const handleChangeSeason = (selected) => {
     setSelectedSeason(selected);
   };
-
   useEffect(() => {
-    console.log(selectedSeason?.value);
-    setIsLoading(true);
-    fetch(
-      "http://localhost:5271/api/seasons/" + selectedSeason?.value + "/table",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
+    fetch("http://localhost:5271/api/leagues/" + id, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then((res) => {
         return res.json();
       })
       .then((data) => {
-        setScoreBoard(data);
-        setTeamCount(data.length);
-        setIsLoading(false);
+        setLeague(data);
       })
       .catch((error) => {
         alert(error);
       });
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:5271/api/seasons/" + id, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        const allSeasons = [];
+        console.log(data);
+        data.map((season) => {
+          allSeasons.push({
+            value: season.id,
+            label: season.league + " " + season.year,
+          });
+        });
+        setSeasons(allSeasons);
+        setSelectedSeason(allSeasons[0]);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (selectedSeason?.value) {
+      setIsLoading(true);
+      fetch(
+        "http://localhost:5271/api/seasons/" + selectedSeason?.value + "/table",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          setScoreBoard(data);
+          setTeamCount(data.length);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    } else {
+      return;
+    }
   }, [selectedSeason]);
 
   return (
     <div className={classes.league}>
       <div className={classes.whiteContainerTitle}>
-        <h2>League title</h2>
-        <p>2022/2023</p>
+        <h2>{league?.name}</h2>
       </div>
       <div className={classes.leagueMenu}>
         <div
@@ -67,7 +116,7 @@ const League = () => {
           <Select
             defaultValue={selectedSeason}
             onChange={handleChangeSeason}
-            options={allSeasons}
+            options={seasons}
             placeholder="Select season"
           />
         </div>
@@ -144,66 +193,68 @@ const League = () => {
               <h3>Scoreboard</h3>
               <br></br>
 
-              <div className={classes.scoreboard}>
-                <table className={classes.leaguesTable}>
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Team</th>
-                      <th>PG</th>
-                      <th>W</th>
-                      <th>D</th>
-                      <th>L</th>
-                      <th>GD</th>
-                      <th>P</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {scoreBoard?.map((team, index) => (
+              {scoreBoard.length > 0 && (
+                <div className={classes.scoreboard}>
+                  <table className={classes.leaguesTable}>
+                    <thead>
                       <tr>
-                        <td>
-                          <span
-                            className={
-                              index === 0 ||
-                              index === 1 ||
-                              index === 2 ||
-                              index === 3
-                                ? classes.first
-                                : index === 4
-                                ? classes.second
-                                : index === 17 || index === 18 || index === 19
-                                ? classes.last
-                                : classes.other
-                            }
-                          >
-                            {`${index + 1}.`}{" "}
-                          </span>
-                        </td>
-                        <td>
-                          <div className={classes.imgNameColumn}>
-                            {team?.logo && (
-                              <img
-                                className={classes.teamLogo}
-                                src={`data:image/png;base64,${team?.logo}`}
-                              ></img>
-                            )}
-                            <span>{team?.name}</span>
-                          </div>
-                        </td>
-
-                        <td>{team.wins + team.draws + team.losses}</td>
-                        <td>{team.wins}</td>
-                        <td>{team.draws}</td>
-                        <td>{team.losses}</td>
-                        <td>
-                          {team.goalsScored}:{team.goalsConceded}
-                        </td>
-                        <td>{team.wins * 3 + team.draws}</td>
+                        <th>#</th>
+                        <th>Team</th>
+                        <th>PG</th>
+                        <th>W</th>
+                        <th>D</th>
+                        <th>L</th>
+                        <th>GD</th>
+                        <th>P</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody>
+                      {scoreBoard?.map((team, index) => (
+                        <tr>
+                          <td>
+                            <span
+                              className={
+                                index === 0 ||
+                                index === 1 ||
+                                index === 2 ||
+                                index === 3
+                                  ? classes.first
+                                  : index === 4
+                                  ? classes.second
+                                  : index === 17 || index === 18 || index === 19
+                                  ? classes.last
+                                  : classes.other
+                              }
+                            >
+                              {`${index + 1}.`}{" "}
+                            </span>
+                          </td>
+                          <td>
+                            <div className={classes.imgNameColumn}>
+                              {team?.logo && (
+                                <img
+                                  className={classes.teamLogo}
+                                  src={`data:image/png;base64,${team?.logo}`}
+                                ></img>
+                              )}
+                              <span>{team?.name}</span>
+                            </div>
+                          </td>
+
+                          <td>{team?.wins + team?.draws + team?.losses}</td>
+                          <td>{team?.wins}</td>
+                          <td>{team?.draws}</td>
+                          <td>{team?.losses}</td>
+                          <td>
+                            {team?.goalsScored}:{team?.goalsConceded}
+                          </td>
+                          <td>{team?.wins * 3 + team?.draws}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </>
           ) : (
             <div>There is no data for this season.</div>
