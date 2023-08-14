@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FBSApp.Models.DTOs;
+using FBSApp.Models.DTOs.Award;
 using FBSApp.Models.DTOs.Staff;
 using FBSApp.Repositories;
 using FBSApp.SupportClasses.GlobalExceptionHandler.CustomExceptions;

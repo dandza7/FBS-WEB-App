@@ -11,5 +11,6 @@ namespace FBSApp.Models
         public Team Team { get; set; }
         public long TeamId { get; set; }
         public bool IsTeamHost { get; set; }
+        public TeamStats Stats { get; set; }
     }
 }

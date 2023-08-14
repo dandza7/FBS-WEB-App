@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using FBSApp.Models;
-using FBSApp.Models.DTOs;
+using FBSApp.Models.DTOs.Award;
 
 namespace FBSApp.SupportClasses.AutoMapper
 {

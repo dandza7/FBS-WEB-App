@@ -2,6 +2,7 @@
 using FBSApp.Models.DTOs.Match;
 using FBSApp.Models.DTOs.Staff;
 using FBSApp.Models.DTOs.Team;
+using FBSApp.Models.DTOs.TeamStats;
 using FBSApp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -66,6 +67,16 @@ namespace FBSApp.Controllers
         public ActionResult<IEnumerable<HeadStaffDTO>> GetTeamsStaff(long id, long seasonId)
         {
             return Ok(_teamService.GetTeamsStaff(id, seasonId));
+        }
+
+        /// <summary>
+        /// [Anonymous] Gets team stats
+        /// </summary>
+        [HttpGet("{id}/stats/{seasonId}", Name = "GetTeamStats")]
+        [AllowAnonymous]
+        public ActionResult<TeamStatsDTO> GetTeamStats(long id, long seasonId)
+        {
+            return Ok(_teamService.GetTeamStats(id, seasonId));
         }
     }
 }

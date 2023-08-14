@@ -10,5 +10,6 @@ namespace FBSApp.Models.DTOs.Match
         public DateTime Date { get; set; }
         public int HomeTeamGoals { get; set; }
         public int AwayTeamGoals { get; set; }
+        public int Gameweek { get; set; }
     }
 }

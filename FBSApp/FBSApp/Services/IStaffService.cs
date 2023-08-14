@@ -1,4 +1,5 @@
 ﻿using FBSApp.Models.DTOs;
+using FBSApp.Models.DTOs.Award;
 using FBSApp.Models.DTOs.Staff;
 
 namespace FBSApp.Services
