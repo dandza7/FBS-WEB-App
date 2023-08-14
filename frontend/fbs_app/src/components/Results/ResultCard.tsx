@@ -1,10 +1,19 @@
 import React from "react";
 import classes from "./Results.module.css";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router";
 
 const ResultCard = (props: any) => {
+  const navigate = useNavigate();
+
   return (
-    <div className={classes.result} key={props.match.id}>
+    <div
+      className={classes.result}
+      key={props.match.id}
+      onClick={() => {
+        navigate("/match/" + props.match.id);
+      }}
+    >
       <div className={classes.teamsDateContainer}>
         <div>
           <p>{dayjs(props.match.date).format("DD.MM")}</p>

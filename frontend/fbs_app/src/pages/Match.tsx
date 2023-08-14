@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import classes from "./styles/Match.module.css";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
+import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 
 export const Match = () => {
   const { id } = useParams();
@@ -179,12 +180,30 @@ export const Match = () => {
                       src={`data:image/png;base64,${player.flag}`}
                     ></img>
                     <div className={classes.playerName}>{player?.name}</div>
+                    <div className={classes.playerMinutes}>
+                      {player?.minutes}'
+                    </div>
+                    {player.goals > 0 && (
+                      <div className={classes.playerGoals}>
+                        <SportsSoccerIcon fontSize="small"></SportsSoccerIcon>
+                        <div className={classes.goalNumber}>{player.goals}</div>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
               <div className={classes.awayTeamSuad}>
                 {awayTeamSquad.starters?.map((player) => (
                   <div className={classes.awaySquadPlayer}>
+                    {player.goals > 0 && (
+                      <div className={classes.playerGoals}>
+                        <SportsSoccerIcon fontSize="small"></SportsSoccerIcon>
+                        <div className={classes.goalNumber}>{player.goals}</div>
+                      </div>
+                    )}
+                    <div className={classes.playerMinutes}>
+                      {player?.minutes}'
+                    </div>
                     <div className={classes.playerName}>{player?.name}</div>
                     <img
                       className={classes.playerFlag}
@@ -204,12 +223,34 @@ export const Match = () => {
                       src={`data:image/png;base64,${player.flag}`}
                     ></img>
                     <div className={classes.playerName}>{player?.name}</div>
+                    {player.minutes > 0 && (
+                      <div className={classes.playerMinutes}>
+                        {player?.minutes}'
+                      </div>
+                    )}
+                    {player.goals > 0 && (
+                      <div className={classes.playerGoals}>
+                        <SportsSoccerIcon fontSize="small"></SportsSoccerIcon>
+                        <div className={classes.goalNumber}>{player.goals}</div>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
               <div className={classes.awayTeamSuad}>
                 {awayTeamSquad.changes?.map((player) => (
                   <div className={classes.awaySquadPlayer}>
+                    {player.goals > 0 && (
+                      <div className={classes.playerGoals}>
+                        <SportsSoccerIcon fontSize="small"></SportsSoccerIcon>
+                        <div className={classes.goalNumber}>{player.goals}</div>
+                      </div>
+                    )}
+                    {player.minutes > 0 && (
+                      <div className={classes.playerMinutes}>
+                        {player?.minutes}'
+                      </div>
+                    )}
                     <div className={classes.playerName}>{player?.name}</div>
                     <img
                       className={classes.playerFlag}

@@ -191,7 +191,6 @@
   align-items: start;
   justify-content: space-between;
   font-size: 0.9rem;
-  padding: 0 0.5rem;
 }
 
 .homeTeamSuad {
@@ -209,34 +208,36 @@
 }
 
 .homeSquadPlayer {
-  padding: 0.8rem 0rem;
+  padding: 0.8rem 0.3rem;
   width: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   gap: 0.5rem;
+  min-height: 20px;
 }
 .awaySquadPlayer {
-  padding: 0.8rem 0rem;
+  padding: 0.8rem 0.3rem;
   width: 100%;
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: 0.5rem;
+  min-height: 20px;
 }
-.homeTeamSuad :nth-of-type(even) {
-  background-color: #f9f9f9;
+.homeSquadPlayer:nth-of-type(even) {
+  background-color: #ededf1;
 }
 
-.homeTeamSuad:nth-of-type(odd) {
+.homeSquadPlayer:nth-of-type(odd) {
   background-color: #ffffff;
 }
 
-.awayTeamSuad :nth-of-type(even) {
-  background-color: #f9f9f9;
+.awaySquadPlayer:nth-of-type(even) {
+  background-color: #ededf1;
 }
 
-.awayTeamSuad:nth-of-type(odd) {
+.awaySquadPlayer:nth-of-type(odd) {
   background-color: #ffffff;
 }
 
@@ -260,6 +261,31 @@
   padding: 0.3rem;
   font-size: 0.9rem;
   font-weight: 600;
+}
+
+.playerMinutes {
+  background-color: rgb(10, 131, 182) !important;
+  color: rgb(255, 254, 254);
+  border-radius: 0.2rem;
+  padding: 0.1rem;
+}
+
+.playerGoals {
+  display: flex;
+}
+
+.goalNumber {
+  background-color: rgb(14, 17, 85);
+  color: white;
+  padding: 0 4px;
+  display: flex;
+  border-radius: 0.2rem;
+  align-self: center;
+  justify-content: center;
+  position: absolute;
+  margin-left: 12px;
+  margin-bottom: 20px;
+  font-size: 0.8rem;
 }
 
 @media only screen and (max-width: 650px) {
@@ -286,5 +312,8 @@
   }
   .squads {
     font-size: 0.8rem;
+  }
+  .playerName {
+    max-width: 90px;
   }
 }
