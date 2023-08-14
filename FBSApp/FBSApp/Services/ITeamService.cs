@@ -2,15 +2,17 @@
 using FBSApp.Models.DTOs.Match;
 using FBSApp.Models.DTOs.Staff;
 using FBSApp.Models.DTOs.Team;
+using FBSApp.Models.DTOs.TeamStats;
 
 namespace FBSApp.Services
 {
     public interface ITeamService
     {
-        public PaginationWrapper<TeamListPreviewDTO> GetListed(TeamFilterQuery query);
-        public PaginationWrapper<MatchListPreviewDTO> GetMatchesByTeam(long teamId, long seasonId, int page, int pageSize);
-        public TeamDetailedDTO GetTeamDetailed(long teamId);
-        public IEnumerable<PlayerListPreviewDTO> GetTeamsSquad(long teamId, long seasonId);
-        public IEnumerable<HeadStaffDTO> GetTeamsStaff(long teamId, long seasonId);
+        PaginationWrapper<TeamListPreviewDTO> GetListed(TeamFilterQuery query);
+        PaginationWrapper<MatchListPreviewDTO> GetMatchesByTeam(long teamId, long seasonId, int page, int pageSize);
+        TeamDetailedDTO GetTeamDetailed(long teamId);
+        IEnumerable<PlayerListPreviewDTO> GetTeamsSquad(long teamId, long seasonId);
+        IEnumerable<HeadStaffDTO> GetTeamsStaff(long teamId, long seasonId);
+        TeamStatsDTO GetTeamStats(long id, long seasonId);
     }
 }

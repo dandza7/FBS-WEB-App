@@ -62,6 +62,7 @@ namespace FBSApp.Services
                     AwayTeamGoals = 0, // TO-DO
                     HomeTeam = m.MatchActors.First().IsTeamHost ? _mapper.Map<TeamListPreviewDTO>(m.MatchActors.First().Team) : _mapper.Map<TeamListPreviewDTO>(m.MatchActors.Last().Team),
                     AwayTeam = m.MatchActors.First().IsTeamHost ? _mapper.Map<TeamListPreviewDTO>(m.MatchActors.Last().Team) : _mapper.Map<TeamListPreviewDTO>(m.MatchActors.First().Team),
+                    Gameweek = m.Gameweek
                 }),
                 TotalCount = totalCount
             };
