@@ -30,7 +30,13 @@
   transition: 0.3s;
 }
 
-.logo {
+.teamImageContainer {
   width: 60px;
-  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  height: 65px;
 }

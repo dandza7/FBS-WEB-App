@@ -142,7 +142,6 @@
 }
 .teamLogo {
   width: 20px;
-  height: 18px;
 }
 
 @media only screen and (max-width: 500px) {
@@ -199,7 +198,7 @@
 }
 
 .first {
-  background-color: rgb(31, 120, 188);
+  background-color: rgb(22, 42, 98);
   color: rgb(229, 229, 229);
   padding: 0.3rem;
   border-radius: 0.3rem;
@@ -207,7 +206,14 @@
 .second {
   padding: 0.3rem;
   border-radius: 0.3rem;
-  background-color: rgb(22, 42, 98);
+  background-color: rgb(58, 42, 23);
+  color: rgb(229, 229, 229);
+}
+
+.last {
+  padding: 0.3rem;
+  border-radius: 0.3rem;
+  background-color: rgb(172, 27, 14);
   color: rgb(229, 229, 229);
 }
 
