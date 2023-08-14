@@ -88,10 +88,11 @@ namespace FBSApp.Services
 
         public IEnumerable<string> Temp()
         {
-            var players = _unitOfWork.PlayerRepository.GetAll();
-            //return players.Select(p => $"teamEngagement.HasData(new {{ Id = {p.Id}L, PlayerId = {p.Id}L, TeamId = {p.Id / 100}L, StartDate = DateTime.Parse(\"Aug 1, 2018\"), EndDate = DateTime.Parse(\"Sep 1, 2020\"), Name = \"{p.Name}\" }});");
-            var matches = _unitOfWork.MatchRepository.GetAll().Include(m => m.MatchActors).ThenInclude(ma => ma.Team).ToList();
-            return matches.Select(m => m.MatchActors.First().IsTeamHost ? $"{m.Id}: {m.MatchActors.First().Team.Name} vs {m.MatchActors.Last().Team.Name}" : $"{m.Id}: {m.MatchActors.Last().Team.Name} vs {m.MatchActors.First().Team.Name}");
+            var season = _unitOfWork.SeasonRepository.GetAll().Where(s => s.Id == 1L).FirstOrDefault();
+            var players = _unitOfWork.PlayerRepository.GetAll().Where(p => p.Engagements.Where(e => e.StartDate >= DateTime.Parse("Aug 1, 2018") || e.EndDate <= season.EndDate)
+                                                                                        .Where(e => e.TeamId == 9).Any())
+                                                               .ToList();
+            return players.Select(p => $"{p.Id} - {p.Name}");
         }
     }
 }
