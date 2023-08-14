@@ -9,6 +9,7 @@ const ResultCard = (props: any) => {
         <div>
           <p>{dayjs(props.match.date).format("DD.MM")}</p>
         </div>
+
         <div className={classes.resultTeamsContainer}>
           <div className={classes.matchTeam}>
             <img

@@ -67,3 +67,8 @@
   width: 35px;
   height: 20px;
 }
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

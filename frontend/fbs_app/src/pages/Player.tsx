@@ -134,39 +134,45 @@ const Player = () => {
       )}
       {!showMatches && (
         <div className={classes.whiteContainer}>
-          <h3>Teams</h3>
-          <br></br>
-          <div className={classes.engagaments}>
-            <table className={classes.engagamentsTable}>
-              <thead>
-                <tr>
-                  <th>Team</th>
-                  <th>Time in team</th>
-                </tr>
-              </thead>
-              <tbody>
-                {playerEngagements?.map((engagament: any) => (
-                  <tr>
-                    <td>
-                      <div className={classes.imgNameColumn}>
-                        {engagament?.logo && (
-                          <img
-                            className={classes.tableFlag}
-                            src={`data:image/png;base64,${engagament?.logo}`}
-                          ></img>
-                        )}
-                        {engagament?.name}
-                      </div>
-                    </td>
-                    <td>
-                      {dayjs(engagament.startDate).format("MM.YYYY")}-
-                      {dayjs(engagament.endDate).format("MM.YYYY")}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          {playerEngagements.length > 0 ? (
+            <>
+              <h3>Teams</h3>
+              <br></br>
+              <div className={classes.engagaments}>
+                <table className={classes.engagamentsTable}>
+                  <thead>
+                    <tr>
+                      <th>Team</th>
+                      <th>Time in team</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {playerEngagements?.map((engagament: any) => (
+                      <tr>
+                        <td>
+                          <div className={classes.imgNameColumn}>
+                            {engagament?.logo && (
+                              <img
+                                className={classes.tableFlag}
+                                src={`data:image/png;base64,${engagament?.logo}`}
+                              ></img>
+                            )}
+                            {engagament?.name}
+                          </div>
+                        </td>
+                        <td>
+                          {dayjs(engagament.startDate).format("MM.YYYY")}-
+                          {dayjs(engagament.endDate).format("MM.YYYY")}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          ) : (
+            <div>There is no data for this player.</div>
+          )}
         </div>
       )}
     </div>

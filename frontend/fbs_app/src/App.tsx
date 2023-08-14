@@ -17,6 +17,7 @@ import Players from "./pages/Players";
 import Player from "./pages/Player";
 import Team from "./pages/Team";
 import Staff from "./pages/Staff";
+import { Match } from "./pages/Match";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,6 +32,7 @@ const router = createBrowserRouter(
         <Route path="/players" element={<Players></Players>}></Route>
         <Route path="/player/:id" element={<Player></Player>}></Route>
         <Route path="/team/:id" element={<Team></Team>}></Route>
+        <Route path="/match/:id" element={<Match></Match>}></Route>
       </Route>
     </Route>
   )
