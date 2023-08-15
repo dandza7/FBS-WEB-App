@@ -49,7 +49,7 @@ namespace FBSApp.Controllers
         }
 
         /// <summary>
-        /// [Admin] Gets matches in season
+        /// [Anonymous] Gets matches in season
         /// </summary>
         [HttpGet("{id}/matches/{page}/{pageSize}", Name = "GetMatchesInSeason")]
         [AllowAnonymous]

@@ -6,6 +6,7 @@
         public float Shots { get; set; }
         public float ShotsOnTarget { get; set; }
         public float BlockedShots { get; set; }
+        public float ShotsOffTarget { get; set; }
         public float FreeKicks { get; set; }
         public float CornerKicks { get; set; }
         public float Offsides { get; set; }

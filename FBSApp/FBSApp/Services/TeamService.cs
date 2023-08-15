@@ -5,7 +5,6 @@ using FBSApp.Models.DTOs.Match;
 using FBSApp.Models.DTOs.Season;
 using FBSApp.Models.DTOs.Staff;
 using FBSApp.Models.DTOs.Team;
-using FBSApp.Models.DTOs.TeamStats;
 using FBSApp.Repositories;
 using FBSApp.SupportClasses.GlobalExceptionHandler.CustomExceptions;
 using Microsoft.EntityFrameworkCore;
@@ -168,42 +167,6 @@ namespace FBSApp.Services
                 EndOfEmployment = te.EndDate,
                 Empolyees = MakeStaffHierarchy(te, season)
             });
-        }
-
-        public TeamStatsDTO GetTeamStats(long id, long seasonId)
-        {
-            if (_unitOfWork.TeamRepository.GetAll().Where(t => t.Id == id).FirstOrDefault() == null)
-            {
-                throw new NotFoundException($"Team with ID {id} does not exist.");
-            }
-            if (_unitOfWork.SeasonRepository.GetAll().Where(s => s.Id == seasonId).FirstOrDefault() == null)
-            {
-                throw new NotFoundException($"Season with ID {seasonId} does not exist.");
-            }
-
-            var stats = _unitOfWork.TeamStatsRepository.GetAll().Where(ts => ts.TeamMatchInfo.TeamId == id)
-                                                                .Where(ts => seasonId == 0 ? true : ts.TeamMatchInfo.Match.SeasonId == seasonId)
-                                                                .ToList();
-            if (!stats.Any())
-            {
-                throw new NotFoundException($"There are no stats for team with ID {id} in season with ID {seasonId}.");
-            }
-            return new TeamStatsDTO
-            {
-                Shots = (float)stats.Average(s => s.Shots),
-                ShotsOnTarget = (float)stats.Average(s => s.ShotsOnTarget),
-                BlockedShots = (float)stats.Average(s => s.BlockedShots),
-                FreeKicks = (float)stats.Average(s => s.FreeKicks),
-                CornerKicks = (float)stats.Average(s => s.CornerKicks),
-                Offsides = (float)stats.Average(s => s.Offsides),
-                Possession = (float)stats.Average(s => s.Possession),
-                Saves = (float)stats.Average(s => s.Saves),
-                Fouls = (float)stats.Average(s => s.Fouls),
-                RedCards = (float)stats.Average(s => s.RedCards),
-                YellowCards = (float)stats.Average(s => s.YellowCards),
-                Tackles = (float)stats.Average(s => s.Tackles),
-                Passes = (float)stats.Average(s => s.Passes),
-            };
         }
 
         private IEnumerable<StaffEmployeeDTO> MakeStaffHierarchy(TeamEmployment employment, Season season)

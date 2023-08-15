@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FBSApp.Models;
 using FBSApp.Models.DTOs.League;
+using FBSApp.Models.DTOs.Season;
 using FBSApp.Repositories;
 using FBSApp.SupportClasses.GlobalExceptionHandler.CustomExceptions;
 
@@ -49,7 +50,13 @@ namespace FBSApp.Services
             {
                 throw new NotFoundException($"League with ID {id} does not exist!");
             }
-            return _mapper.Map<LeagueDTO>(league);
+            return new LeagueDTO
+            {
+                Id = league.Id,
+                Name = league.Name,
+                Flag = league.Country.Flag,
+                Seasons = _mapper.Map<IEnumerable<SeasonDTO>>(_unitOfWork.SeasonRepository.GetAll().Where(s => s.LeagueId == id).ToList()),
+            };
         }
     }
 }
