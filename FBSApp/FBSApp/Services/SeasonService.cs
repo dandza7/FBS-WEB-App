@@ -114,13 +114,111 @@ namespace FBSApp.Services
                                              .ThenByDescending(t => t.GoalsScored)
                                              .ThenByDescending(t => t.Wins);
         }
-        private void CalculateMatchWinner(Match match, Dictionary<string, TeamTableViewDTO> table)
+
+        public IEnumerable<TeamTableViewDTO> GetFilteredTable(long seasonId, TableCalculationQuery query)
+        {
+            var season = _unitOfWork.SeasonRepository.GetAll().Include(s => s.Teams).ThenInclude(t => t.Country)
+                                                              .Include(s => s.Matches.OrderBy(m => m.Date)).ThenInclude(m => m.MatchActors).ThenInclude(ma => ma.Team)
+                                                              .Include(s => s.Matches.OrderBy(m => m.Date)).ThenInclude(m => m.PlayersEvidention.Where(pe => pe.Goals.Any())).ThenInclude(pm => pm.Goals)
+                                                              .Where(s => s.Id == seasonId).FirstOrDefault();
+            if (season == null)
+            {
+                throw new NotFoundException($"Season with ID {seasonId} does not exist.");
+            }
+            var teams = season.Teams;
+            var matches = season.Matches.Where(m => m.PlayersEvidention.Any());
+            if (query != null)
+            {
+                if (query.TeamsSubsetFilter != null)
+                {
+                    teams = teams.Where(t => query.TeamsSubsetFilter.Ids.Contains(t.Id));
+                    matches = matches.Where(m => query.TeamsSubsetFilter.Ids.Contains(m.MatchActors.First().TeamId) && query.TeamsSubsetFilter.Ids.Contains(m.MatchActors.Last().TeamId));
+                }
+                if (query.DateFilter != null)
+                {
+                    matches = matches.Where(m => query.DateFilter.LowerLimit <= m.Date && m.Date <= query.DateFilter.UpperLimit);
+                }
+                if (query.GameweeksFilter != null)
+                {
+                    matches = matches.Where(m => query.GameweeksFilter.LowerLimit <= m.Gameweek && m.Gameweek <= query.GameweeksFilter.UpperLimit);
+                }
+            }
+            Dictionary<string, TeamTableViewDTO> table = teams.ToDictionary(t => t.Name, t => new TeamTableViewDTO
+            {
+                Name = t.Name,
+                //Logo = t.Logo,
+                //Flag = t.Country.Flag,
+                Wins = 0,
+                Draws = 0,
+                Losses = 0,
+                GoalsScored = 0,
+                GoalsConceded = 0,
+            });
+            foreach (var match in matches)
+            {
+                CalculateMatchWinner(match, table, query);
+            }
+
+
+            return table.Select(t => t.Value).OrderByDescending(t => (3 * t.Wins + t.Draws))
+                                             .ThenBy(t => t.Wins + t.Draws + t.Losses)
+                                             .ThenByDescending(t => t.GoalsScored - t.GoalsConceded)
+                                             .ThenByDescending(t => t.GoalsScored)
+                                             .ThenByDescending(t => t.Wins);
+        }
+
+        private bool IsGoalRegularByFilter(Goal goal, TCQ_GoalsMinuteFilter filter)
+        {
+            if (filter == null)
+            {
+                return true;
+            }
+            if (goal.Minute >= 1 && goal.Minute <= 45)
+            {
+                if (goal.IsExtraTime)
+                {
+                    return filter.ExtraTimeIncludedFirstHalf;
+                }
+                if (goal.Minute >= filter.LowerLimitFirstHalf && goal.Minute <= filter.UpperLimitFirstHalf)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (goal.IsExtraTime)
+                {
+                    return filter.ExtraTimeIncludedSecondHalf;
+                }
+                if (goal.Minute >= filter.LowerLimitSecondHalf && goal.Minute <= filter.UpperLimitSecondHalf)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        private bool CheckIfTeamExceededGameweekFilterLimit(int playedMatches, TCQ_PlayedGameweeksFilter filter = null)
+        {
+            return filter == null ? false : playedMatches >= filter.PlayedGameweeks;
+        }
+
+        private void CalculateMatchWinner(Match match, Dictionary<string, TeamTableViewDTO> table, TableCalculationQuery filter = null)
         {
             var homeTeam = match.MatchActors.Where(ma => ma.IsTeamHost).First().Team;
             var awayTeam = match.MatchActors.Where(ma => !ma.IsTeamHost).First().Team;
 
             var homeGoals = 0;
             var awayGoals = 0;
+
+            var goalFilter = filter == null ? null : filter.GoalsMinuteFilter;
 
             foreach (var pe in match.PlayersEvidention)
             {
@@ -131,13 +229,16 @@ namespace FBSApp.Services
                 {
                     foreach (var goal in pe.Goals)
                     {
-                        if (goal.IsOwnGoal)
+                        if (IsGoalRegularByFilter(goal, goalFilter))
                         {
-                            awayGoals++;
-                        }
-                        else
-                        {
-                            homeGoals++;
+                            if (goal.IsOwnGoal)
+                            {
+                                awayGoals++;
+                            }
+                            else
+                            {
+                                homeGoals++;
+                            }
                         }
                     }
                 }
@@ -145,35 +246,54 @@ namespace FBSApp.Services
                 {
                     foreach (var goal in pe.Goals)
                     {
-                        if (!goal.IsOwnGoal)
+                        if (IsGoalRegularByFilter(goal, goalFilter))
                         {
-                            awayGoals++;
-                        }
-                        else
-                        {
-                            homeGoals++;
+                            if (!goal.IsOwnGoal)
+                            {
+                                awayGoals++;
+                            }
+                            else
+                            {
+                                homeGoals++;
+                            }
                         }
                     }
                 }
             }
-            table[homeTeam.Name].GoalsScored += homeGoals;
-            table[homeTeam.Name].GoalsConceded += awayGoals;
-            table[awayTeam.Name].GoalsScored += awayGoals;
-            table[awayTeam.Name].GoalsConceded += homeGoals;
-            if (homeGoals > awayGoals)
+
+            if (!CheckIfTeamExceededGameweekFilterLimit(table[homeTeam.Name].Wins + table[homeTeam.Name].Draws + table[homeTeam.Name].Losses, filter.PlayedGameweeksFilter))
             {
-                table[homeTeam.Name].Wins++;
-                table[awayTeam.Name].Losses++;
+                table[homeTeam.Name].GoalsScored += homeGoals;
+                table[homeTeam.Name].GoalsConceded += awayGoals;
+                if (homeGoals > awayGoals)
+                {
+                    table[homeTeam.Name].Wins++;
+                }
+                else if (homeGoals < awayGoals)
+                {
+                    table[homeTeam.Name].Losses++;
+                }
+                else
+                {
+                    table[homeTeam.Name].Draws++;
+                }
             }
-            else if (homeGoals < awayGoals)
+            if (!CheckIfTeamExceededGameweekFilterLimit(table[awayTeam.Name].Wins + table[awayTeam.Name].Draws + table[awayTeam.Name].Losses, filter.PlayedGameweeksFilter))
             {
-                table[homeTeam.Name].Losses++;
-                table[awayTeam.Name].Wins++;
-            }
-            else
-            {
-                table[homeTeam.Name].Draws++;
-                table[awayTeam.Name].Draws++;
+                table[awayTeam.Name].GoalsScored += awayGoals;
+                table[awayTeam.Name].GoalsConceded += homeGoals;
+                if (homeGoals > awayGoals)
+                {
+                    table[awayTeam.Name].Losses++;
+                }
+                else if (homeGoals < awayGoals)
+                {
+                    table[awayTeam.Name].Wins++;
+                }
+                else
+                {
+                    table[awayTeam.Name].Draws++;
+                }
             }
             return;
         }
