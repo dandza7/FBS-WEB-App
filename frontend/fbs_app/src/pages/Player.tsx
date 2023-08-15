@@ -3,12 +3,20 @@ import classes from "./styles/Player.module.css";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router";
+import PlayerResultCard from "../components/Results/PlayerResultCard";
+import Pagination from "../components/Utils/Pagination";
+
 const Player = () => {
   const [showMatches, setshowMaches] = useState(true);
   const [player, setPlayer] = useState(null);
   const [playerEngagements, setPlayerEngagements] = useState(null);
-
+  const [matches, setMatches] = useState<any[]>([]);
+  const navigate = useNavigate();
+  const [totalMatchCount, setTotalMatchCount] = useState(null);
   const { id } = useParams();
+  const pageSize = 5;
+  const [selectedPage, setSelectedPage] = useState(1);
 
   function getAge(dateString: Date) {
     var today = new Date();
@@ -33,6 +41,7 @@ const Player = () => {
       })
       .then((data) => {
         setPlayer(data);
+        getMatches();
       })
       .catch((error) => {
         alert(error);
@@ -57,6 +66,33 @@ const Player = () => {
         alert(error);
       });
   }, []);
+
+  const getMatches = () => {
+    fetch(
+      `http://localhost:5271/api/players/${id}/matches/${selectedPage}/${pageSize}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setMatches(data.entities);
+        setTotalMatchCount(data.totalCount);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+
+  const changePage = (page: number) => {
+    setSelectedPage(page);
+  };
 
   return (
     <div className={classes.player}>
@@ -110,26 +146,27 @@ const Player = () => {
       </div>
       {showMatches && (
         <div className={classes.whiteContainer}>
-          <h3>Matches</h3>
-          <br></br>
-          <div className={classes.results}>
-            <div className={classes.result}>
-              <div className={classes.teamsDateContainer}>
-                <div>
-                  <p>25.08.2023.</p>
-                </div>
-                <div>
-                  <p>Tim1</p>
-                  <p className={classes.winner}>Tim1</p>
-                </div>
+          {matches?.length > 0 ? (
+            <>
+              <h3>Matches</h3>
+              <br></br>
+              <div className={classes.results}>
+                {matches?.map((match) => (
+                  <PlayerResultCard match={match}></PlayerResultCard>
+                ))}
               </div>
-
-              <div className={classes.score}>
-                <p>2</p>
-                <p>1</p>
-              </div>
-            </div>
-          </div>
+              {totalMatchCount > pageSize && (
+                <Pagination
+                  change={changePage}
+                  totalCount={totalMatchCount}
+                  pageSize={pageSize}
+                  currentPage={selectedPage}
+                ></Pagination>
+              )}
+            </>
+          ) : (
+            <div>There are no matches for this season.</div>
+          )}
         </div>
       )}
       {!showMatches && (

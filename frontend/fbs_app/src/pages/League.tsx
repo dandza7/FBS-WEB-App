@@ -43,33 +43,16 @@ const League = () => {
       })
       .then((data) => {
         setLeague(data);
-      })
-      .catch((error) => {
-        alert(error);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch("http://localhost:5271/api/seasons/" + id, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        const allSeasons = [];
-        console.log(data);
-        data.map((season) => {
-          allSeasons.push({
+        let seasons = [];
+        data.seasons.map((season) => {
+          seasons.push({
             value: season.id,
             label: season.league + " " + season.year,
           });
         });
-        setSeasons(allSeasons);
-        setSelectedSeason(allSeasons[0]);
+        console.log(seasons[0]);
+        setSeasons(seasons);
+        setSelectedSeason(seasons[0]);
       })
       .catch((error) => {
         alert(error);
@@ -154,12 +137,14 @@ const League = () => {
       <div className={classes.seasonContainer}>
         <div className={classes.seasonSelectContainer}>
           <span>Season:</span>
-          <Select
-            defaultValue={selectedSeason}
-            onChange={handleChangeSeason}
-            options={seasons}
-            placeholder="Select season"
-          />
+          {selectedSeason && (
+            <Select
+              defaultValue={selectedSeason}
+              onChange={handleChangeSeason}
+              options={seasons}
+              placeholder="Select season"
+            />
+          )}
         </div>
       </div>
       {!isScoreboard && (
