@@ -11,7 +11,7 @@ import Pagination from "../components/Utils/Pagination";
 import ResultCard from "../components/Results/ResultCard";
 
 const Team = () => {
-  const [tab, setTab] = useState("Stats");
+  const [tab, setTab] = useState("Matches");
 
   const [team, setTeam] = useState(null);
   const [squad, setSquad] = useState<any[]>([]);
@@ -124,7 +124,6 @@ const Team = () => {
           });
         });
         console.log(seasons[0]);
-
         setAllSeasons(seasons);
         setSelectedSeason(seasons[0]);
       })
@@ -163,26 +162,6 @@ const Team = () => {
       <div className={classes.teamMenu}>
         <div
           className={
-            tab === "Stats"
-              ? classes.teamMenuItemSelected
-              : classes.teamMenuItem
-          }
-          onClick={() => setTab("Stats")}
-        >
-          Stats
-        </div>
-        <div
-          className={
-            tab === "Squad"
-              ? classes.teamMenuItemSelected
-              : classes.teamMenuItem
-          }
-          onClick={() => setTab("Squad")}
-        >
-          Squad
-        </div>
-        <div
-          className={
             tab === "Matches"
               ? classes.teamMenuItemSelected
               : classes.teamMenuItem
@@ -193,6 +172,16 @@ const Team = () => {
           }}
         >
           Matches
+        </div>
+        <div
+          className={
+            tab === "Squad"
+              ? classes.teamMenuItemSelected
+              : classes.teamMenuItem
+          }
+          onClick={() => setTab("Squad")}
+        >
+          Squad
         </div>
       </div>
       <div className={classes.seasonContainer}>
@@ -208,13 +197,7 @@ const Team = () => {
           )}
         </div>
       </div>
-      {tab === "Stats" && (
-        <div className={classes.whiteContainerInfo}>
-          <h3>Statistics</h3>
-          <br></br>
-          <div className={classes.statistics}></div>
-        </div>
-      )}
+
       {tab === "Squad" && (
         <div className={classes.whiteContainerInfo}>
           {selectedSeason ? (
@@ -226,10 +209,10 @@ const Team = () => {
       )}
       {tab === "Matches" && (
         <div className={classes.whiteContainerInfo}>
-          <h3>Matches</h3>
-          <br></br>
           {matches?.length > 0 ? (
             <>
+              <h3>Matches</h3>
+              <br></br>
               <div className={classes.results}>
                 {matches?.map((match) => (
                   <ResultCard match={match}></ResultCard>

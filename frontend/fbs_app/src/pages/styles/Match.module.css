@@ -1,0 +1,365 @@
+.player {
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.playerMenu {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  margin-top: -1rem;
+  border-top: 1px solid rgb(223, 223, 223);
+  padding: 0.5rem;
+  border-radius: 0rem 0rem 1rem 1rem;
+}
+
+.playerMenuItem {
+  cursor: pointer;
+  font-weight: 600;
+  color: #555454;
+}
+
+.whiteContainerTitle {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 1rem 1rem 0rem 0rem;
+}
+.whiteContainer {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.resultDate {
+  display: flex;
+  align-items: flex-end;
+}
+
+.teamsDateContainer {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.score {
+  font-weight: 600;
+}
+
+.winner {
+  font-weight: 600;
+}
+
+.engagamentsTable thead tr {
+  background-color: rgb(218, 218, 218);
+  color: #272727;
+  text-align: left;
+}
+
+.engagamentsTable th,
+.engagamentsTable td {
+  padding: 0.5rem 1rem;
+}
+.engagamentsTable th {
+  font-size: 1rem;
+  font-weight: 400;
+  font-size: 13px;
+}
+
+.engagamentsTable tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.engagamentsTable tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.engagamentsTable tbody tr:nth-of-type(odd) {
+  background-color: #ffffff;
+}
+
+.engagamentsTable tbody tr:last-of-type {
+  border-bottom: 1px solid var(--darkGreen);
+}
+
+.engagamentsTable {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  border-radius: 1rem;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+.playerInfo {
+  display: flex;
+  gap: 1rem;
+}
+.basicInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.playerMenuItemSelected {
+  color: rgb(40, 54, 131);
+  font-weight: bold;
+}
+@media only screen and (max-width: 650px) {
+  .playerImage {
+    width: 130px;
+    height: 150px;
+    border-radius: 1rem;
+  }
+}
+.imgNameColumn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+}
+.tableFlag {
+  width: 20px;
+  height: 18px;
+}
+.flagImage {
+  width: 23px;
+  height: 16px;
+}
+.playerCountry {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.matchContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 80%;
+  margin: auto;
+}
+
+.teamContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  width: 33%;
+}
+
+.teamImageContainer {
+  border-radius: 0.5rem;
+  border: 1px solid rgb(238, 237, 237);
+  padding: 0.2rem;
+}
+.teamImage {
+  padding: 1rem;
+  height: 90px;
+  border-radius: 1rem;
+}
+.resultContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.result {
+  display: flex;
+
+  gap: 0.5rem;
+}
+.resultGoals {
+  font-size: 4rem;
+}
+
+.squads {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  font-size: 0.9rem;
+}
+
+.homeTeamSuad {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: rgb(245, 240, 240);
+  width: 50%;
+}
+.awayTeamSuad {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 50%;
+}
+
+.homeSquadPlayer {
+  padding: 0.8rem 0.3rem;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 20px;
+}
+.awaySquadPlayer {
+  padding: 0.8rem 0.3rem;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 20px;
+}
+.homeSquadPlayer:nth-of-type(even) {
+  background-color: #ededf1;
+}
+
+.homeSquadPlayer:nth-of-type(odd) {
+  background-color: #ffffff;
+}
+
+.awaySquadPlayer:nth-of-type(even) {
+  background-color: #ededf1;
+}
+
+.awaySquadPlayer:nth-of-type(odd) {
+  background-color: #ffffff;
+}
+
+.playerFlag {
+  height: 13px;
+  width: 20px;
+}
+
+.playerName {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.tableTitle {
+  display: flex;
+  justify-content: center;
+  background-color: var(--ligtGrey);
+  color: rgb(60, 59, 59);
+  border-radius: 0.2rem;
+  padding: 0.3rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.playerMinutes {
+  background-color: rgb(10, 131, 182) !important;
+  color: rgb(255, 254, 254);
+  border-radius: 0.2rem;
+  padding: 0.1rem;
+}
+
+.playerGoals {
+  display: flex;
+}
+
+.goalNumber {
+  background-color: rgb(14, 17, 85);
+  color: white;
+  padding: 0 4px;
+  display: flex;
+  border-radius: 0.2rem;
+  align-self: center;
+  justify-content: center;
+  position: absolute;
+  margin-left: 12px;
+  margin-bottom: 20px;
+  font-size: 0.8rem;
+}
+
+.statistics {
+  display: flex;
+  flex-direction: column;
+}
+.statistic {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid rgb(255, 254, 254);
+}
+
+.statName {
+  background-color: var(--ligtGrey);
+  color: rgb(81, 80, 80);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: capitalize;
+  width: 80%;
+  padding: 0.7rem;
+}
+.statNumberHome {
+  background-color: rgb(212, 212, 214);
+  color: rgb(81, 80, 80);
+  width: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem 0rem 0rem 0.5rem;
+  min-width: 50px;
+}
+.statNumberAway {
+  background-color: rgb(212, 212, 214);
+  color: rgb(81, 80, 80);
+  width: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0rem 0.5rem 0.5rem 0rem;
+  min-width: 50px;
+}
+
+.winner {
+  font-weight: 800;
+  color: rgb(33, 33, 33);
+}
+
+@media only screen and (max-width: 650px) {
+  .matchContainer {
+    width: 100%;
+    margin: auto;
+    height: 100px;
+  }
+  .teamContainer {
+    font-size: 0.7rem;
+  }
+
+  .gameWeek,
+  .date {
+    font-size: 0.8rem;
+  }
+
+  .teamImage {
+    height: 35px;
+    padding: 0.2rem;
+  }
+  .resultGoals {
+    font-size: 3rem;
+  }
+  .squads {
+    font-size: 0.8rem;
+  }
+  .playerName {
+    max-width: 90px;
+  }
+}
