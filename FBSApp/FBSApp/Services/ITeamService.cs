@@ -2,7 +2,6 @@
 using FBSApp.Models.DTOs.Match;
 using FBSApp.Models.DTOs.Staff;
 using FBSApp.Models.DTOs.Team;
-using FBSApp.Models.DTOs.TeamStats;
 
 namespace FBSApp.Services
 {
@@ -13,6 +12,5 @@ namespace FBSApp.Services
         TeamDetailedDTO GetTeamDetailed(long teamId);
         IEnumerable<PlayerListPreviewDTO> GetTeamsSquad(long teamId, long seasonId);
         IEnumerable<HeadStaffDTO> GetTeamsStaff(long teamId, long seasonId);
-        TeamStatsDTO GetTeamStats(long id, long seasonId);
     }
 }

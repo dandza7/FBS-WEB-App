@@ -2,6 +2,7 @@
 using FBSApp.Models;
 using FBSApp.Models.DTOs.Match;
 using FBSApp.Models.DTOs.Player;
+using FBSApp.Models.DTOs.Staff;
 using FBSApp.Models.DTOs.Team;
 using FBSApp.Models.DTOs.TeamStats;
 using FBSApp.Repositories;
@@ -33,6 +34,7 @@ namespace FBSApp.Services
                 throw new NotFoundException($"Match with ID {id} does not exist!");
             }
             var squads = new MatchSquadDTO();
+            InsertStaffIntoSquad(match, squads);
             foreach (var pe in match.PlayersEvidention)
             {
                 InsertPlayerIntoSquad(pe, squads, match.MatchActors.Where(ma => ma.IsTeamHost).First().TeamId, match.MatchActors.Where(ma => !ma.IsTeamHost).First().TeamId, match.Date);
@@ -63,6 +65,7 @@ namespace FBSApp.Services
                     Shots = homeTeamStats.Shots,
                     ShotsOnTarget = homeTeamStats.ShotsOnTarget,
                     BlockedShots = homeTeamStats.BlockedShots,
+                    ShotsOffTarget = homeTeamStats.Shots - (homeTeamStats.ShotsOnTarget + homeTeamStats.BlockedShots),
                     FreeKicks = homeTeamStats.FreeKicks,
                     CornerKicks = homeTeamStats.CornerKicks,
                     Offsides = homeTeamStats.Offsides,
@@ -80,6 +83,7 @@ namespace FBSApp.Services
                     Shots = awayTeamStats.Shots,
                     ShotsOnTarget = awayTeamStats.ShotsOnTarget,
                     BlockedShots = awayTeamStats.BlockedShots,
+                    ShotsOffTarget = awayTeamStats.Shots - (awayTeamStats.ShotsOnTarget + awayTeamStats.BlockedShots),
                     FreeKicks = awayTeamStats.FreeKicks,
                     CornerKicks = awayTeamStats.CornerKicks,
                     Offsides = awayTeamStats.Offsides,
@@ -153,7 +157,29 @@ namespace FBSApp.Services
             }
             return goals;
         }
-
+        private void InsertStaffIntoSquad(Match match, MatchSquadDTO squad)
+        {
+            var homeTeamId = match.MatchActors.Where(ma => ma.IsTeamHost).First().TeamId;
+            var homeCoach = _unitOfWork.StaffRepository.GetAll().Include(s => s.Country)
+                                                                .Where(s => s.BossId == null)
+                                                                .Where(s => s.Employments.Where(e => e.TeamId == homeTeamId)
+                                                                                         .Where(e => e.StartDate < match.Date && e.EndDate > match.Date).Any()).FirstOrDefault();
+            if (homeCoach == null)
+            {
+                throw new Exception($"ERROR WITH DATA Inserting staff into squad, team with ID {match.MatchActors.Where(ma => ma.IsTeamHost).First().Id} has no head coach at the moment of match with ID {match.Id}.");
+            }
+            var awayTeamId = match.MatchActors.Where(ma => !ma.IsTeamHost).First().TeamId;
+            var awayCoach = _unitOfWork.StaffRepository.GetAll().Include(s => s.Country)
+                                                                .Where(s => s.BossId == null)
+                                                                .Where(s => s.Employments.Where(e => e.TeamId == awayTeamId)
+                                                                                         .Where(e => e.StartDate < match.Date && e.EndDate > match.Date).Any()).FirstOrDefault();
+            if (awayCoach == null)
+            {
+                throw new Exception($"ERROR WITH DATA Inserting staff into squad, team with ID {match.MatchActors.Where(ma => !ma.IsTeamHost).First().Id} has no head coach at the moment of match with ID {match.Id}.");
+            }
+            squad.HomeHeadCoach = new StaffDTO { Id = homeCoach.Id, BirthDate = homeCoach.BirthDate, Name = homeCoach.Name, CountryFlag = homeCoach.Country.Flag };
+            squad.AwayHeadCoach = new StaffDTO { Id = awayCoach.Id, BirthDate = awayCoach.BirthDate, Name = awayCoach.Name, CountryFlag = awayCoach.Country.Flag };
+        }
         private void InsertPlayerIntoSquad(PlayedMatch playerEvidention, MatchSquadDTO squad, long homeTeamId, long awayTeamId, DateTime matchDate)
         {
             var teamEngagement = _unitOfWork.TeamEngagementRepository.GetAll().Where(te => te.PlayerId == playerEvidention.PlayerId)
