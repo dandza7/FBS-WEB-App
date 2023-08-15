@@ -1,5 +1,6 @@
 ﻿using FBSApp.Models.DTOs;
 using FBSApp.Models.DTOs.Award;
+using FBSApp.Models.DTOs.Match;
 using FBSApp.Models.DTOs.Team;
 
 namespace FBSApp.Services
@@ -10,6 +11,7 @@ namespace FBSApp.Services
         public PlayerListPreviewDTO GetPlayer(long playerId);
         public IEnumerable<TeamEngagementDTO> GetPlayersEngagements(long playerId);
         public IEnumerable<AwardDTO> GetPlayersAwards(long playerId);
+        public PaginationWrapper<PlayersMatchDTO> GetMatchesByPlayer(long playerId, int page, int pageSize);
         public IEnumerable<string> Temp();
     }
 }

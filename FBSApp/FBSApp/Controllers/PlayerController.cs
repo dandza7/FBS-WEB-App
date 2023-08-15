@@ -1,5 +1,6 @@
 ﻿using FBSApp.Models.DTOs;
 using FBSApp.Models.DTOs.Award;
+using FBSApp.Models.DTOs.Match;
 using FBSApp.Models.DTOs.Team;
 using FBSApp.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -55,6 +56,16 @@ namespace FBSApp.Controllers
         public ActionResult<PlayerListPreviewDTO> GetPlayer(long id)
         {
             return Ok(_playerService.GetPlayer(id));
+        }
+
+        /// <summary>
+        /// [Anonymous] Gets matches played by player
+        /// </summary>
+        [HttpGet("{id}/matches/{page}/{pageSize}", Name = "GetMatchesByPlayer")]
+        [AllowAnonymous]
+        public ActionResult<PaginationWrapper<PlayersMatchDTO>> GetMatchesByPlayer(long id, int page, int pageSize)
+        {
+            return Ok(_playerService.GetMatchesByPlayer(id, page, pageSize));
         }
 
         [HttpGet("temp", Name = "Temp")]

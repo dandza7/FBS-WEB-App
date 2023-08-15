@@ -49,6 +49,7 @@ namespace FBSApp.Services
             }
             var matchesRaw = _unitOfWork.MatchRepository.GetAll(m => m.Season)
                                                     .Include(m => m.MatchActors).ThenInclude(ma => ma.Team).ThenInclude(t => t.Country)
+                                                    .Include(m => m.PlayersEvidention.Where(pe => pe.Goals.Any())).ThenInclude(pm => pm.Goals)
                                                     .Where(m => m.SeasonId == seasonId).OrderByDescending(m => m.Date);
             var totalCount = matchesRaw.Count();
             var matches = matchesRaw.Skip((page - 1) * pageSize).Take(pageSize).ToList();
@@ -58,8 +59,8 @@ namespace FBSApp.Services
                 {
                     Id = m.Id,
                     Date = m.Date,
-                    HomeTeamGoals = 0, // TO-DO
-                    AwayTeamGoals = 0, // TO-DO
+                    HomeTeamGoals = CalculateTeamGoals(m, "home"),
+                    AwayTeamGoals = CalculateTeamGoals(m, "away"),
                     HomeTeam = m.MatchActors.First().IsTeamHost ? _mapper.Map<TeamListPreviewDTO>(m.MatchActors.First().Team) : _mapper.Map<TeamListPreviewDTO>(m.MatchActors.Last().Team),
                     AwayTeam = m.MatchActors.First().IsTeamHost ? _mapper.Map<TeamListPreviewDTO>(m.MatchActors.Last().Team) : _mapper.Map<TeamListPreviewDTO>(m.MatchActors.First().Team),
                     Gameweek = m.Gameweek
@@ -175,6 +176,44 @@ namespace FBSApp.Services
                 table[awayTeam.Name].Draws++;
             }
             return;
+        }
+
+        private int CalculateTeamGoals(Match match, string teamtype = "home")
+        {
+            var team = teamtype == "home" ? match.MatchActors.Where(ma => ma.IsTeamHost).First().Team : match.MatchActors.Where(ma => !ma.IsTeamHost).First().Team;
+
+            var goals = 0;
+
+            foreach (var pe in match.PlayersEvidention)
+            {
+                var teamEngagement = _unitOfWork.TeamEngagementRepository.GetAll(te => te.Team).Where(te => te.PlayerId == pe.PlayerId)
+                                                                                      .Where(te => te.TeamId == team.Id)
+                                                                                      .Where(te => te.EndDate > match.Date && te.StartDate < match.Date)
+                                                                                      .FirstOrDefault();
+
+                foreach (var goal in pe.Goals)
+                {
+                    if (teamEngagement == null) // If team engagement is null, it is goal scored by opposing team
+                    {
+                        if (goal.IsOwnGoal)
+                        {
+                            goals++;
+                        }
+                    }
+                    else if (teamEngagement.Team.Name == team.Name) // Checking if team engagement is valid
+                    {
+                        if (!goal.IsOwnGoal)
+                        {
+                            goals++;
+                        }
+                    }
+                    else // Otherwise there is problem with data in Database
+                    {
+                        throw new Exception($"ERROR WITH DATA Calculating match winner, player with ID {pe.PlayerId} scored a goal on match with ID {match.Id}, but apparently didn't played for either of team at the time.");
+                    }
+                }
+            }
+            return goals;
         }
     }
 }
