@@ -5,6 +5,22 @@ import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 
+const stats = [
+  { value: "shots", label: "Shots" },
+  { value: "shotsOnTarget", label: "Shots on target" },
+  { value: "blockedShots", label: "Blocked shots" },
+  { value: "freeKicks", label: "Free kicks" },
+  { value: "cornerKicks", label: "Corner kicks" },
+  { value: "offsides", label: "Offsides" },
+  { value: "possession", label: "Possession" },
+  { value: "saves", label: "Saves" },
+  { value: "fouls", label: "Fouls" },
+  { value: "redCards", label: "Red cards" },
+  { value: "yellowCards", label: "Yellow cards" },
+  { value: "tackles", label: "Tackles" },
+  { value: "passes", label: "Passes" },
+];
+
 export const Match = () => {
   const { id } = useParams();
   const [showStatistics, setShowStatistics] = useState(true);
@@ -25,7 +41,6 @@ export const Match = () => {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
         setMatch(data);
         fetchStats();
         fetchSquads();
@@ -36,7 +51,7 @@ export const Match = () => {
   }, []);
 
   const fetchStats = () => {
-    fetch("http://localhost:5271/api/matches/" + id + "/squads", {
+    fetch("http://localhost:5271/api/matches/" + id + "/stats", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -46,7 +61,6 @@ export const Match = () => {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
         setHomeTeamStats(data.homeTeamStats);
         setAwayTeamStats(data.awayTeamStats);
       })
@@ -66,7 +80,6 @@ export const Match = () => {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
         setTeamSquad(data);
         const prviTimDomacin = [];
         const prviTimGost = [];
@@ -160,8 +173,47 @@ export const Match = () => {
       <div className={classes.whiteContainer}>
         {showStatistics && (
           <>
-            <h3>Statistics</h3>
-            <br></br>
+            {
+              <>
+                <h3>Statistics</h3>
+                <br></br>
+                <div className={classes.statistics}>
+                  {stats.map((stat) => (
+                    <div className={classes.statistic}>
+                      <div className={classes.statNumberHome}>
+                        {homeTeamStats && (
+                          <span
+                            className={
+                              homeTeamStats[stat.value] >
+                              awayTeamStats[stat.value]
+                                ? classes.winner
+                                : classes.loser
+                            }
+                          >
+                            {homeTeamStats && homeTeamStats[stat.value]}
+                          </span>
+                        )}
+                      </div>
+                      <div className={classes.statName}>{stat.label}</div>
+                      <div className={classes.statNumberAway}>
+                        {awayTeamStats && (
+                          <span
+                            className={
+                              awayTeamStats[stat.value] >
+                              homeTeamStats[stat.value]
+                                ? classes.winner
+                                : classes.loser
+                            }
+                          >
+                            {awayTeamStats && awayTeamStats[stat.value]}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            }
           </>
         )}
         {!showStatistics && (

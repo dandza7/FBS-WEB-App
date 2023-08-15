@@ -288,6 +288,52 @@
   font-size: 0.8rem;
 }
 
+.statistics {
+  display: flex;
+  flex-direction: column;
+}
+.statistic {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid rgb(255, 254, 254);
+}
+
+.statName {
+  background-color: var(--ligtGrey);
+  color: rgb(81, 80, 80);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: capitalize;
+  width: 80%;
+  padding: 0.7rem;
+}
+.statNumberHome {
+  background-color: rgb(212, 212, 214);
+  color: rgb(81, 80, 80);
+  width: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem 0rem 0rem 0.5rem;
+  min-width: 50px;
+}
+.statNumberAway {
+  background-color: rgb(212, 212, 214);
+  color: rgb(81, 80, 80);
+  width: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0rem 0.5rem 0.5rem 0rem;
+  min-width: 50px;
+}
+
+.winner {
+  font-weight: 800;
+  color: rgb(33, 33, 33);
+}
+
 @media only screen and (max-width: 650px) {
   .matchContainer {
     width: 100%;
