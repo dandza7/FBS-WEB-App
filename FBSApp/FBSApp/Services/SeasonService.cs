@@ -260,8 +260,8 @@ namespace FBSApp.Services
                     }
                 }
             }
-
-            if (!CheckIfTeamExceededGameweekFilterLimit(table[homeTeam.Name].Wins + table[homeTeam.Name].Draws + table[homeTeam.Name].Losses, filter.PlayedGameweeksFilter))
+            var playedGameweeksFilter = filter == null ? null : filter.PlayedGameweeksFilter;
+            if (!CheckIfTeamExceededGameweekFilterLimit(table[homeTeam.Name].Wins + table[homeTeam.Name].Draws + table[homeTeam.Name].Losses, playedGameweeksFilter))
             {
                 table[homeTeam.Name].GoalsScored += homeGoals;
                 table[homeTeam.Name].GoalsConceded += awayGoals;
@@ -278,7 +278,7 @@ namespace FBSApp.Services
                     table[homeTeam.Name].Draws++;
                 }
             }
-            if (!CheckIfTeamExceededGameweekFilterLimit(table[awayTeam.Name].Wins + table[awayTeam.Name].Draws + table[awayTeam.Name].Losses, filter.PlayedGameweeksFilter))
+            if (!CheckIfTeamExceededGameweekFilterLimit(table[awayTeam.Name].Wins + table[awayTeam.Name].Draws + table[awayTeam.Name].Losses, playedGameweeksFilter))
             {
                 table[awayTeam.Name].GoalsScored += awayGoals;
                 table[awayTeam.Name].GoalsConceded += homeGoals;
