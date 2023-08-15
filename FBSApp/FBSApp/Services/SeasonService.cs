@@ -146,8 +146,8 @@ namespace FBSApp.Services
             Dictionary<string, TeamTableViewDTO> table = teams.ToDictionary(t => t.Name, t => new TeamTableViewDTO
             {
                 Name = t.Name,
-                //Logo = t.Logo,
-                //Flag = t.Country.Flag,
+                Logo = t.Logo,
+                Flag = t.Country.Flag,
                 Wins = 0,
                 Draws = 0,
                 Losses = 0,
