@@ -319,7 +319,7 @@ const League = () => {
                               <span
                                 className={classes.scoreBoard_teamName}
                                 onClick={() => {
-                                  navigate("/team/" + team.id);
+                                  navigate("/team/" + team.teamId);
                                 }}
                               >
                                 {team?.name}

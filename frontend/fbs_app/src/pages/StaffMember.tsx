@@ -9,7 +9,7 @@ import Pagination from "../components/Utils/Pagination";
 
 const StaffMember = () => {
   const [showAwards, setshowAwards] = useState(false);
-  const [player, setPlayer] = useState(null);
+  const [staffMember, setStaffMember] = useState(null);
   const [employments, setEmployments] = useState<any[]>([]);
   const [awards, setAwards] = useState<any[]>([]);
   const [matches, setMatches] = useState<any[]>([]);
@@ -31,6 +31,26 @@ const StaffMember = () => {
   }
 
   useEffect(() => {
+    fetch("http://localhost:5271/api/staff/" + id, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setStaffMember(data);
+        fetchEmployments();
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }, []);
+
+  const fetchEmployments = () => {
     fetch("http://localhost:5271/api/staff/" + id + "/employments", {
       method: "GET",
       headers: {
@@ -47,7 +67,7 @@ const StaffMember = () => {
       .catch((error) => {
         alert(error);
       });
-  }, []);
+  };
 
   useEffect(() => {
     fetch("http://localhost:5271/api/staff/" + id + "/awards", {
@@ -79,24 +99,27 @@ const StaffMember = () => {
           <div>
             <img
               className={classes.playerImage}
-              src={`data:image/png;base64,${player?.photo}`}
+              src={
+                staffMember?.photo
+                  ? `data:image/png;base64,${staffMember?.photo}`
+                  : "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+              }
             ></img>
           </div>
           <div className={classes.basicInfo}>
-            <h2>{player?.name}</h2>
+            <h2>{staffMember?.name}</h2>
             <div className={classes.playerCountry}>
               <img
                 className={classes.flagImage}
-                src={`data:image/png;base64,${player?.countryFlag}`}
+                src={`data:image/png;base64,${staffMember?.countryFlag}`}
               ></img>
-              {player?.countryName}
+              {staffMember?.countryName}
             </div>
 
             <p>
-              Age: {getAge(player?.birthDate)} (
-              {dayjs(player?.birthDate).format("DD.MM.YYYY")})
+              Age: {getAge(staffMember?.birthDate)} (
+              {dayjs(staffMember?.birthDate).format("DD.MM.YYYY")})
             </p>
-            <p>Position: {player?.position}</p>
           </div>
         </div>
       </div>
@@ -145,7 +168,14 @@ const StaffMember = () => {
                                 src={`data:image/png;base64,${employment?.teamLogo}`}
                               ></img>
                             )}
-                            {employment?.teamName}
+                            <span
+                              className={classes.employment_teamName}
+                              onClick={() => {
+                                navigate("/team/" + employment.teamId);
+                              }}
+                            >
+                              {employment?.teamName}
+                            </span>
                           </div>
                         </td>
                         <td>
