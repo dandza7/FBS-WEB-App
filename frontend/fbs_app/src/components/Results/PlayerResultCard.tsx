@@ -64,7 +64,7 @@ const PlayerResultCard = (props: any) => {
         <div className={classes.playerMinutes}>
           <p>{props.match.minutes}'</p>
         </div>
-        <div>
+        <div className={classes.scoreGoals}>
           <h3>{props.match.homeTeamGoals}</h3>
           <h3>{props.match.awayTeamGoals}</h3>
         </div>

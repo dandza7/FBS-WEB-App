@@ -165,7 +165,7 @@ const Player = () => {
               )}
             </>
           ) : (
-            <div>There are no matches for this season.</div>
+            <div>There is no data for this player.</div>
           )}
         </div>
       )}

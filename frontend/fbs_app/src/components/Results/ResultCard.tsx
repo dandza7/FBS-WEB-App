@@ -53,7 +53,7 @@ const ResultCard = (props: any) => {
         </div>
       </div>
 
-      <div className={classes.score}>
+      <div className={classes.scoreGoals}>
         <p>{props.match.homeTeamGoals}</p>
         <p>{props.match.awayTeamGoals}</p>
       </div>
