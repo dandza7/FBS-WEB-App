@@ -7,6 +7,7 @@
         public string Position { get; set; }
         public string Photo { get; set; }
         public string CountryName { get; set; }
+        public long CountryId { get; set; }
         public string CountryFlag { get; set; }
         public DateTime BirthDate { get; set; }
     }

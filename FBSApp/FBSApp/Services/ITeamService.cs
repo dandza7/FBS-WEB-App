@@ -7,7 +7,8 @@ namespace FBSApp.Services
 {
     public interface ITeamService
     {
-        PaginationWrapper<TeamListPreviewDTO> GetListed(TeamFilterQuery query);
+        PaginationWrapper<TeamListPreviewDTO> GetFiltered(TeamFilterQuery query);
+        IEnumerable<TeamListPreviewDTO> GetListed();
         PaginationWrapper<MatchListPreviewDTO> GetMatchesByTeam(long teamId, long seasonId, int page, int pageSize);
         TeamDetailedDTO GetTeamDetailed(long teamId);
         IEnumerable<PlayerListPreviewDTO> GetTeamsSquad(long teamId, long seasonId);
