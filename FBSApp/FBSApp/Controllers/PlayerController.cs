@@ -1,6 +1,7 @@
 ﻿using FBSApp.Models.DTOs;
 using FBSApp.Models.DTOs.Award;
 using FBSApp.Models.DTOs.Match;
+using FBSApp.Models.DTOs.Player;
 using FBSApp.Models.DTOs.Team;
 using FBSApp.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -56,6 +57,38 @@ namespace FBSApp.Controllers
         public ActionResult<PlayerListPreviewDTO> GetPlayer(long id)
         {
             return Ok(_playerService.GetPlayer(id));
+        }
+
+        /// <summary>
+        /// [Admin] Deletes players engagement
+        /// </summary>
+        [HttpDelete("{playerId}/engagement/{engagementId}", Name = "DeletePlayersEngagement")]
+        [Authorize(Roles = "ADMIN")]
+        public ActionResult DeletePlayersEngagement(long playerId, long engagementId)
+        {
+            _playerService.DeletePlayersEngagement(playerId, engagementId);
+            return Ok();
+        }
+
+        /// <summary>
+        /// [Admin] Creates new player or updates existing one
+        /// </summary>
+        [HttpPost("update", Name = "CreateOrUpdatePlayer")]
+        [Authorize(Roles = "ADMIN")]
+        public ActionResult<long> CreateOrUpdatePlayer([FromBody] NewPlayerDTO player)
+        {
+            return Ok(_playerService.CreateOrUpdatePlayer(player));
+        }
+
+        /// <summary>
+        /// [Admin] Creates new player or updates existing one
+        /// </summary>
+        [HttpPost("engagement", Name = "AddPlayersEngagement")]
+        [Authorize(Roles = "ADMIN")]
+        public ActionResult AddPlayersEngagement([FromBody] AddPlayersEngagementDTO engagement)
+        {
+            _playerService.AddPlayersEngagement(engagement);
+            return Ok();
         }
 
         /// <summary>

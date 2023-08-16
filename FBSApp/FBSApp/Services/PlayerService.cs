@@ -3,10 +3,12 @@ using FBSApp.Models;
 using FBSApp.Models.DTOs;
 using FBSApp.Models.DTOs.Award;
 using FBSApp.Models.DTOs.Match;
+using FBSApp.Models.DTOs.Player;
 using FBSApp.Models.DTOs.Team;
 using FBSApp.Repositories;
 using FBSApp.SupportClasses.GlobalExceptionHandler.CustomExceptions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FBSApp.Services
 {
@@ -19,6 +21,91 @@ namespace FBSApp.Services
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+        }
+
+        public void AddPlayersEngagement(AddPlayersEngagementDTO engagement)
+        {
+            var player = _unitOfWork.PlayerRepository.GetAll(p => p.Engagements).FirstOrDefault(p => p.Id == engagement.PlayerId);
+            if (player == null)
+            {
+                throw new NotFoundException($"Player with ID {engagement.PlayerId} does not exist.");
+            }
+            var team = _unitOfWork.TeamRepository.GetAll().FirstOrDefault(p => p.Id == engagement.TeamId);
+            if (team == null)
+            {
+                throw new NotFoundException($"Team with ID {engagement.TeamId} does not exist.");
+            }
+            if (player.Engagements.Where(e => !(engagement.StartDate > e.EndDate || e.StartDate > engagement.EndDate)).Any())
+            {
+                throw new DuplicateItemException($"Player with ID {engagement.PlayerId} already has employment in selected period.");
+            }
+            /*foreach (var e in player.Engagements)
+            {
+                if (!(engagement.StartDate > e.EndDate || e.StartDate > engagement.EndDate))
+                {
+                    throw new DuplicateItemException($"Player with ID {engagement.PlayerId} already has employment in selected period.");
+                }
+            }*/
+            _unitOfWork.TeamEngagementRepository.Create(new TeamEngagement
+            {
+                Team = team,
+                Player = player,
+                StartDate = engagement.StartDate,
+                EndDate = engagement.EndDate,
+            });
+            _unitOfWork.SaveChanges();
+        }
+
+        public long CreateOrUpdatePlayer(NewPlayerDTO newPlayerDTO)
+        {
+            Player player;
+            if (newPlayerDTO.Id != 0)
+            {
+                player = _unitOfWork.PlayerRepository.GetAll().Where(p => p.Id == newPlayerDTO.Id).FirstOrDefault();
+                if (player == null)
+                {
+                    throw new NotFoundException($"Player with ID {newPlayerDTO.Id} does not exist.");
+                }
+            }
+            else
+            {
+                player = new Player();
+            }
+            var country = _unitOfWork.CountryRepository.GetAll().Where(c => c.Id == newPlayerDTO.CountryId).FirstOrDefault();
+            if (country == null)
+            {
+                throw new NotFoundException($"Country with ID {newPlayerDTO.CountryId} does not exist.");
+            }
+            player.Country = country;
+            player.Name = newPlayerDTO.Name;
+            player.Photo = newPlayerDTO.Photo.IsNullOrEmpty() ? player.Photo : newPlayerDTO.Photo;
+            player.BirthDate = newPlayerDTO.BirthDate;
+            player.Position = newPlayerDTO.Position;
+            if (newPlayerDTO.Id == 0)
+            {
+                _unitOfWork.PlayerRepository.Create(player);
+            }
+            else
+            {
+                _unitOfWork.PlayerRepository.Update(player);
+            }
+            _unitOfWork.SaveChanges();
+            return player.Id;
+        }
+
+        public void DeletePlayersEngagement(long playerId, long engagementId)
+        {
+            var player = _unitOfWork.PlayerRepository.GetAll(p => p.Engagements).FirstOrDefault(p => p.Id == playerId);
+            if (player == null)
+            {
+                throw new NotFoundException($"Player with ID {playerId} does not exist.");
+            }
+            var engagement = player.Engagements.Where(e => e.Id == engagementId).FirstOrDefault();
+            if (engagement != null)
+            {
+                _unitOfWork.TeamEngagementRepository.Delete(engagement);
+                _unitOfWork.SaveChanges();
+            }
         }
 
         public PaginationWrapper<PlayerListPreviewDTO> GetListed(PlayerFilterQuery query)
@@ -117,7 +204,7 @@ namespace FBSApp.Services
                 Flag = te.Team.Country.Flag,
                 StartDate = te.StartDate,
                 EndDate = te.EndDate,
-            });
+            }).OrderBy(e => e.StartDate);
         }
 
         public IEnumerable<string> Temp()
