@@ -23,7 +23,7 @@ namespace FBSApp.Repository
 
         public void Delete(T entity)
         {
-            _dbContext.Set<T>().Update(entity);
+            _dbContext.Set<T>().Remove(entity);
         }
 
         public IQueryable<T> GetAll(params Expression<Func<T, object>>[] includes)
