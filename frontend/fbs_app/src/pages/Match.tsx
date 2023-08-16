@@ -241,12 +241,22 @@ export const Match = () => {
                         <div className={classes.goalNumber}>{player.goals}</div>
                       </div>
                     )}
+                    {player.ownGoals > 0 && (
+                      <div className={classes.playerAutoGoals}>
+                        <SportsSoccerIcon fontSize="small"></SportsSoccerIcon>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
               <div className={classes.awayTeamSuad}>
                 {awayTeamSquad.starters?.map((player) => (
                   <div className={classes.awaySquadPlayer}>
+                    {player.ownGoals > 0 && (
+                      <div className={classes.playerAutoGoals}>
+                        <SportsSoccerIcon fontSize="small"></SportsSoccerIcon>
+                      </div>
+                    )}
                     {player.goals > 0 && (
                       <div className={classes.playerGoals}>
                         <SportsSoccerIcon fontSize="small"></SportsSoccerIcon>

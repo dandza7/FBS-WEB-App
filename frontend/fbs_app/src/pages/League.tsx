@@ -180,6 +180,10 @@ const League = () => {
     <div className={classes.league}>
       <div className={classes.whiteContainerTitle}>
         <h2>{league?.name}</h2>
+        <img
+          className={classes.leagueFlag}
+          src={`data:image/png;base64,${league?.flag}`}
+        ></img>
       </div>
       <div className={classes.leagueMenu}>
         <div

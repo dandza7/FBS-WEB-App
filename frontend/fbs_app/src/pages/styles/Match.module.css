@@ -209,7 +209,7 @@
 
 .homeSquadPlayer {
   padding: 0.8rem 0.3rem;
-  width: 100%;
+  width: 98%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -218,7 +218,7 @@
 }
 .awaySquadPlayer {
   padding: 0.8rem 0.3rem;
-  width: 100%;
+  width: 98%;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -268,6 +268,10 @@
   color: rgb(255, 254, 254);
   border-radius: 0.2rem;
   padding: 0.1rem;
+  min-width: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .playerGoals {
@@ -332,6 +336,10 @@
 .winner {
   font-weight: 800;
   color: rgb(33, 33, 33);
+}
+
+.playerAutoGoals {
+  color: rgb(216, 28, 60);
 }
 
 @media only screen and (max-width: 650px) {
