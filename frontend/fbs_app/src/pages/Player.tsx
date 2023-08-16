@@ -197,7 +197,7 @@ const Player = () => {
                             <span
                               className={classes.engagamentName}
                               onClick={() => {
-                                navigate("/team/" + engagament.id);
+                                navigate("/team/" + engagament.teamId);
                               }}
                             >
                               {engagament?.name}
