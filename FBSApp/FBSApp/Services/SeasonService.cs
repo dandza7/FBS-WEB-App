@@ -92,6 +92,7 @@ namespace FBSApp.Services
             var teams = season.Teams;
             Dictionary<string, TeamTableViewDTO> table = teams.ToDictionary(t => t.Name, t => new TeamTableViewDTO
             {
+                TeamId = t.Id,
                 Name = t.Name,
                 Logo = t.Logo,
                 Flag = t.Country.Flag,
@@ -145,6 +146,7 @@ namespace FBSApp.Services
             }
             Dictionary<string, TeamTableViewDTO> table = teams.ToDictionary(t => t.Name, t => new TeamTableViewDTO
             {
+                TeamId = t.Id,
                 Name = t.Name,
                 Logo = t.Logo,
                 Flag = t.Country.Flag,

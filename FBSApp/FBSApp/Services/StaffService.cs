@@ -31,6 +31,7 @@ namespace FBSApp.Services
             var employments = _unitOfWork.TeamEmploymentRepository.GetAll(te => te.Team).Where(te => te.StaffId == staffId);
             return employments.Select(e => new TeamEmploymentDTO
             {
+                TeamId = e.TeamId,
                 TeamName = e.Team.Name,
                 TeamLogo = e.Team.Logo,
                 StartDate = e.StartDate,
