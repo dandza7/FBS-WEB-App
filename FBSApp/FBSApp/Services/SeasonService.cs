@@ -101,7 +101,7 @@ namespace FBSApp.Services
                 GoalsScored = 0,
                 GoalsConceded = 0,
             });
-            var matches = season.Matches.Where(m => m.PlayersEvidention.Any());
+            var matches = season.Matches.Where(m => m.MatchActors.Any()); //Izbaciti Where kad se ubace svi mecevi
             foreach (var match in matches)
             {
                 CalculateMatchWinner(match, table);
@@ -126,7 +126,7 @@ namespace FBSApp.Services
                 throw new NotFoundException($"Season with ID {seasonId} does not exist.");
             }
             var teams = season.Teams;
-            var matches = season.Matches.Where(m => m.PlayersEvidention.Any());
+            var matches = season.Matches.Where(m => m.MatchActors.Any()); //Izbaciti Where kad se ubace svi mecevi
             if (query != null)
             {
                 if (query.TeamsSubsetFilter != null)
