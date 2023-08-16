@@ -12,7 +12,6 @@ import ResultCard from "../components/Results/ResultCard";
 
 const Team = () => {
   const [tab, setTab] = useState("Matches");
-
   const [team, setTeam] = useState(null);
   const [squad, setSquad] = useState<any[]>([]);
   const [staff, setStaff] = useState<any[]>([]);

@@ -3,7 +3,7 @@ import classes from "./styles/League.module.css";
 import { useState, useEffect, useContext } from "react";
 import Select from "react-select";
 import ReactLoading from "react-loading";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import AuthContext from "../store/auth-context";
 import Pagination from "../components/Utils/Pagination";
 import ResultCard from "../components/Results/ResultCard";
@@ -30,7 +30,6 @@ const League = () => {
   const authCtx = useContext(AuthContext);
   const [toggleFilters, setToggleFilters] = useState(false);
   const [open, setOpen] = useState(false);
-
   const [toggleFilterDate, setToggleFilterDate] = useState(false);
   const [toggleFilterMinutes, setToggleFilterMinutes] = useState(false);
   const [toggleFilterGameweeks, setToggleFilterGameweeks] = useState(false);
@@ -38,7 +37,7 @@ const League = () => {
     useState(false);
   const [toggleFilterSubset, setToggleFilterSubset] = useState(false);
   const [teamList, setTeamList] = useState<any[]>([]);
-
+  const navigate = useNavigate();
   const style = {
     position: "absolute" as "absolute",
     top: "50%",
@@ -317,7 +316,14 @@ const League = () => {
                                   src={`data:image/png;base64,${team?.logo}`}
                                 ></img>
                               )}
-                              <span>{team?.name}</span>
+                              <span
+                                className={classes.scoreBoard_teamName}
+                                onClick={() => {
+                                  navigate("/team/" + team.id);
+                                }}
+                              >
+                                {team?.name}
+                              </span>
                             </div>
                           </td>
 

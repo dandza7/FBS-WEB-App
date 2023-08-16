@@ -131,6 +131,10 @@
   font-weight: bold;
 }
 
+.engagamentName {
+  cursor: pointer;
+}
+
 @media only screen and (max-width: 650px) {
   .playerImage {
     width: 130px;

@@ -194,7 +194,14 @@ const Player = () => {
                                 src={`data:image/png;base64,${engagament?.logo}`}
                               ></img>
                             )}
-                            {engagament?.name}
+                            <span
+                              className={classes.engagamentName}
+                              onClick={() => {
+                                navigate("/team/" + engagament.id);
+                              }}
+                            >
+                              {engagament?.name}
+                            </span>
                           </div>
                         </td>
                         <td>
