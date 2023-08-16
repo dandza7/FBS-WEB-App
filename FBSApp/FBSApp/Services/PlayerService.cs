@@ -202,6 +202,7 @@ namespace FBSApp.Services
                 Name = te.Team.Name,
                 Logo = te.Team.Logo,
                 Flag = te.Team.Country.Flag,
+                TeamId = te.Team.Id,
                 StartDate = te.StartDate,
                 EndDate = te.EndDate,
             }).OrderBy(e => e.StartDate);

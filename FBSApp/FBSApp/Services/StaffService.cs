@@ -31,11 +31,22 @@ namespace FBSApp.Services
             var employments = _unitOfWork.TeamEmploymentRepository.GetAll(te => te.Team).Where(te => te.StaffId == staffId);
             return employments.Select(e => new TeamEmploymentDTO
             {
+                TeamId = e.TeamId,
                 TeamName = e.Team.Name,
                 TeamLogo = e.Team.Logo,
                 StartDate = e.StartDate,
                 EndDate = e.EndDate,
             });
+        }
+
+        public StaffDTO GetOne(long id)
+        {
+            var staff = _unitOfWork.StaffRepository.GetAll(s => s.Country).FirstOrDefault(s => s.Id == id);
+            if (staff == null)
+            {
+                throw new NotFoundException($"Staff with ID {id} doest not exist!");
+            }
+            return _mapper.Map<StaffDTO>(staff);
         }
 
         public IEnumerable<AwardDTO> GetStaffAwards(long staffId)

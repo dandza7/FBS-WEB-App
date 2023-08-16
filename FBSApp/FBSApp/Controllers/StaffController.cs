@@ -28,6 +28,16 @@ namespace FBSApp.Controllers
         }
 
         /// <summary>
+        /// [Anonymous] Gets staff by id
+        /// </summary>
+        [HttpGet("{id}", Name = "GetOneStaff")]
+        [AllowAnonymous]
+        public ActionResult<StaffDTO> GetOneStaff(long id)
+        {
+            return Ok(_staffService.GetOne(id));
+        }
+
+        /// <summary>
         /// [Anonymous] Gets staff employments
         /// </summary>
         [HttpGet("{id}/employments", Name = "GetAllStaffEmployments")]

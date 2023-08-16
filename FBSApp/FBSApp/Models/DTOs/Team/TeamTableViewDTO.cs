@@ -2,6 +2,7 @@
 {
     public class TeamTableViewDTO
     {
+        public long TeamId { get; set; }
         public string Name { get; set; }
         public string Logo { get; set; }
         public string Flag { get; set; }
