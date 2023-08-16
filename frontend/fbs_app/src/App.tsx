@@ -6,6 +6,7 @@ import {
   RouterProvider,
   Route,
   Link,
+  redirect,
   createRoutesFromElements,
 } from "react-router-dom";
 import RootLayout from "./components/RootLayout.tsx/RootLayout";
@@ -25,8 +26,8 @@ const router = createBrowserRouter(
     <Route>
       <Route path="/login" element={<Login></Login>} />
       <Route path="/" element={<RootLayout></RootLayout>}>
-        {<Route path="/" index element={<></>}></Route>}
-        <Route path="/leagues" element={<Leagues></Leagues>}></Route>
+        {<Route path="/" element={<></>}></Route>}
+        <Route path="/leagues" index element={<Leagues></Leagues>}></Route>
         <Route path="/league/:id" element={<League></League>}></Route>
         <Route path="/teams" element={<Teams></Teams>}></Route>
         <Route path="/staff" element={<Staff></Staff>}></Route>
