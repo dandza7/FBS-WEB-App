@@ -1,7 +1,9 @@
 import React from "react";
 import classes from "./TeamPositionPlayers.module.css";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router";
 const TeamPositionPlayers = (props) => {
+  const navigate = useNavigate();
   function getAge(dateString: Date) {
     var today = new Date();
     var birthDate = new Date(dayjs(dateString).format("MMM D, YYYY"));
@@ -36,7 +38,15 @@ const TeamPositionPlayers = (props) => {
                         src={`data:image/png;base64,${player?.countryFlag}`}
                       ></img>
                     )}
-                    {player?.name}
+                    <span
+                      className={classes.playerName}
+                      onClick={() => {
+                        navigate("/player/" + player.id);
+                      }}
+                    >
+                      {" "}
+                      {player?.name}
+                    </span>
                   </div>
                 </td>
                 <td>{getAge(player?.birthDate)}</td>

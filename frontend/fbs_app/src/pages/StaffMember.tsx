@@ -7,10 +7,11 @@ import { useNavigate } from "react-router";
 import PlayerResultCard from "../components/Results/PlayerResultCard";
 import Pagination from "../components/Utils/Pagination";
 
-const Player = () => {
-  const [showMatches, setshowMaches] = useState(true);
+const StaffMember = () => {
+  const [showAwards, setshowAwards] = useState(false);
   const [player, setPlayer] = useState(null);
-  const [playerEngagements, setPlayerEngagements] = useState(null);
+  const [employments, setEmployments] = useState<any[]>([]);
+  const [awards, setAwards] = useState<any[]>([]);
   const [matches, setMatches] = useState<any[]>([]);
   const navigate = useNavigate();
   const [totalMatchCount, setTotalMatchCount] = useState(null);
@@ -30,7 +31,7 @@ const Player = () => {
   }
 
   useEffect(() => {
-    fetch("http://localhost:5271/api/players/" + id, {
+    fetch("http://localhost:5271/api/staff/" + id + "/employments", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -40,8 +41,8 @@ const Player = () => {
         return res.json();
       })
       .then((data) => {
-        setPlayer(data);
-        getMatches();
+        console.log(data);
+        setEmployments(data);
       })
       .catch((error) => {
         alert(error);
@@ -49,7 +50,7 @@ const Player = () => {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:5271/api/players/" + id + "/engagements", {
+    fetch("http://localhost:5271/api/staff/" + id + "/awards", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -60,35 +61,12 @@ const Player = () => {
       })
       .then((data) => {
         console.log(data);
-        setPlayerEngagements(data);
+        setAwards(data);
       })
       .catch((error) => {
         alert(error);
       });
   }, []);
-
-  const getMatches = () => {
-    fetch(
-      `http://localhost:5271/api/players/${id}/matches/${selectedPage}/${pageSize}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data);
-        setMatches(data.entities);
-        setTotalMatchCount(data.totalCount);
-      })
-      .catch((error) => {
-        alert(error);
-      });
-  };
 
   const changePage = (page: number) => {
     setSelectedPage(page);
@@ -125,55 +103,28 @@ const Player = () => {
       <div className={classes.playerMenu}>
         <div
           className={
-            showMatches
+            !showAwards
               ? classes.playerMenuItemSelected
               : classes.playerMenuItem
           }
-          onClick={() => setshowMaches(true)}
+          onClick={() => setshowAwards(false)}
         >
-          Matches
+          Career
         </div>
         <div
           className={
-            !showMatches
-              ? classes.playerMenuItemSelected
-              : classes.playerMenuItem
+            showAwards ? classes.playerMenuItemSelected : classes.playerMenuItem
           }
-          onClick={() => setshowMaches(false)}
+          onClick={() => setshowAwards(true)}
         >
-          Teams
+          Awards
         </div>
       </div>
-      {showMatches && (
+      {!showAwards && (
         <div className={classes.whiteContainer}>
-          {matches?.length > 0 ? (
+          {employments?.length > 0 ? (
             <>
-              <h3>Matches</h3>
-              <br></br>
-              <div className={classes.results}>
-                {matches?.map((match) => (
-                  <PlayerResultCard match={match}></PlayerResultCard>
-                ))}
-              </div>
-              {totalMatchCount > pageSize && (
-                <Pagination
-                  change={changePage}
-                  totalCount={totalMatchCount}
-                  pageSize={pageSize}
-                  currentPage={selectedPage}
-                ></Pagination>
-              )}
-            </>
-          ) : (
-            <div>There is no data for this player.</div>
-          )}
-        </div>
-      )}
-      {!showMatches && (
-        <div className={classes.whiteContainer}>
-          {playerEngagements.length > 0 ? (
-            <>
-              <h3>Teams</h3>
+              <h3>Carrer</h3>
               <br></br>
               <div className={classes.engagaments}>
                 <table className={classes.engagamentsTable}>
@@ -184,29 +135,22 @@ const Player = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {playerEngagements?.map((engagament: any) => (
+                    {employments?.map((employment: any) => (
                       <tr>
                         <td>
                           <div className={classes.imgNameColumn}>
-                            {engagament?.logo && (
+                            {employment?.teamLogo && (
                               <img
                                 className={classes.tableFlag}
-                                src={`data:image/png;base64,${engagament?.logo}`}
+                                src={`data:image/png;base64,${employment?.teamLogo}`}
                               ></img>
                             )}
-                            <span
-                              className={classes.engagamentName}
-                              onClick={() => {
-                                navigate("/team/" + engagament.id);
-                              }}
-                            >
-                              {engagament?.name}
-                            </span>
+                            {employment?.teamName}
                           </div>
                         </td>
                         <td>
-                          {dayjs(engagament.startDate).format("MM.YYYY")}-
-                          {dayjs(engagament.endDate).format("MM.YYYY")}
+                          {dayjs(employment.startDate).format("MM.YYYY")}-
+                          {dayjs(employment.endDate).format("MM.YYYY")}
                         </td>
                       </tr>
                     ))}
@@ -215,7 +159,44 @@ const Player = () => {
               </div>
             </>
           ) : (
-            <div>There is no data for this player.</div>
+            <div>There is no data for this person.</div>
+          )}
+        </div>
+      )}
+      {showAwards && (
+        <div className={classes.whiteContainer}>
+          {awards.length > 0 ? (
+            <>
+              <h3>Awards</h3>
+              <br></br>
+              <div className={classes.engagaments}>
+                <table className={classes.engagamentsTable}>
+                  <thead>
+                    <tr>
+                      <th>Award</th>
+                      <th>Season</th>
+                      <th>League</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {awards?.map((award: any) => (
+                      <tr>
+                        <td>
+                          <div className={classes.imgNameColumn}>
+                            {award?.type}
+                            {award.month && ` - ${award.month}`}
+                          </div>
+                        </td>
+                        <td>{award.season}</td>
+                        <td>{award.league}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          ) : (
+            <div>There is no data for this person.</div>
           )}
         </div>
       )}
@@ -223,4 +204,4 @@ const Player = () => {
   );
 };
 
-export default Player;
+export default StaffMember;

@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import classes from "./styles/Match.module.css";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
@@ -23,6 +23,7 @@ const stats = [
 
 export const Match = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [showStatistics, setShowStatistics] = useState(true);
   const [match, setMatch] = useState(null);
   const [homeTeamStats, setHomeTeamStats] = useState(null);
@@ -231,7 +232,14 @@ export const Match = () => {
                       className={classes.playerFlag}
                       src={`data:image/png;base64,${player.flag}`}
                     ></img>
-                    <div className={classes.playerName}>{player?.name}</div>
+                    <div
+                      className={classes.playerName}
+                      onClick={() => {
+                        navigate("/player/" + player.id);
+                      }}
+                    >
+                      {player?.name}
+                    </div>
                     <div className={classes.playerMinutes}>
                       {player?.minutes}'
                     </div>
@@ -239,6 +247,11 @@ export const Match = () => {
                       <div className={classes.playerGoals}>
                         <SportsSoccerIcon fontSize="small"></SportsSoccerIcon>
                         <div className={classes.goalNumber}>{player.goals}</div>
+                      </div>
+                    )}
+                    {player.ownGoals > 0 && (
+                      <div className={classes.playerAutoGoals}>
+                        <SportsSoccerIcon fontSize="small"></SportsSoccerIcon>
                       </div>
                     )}
                   </div>
@@ -247,6 +260,11 @@ export const Match = () => {
               <div className={classes.awayTeamSuad}>
                 {awayTeamSquad.starters?.map((player) => (
                   <div className={classes.awaySquadPlayer}>
+                    {player.ownGoals > 0 && (
+                      <div className={classes.playerAutoGoals}>
+                        <SportsSoccerIcon fontSize="small"></SportsSoccerIcon>
+                      </div>
+                    )}
                     {player.goals > 0 && (
                       <div className={classes.playerGoals}>
                         <SportsSoccerIcon fontSize="small"></SportsSoccerIcon>
@@ -256,7 +274,14 @@ export const Match = () => {
                     <div className={classes.playerMinutes}>
                       {player?.minutes}'
                     </div>
-                    <div className={classes.playerName}>{player?.name}</div>
+                    <div
+                      className={classes.playerName}
+                      onClick={() => {
+                        navigate("/player/" + player.id);
+                      }}
+                    >
+                      {player?.name}
+                    </div>
                     <img
                       className={classes.playerFlag}
                       src={`data:image/png;base64,${player.flag}`}
@@ -274,7 +299,14 @@ export const Match = () => {
                       className={classes.playerFlag}
                       src={`data:image/png;base64,${player.flag}`}
                     ></img>
-                    <div className={classes.playerName}>{player?.name}</div>
+                    <div
+                      className={classes.playerName}
+                      onClick={() => {
+                        navigate("/team/" + player.id);
+                      }}
+                    >
+                      {player?.name}
+                    </div>
                     {player.minutes > 0 && (
                       <div className={classes.playerMinutes}>
                         {player?.minutes}'
@@ -303,7 +335,14 @@ export const Match = () => {
                         {player?.minutes}'
                       </div>
                     )}
-                    <div className={classes.playerName}>{player?.name}</div>
+                    <div
+                      className={classes.playerName}
+                      onClick={() => {
+                        navigate("/player/" + player.id);
+                      }}
+                    >
+                      {player?.name}
+                    </div>
                     <img
                       className={classes.playerFlag}
                       src={`data:image/png;base64,${player.flag}`}

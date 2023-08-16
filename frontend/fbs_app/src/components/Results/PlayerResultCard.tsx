@@ -2,8 +2,9 @@ import React from "react";
 import classes from "./Results.module.css";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router";
+import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 
-const ResultCard = (props: any) => {
+const PlayerResultCard = (props: any) => {
   const navigate = useNavigate();
 
   return (
@@ -53,12 +54,23 @@ const ResultCard = (props: any) => {
         </div>
       </div>
 
-      <div className={classes.scoreGoals}>
-        <p>{props.match.homeTeamGoals}</p>
-        <p>{props.match.awayTeamGoals}</p>
+      <div className={classes.score}>
+        {props.match.goals > 0 && (
+          <div className={classes.playerGoals}>
+            <SportsSoccerIcon fontSize="small"></SportsSoccerIcon>
+            <div className={classes.goalNumber}>{props.match.goals}</div>
+          </div>
+        )}
+        <div className={classes.playerMinutes}>
+          <p>{props.match.minutes}'</p>
+        </div>
+        <div className={classes.scoreGoals}>
+          <h3>{props.match.homeTeamGoals}</h3>
+          <h3>{props.match.awayTeamGoals}</h3>
+        </div>
       </div>
     </div>
   );
 };
 
-export default ResultCard;
+export default PlayerResultCard;

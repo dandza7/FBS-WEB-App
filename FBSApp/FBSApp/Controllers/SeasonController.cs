@@ -42,7 +42,7 @@ namespace FBSApp.Controllers
         /// [Admin] Gets teams in season
         /// </summary>
         [HttpGet("{id}/teams", Name = "GetTeamsInSeason")]
-        [Authorize(Roles = "ADMIN")]
+        [AllowAnonymous]
         public ActionResult<IEnumerable<TeamListPreviewDTO>> GetTeamsInSeason(long id)
         {
             return Ok(_seasonService.GetTeamsInSeason(id));

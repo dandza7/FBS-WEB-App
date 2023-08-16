@@ -2,7 +2,7 @@ import React from "react";
 import classes from "./styles/Players.module.css";
 import { useState, useEffect } from "react";
 import Pagination from "../components/Utils/Pagination";
-import PlayerCard from "../components/Players/PlayerCard";
+import StaffCard from "../components/Staff/StaffCard";
 import ReactLoading from "react-loading";
 const Staff = () => {
   const pageSize = 10;
@@ -56,7 +56,7 @@ const Staff = () => {
           <>
             <div className={classes.players}>
               {staff?.map((staff) => (
-                <PlayerCard player={staff} key={staff.id}></PlayerCard>
+                <StaffCard player={staff} key={staff.id}></StaffCard>
               ))}
             </div>
             <Pagination
