@@ -38,6 +38,16 @@ namespace FBSApp.Services
             });
         }
 
+        public StaffDTO GetOne(long id)
+        {
+            var staff = _unitOfWork.StaffRepository.GetAll(s => s.Country).FirstOrDefault(s => s.Id == id);
+            if (staff == null)
+            {
+                throw new NotFoundException($"Staff with ID {id} doest not exist!");
+            }
+            return _mapper.Map<StaffDTO>(staff);
+        }
+
         public IEnumerable<AwardDTO> GetStaffAwards(long staffId)
         {
             if (!_unitOfWork.StaffRepository.GetAll().Where(s => s.Id == staffId).Any())
