@@ -19,13 +19,23 @@ namespace FBSApp.Controllers
         }
 
         /// <summary>
+        /// [Anonymous] Gets teams filtered
+        /// </summary>
+        [HttpPost(Name = "GetFiltered")]
+        [AllowAnonymous]
+        public ActionResult<PaginationWrapper<TeamListPreviewDTO>> GetFiltered([FromBody] TeamFilterQuery query)
+        {
+            return Ok(_teamService.GetFiltered(query));
+        }
+
+        /// <summary>
         /// [Anonymous] Gets teams in list view
         /// </summary>
-        [HttpPost(Name = "GetTeamsListed")]
+        [HttpGet(Name = "GetListed")]
         [AllowAnonymous]
-        public ActionResult<PaginationWrapper<TeamListPreviewDTO>> GetTeamsListed([FromBody] TeamFilterQuery query)
+        public ActionResult<IEnumerable<TeamListPreviewDTO>> GetListed()
         {
-            return Ok(_teamService.GetListed(query));
+            return Ok(_teamService.GetListed());
         }
 
         /// <summary>

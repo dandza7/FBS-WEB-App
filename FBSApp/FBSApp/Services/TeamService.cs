@@ -22,7 +22,7 @@ namespace FBSApp.Services
             _mapper = mapper;
         }
 
-        public PaginationWrapper<TeamListPreviewDTO> GetListed(TeamFilterQuery query)
+        public PaginationWrapper<TeamListPreviewDTO> GetFiltered(TeamFilterQuery query)
         {
             var teams = _unitOfWork.TeamRepository.GetAll(t => t.Country).Where(t => t.Name.Contains(query.Name));
             if (query.CountryId != 0)
@@ -74,6 +74,11 @@ namespace FBSApp.Services
                 }),
                 TotalCount = totalCount
             };
+        }
+
+        public IEnumerable<TeamListPreviewDTO> GetListed()
+        {
+            return _mapper.Map<IEnumerable<TeamListPreviewDTO>>(_unitOfWork.TeamRepository.GetAll(t => t.Country));
         }
 
         public TeamDetailedDTO GetTeamDetailed(long teamId)
@@ -131,6 +136,7 @@ namespace FBSApp.Services
                         Position = te.Player.Position,
                         Photo = te.Player.Photo,
                         CountryName = te.Player.Country.Name,
+                        CountryId = te.Player.Country.Id,
                         CountryFlag = te.Player.Country.Flag,
                         BirthDate = te.Player.BirthDate,
                     });

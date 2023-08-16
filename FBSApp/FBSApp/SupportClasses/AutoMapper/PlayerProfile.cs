@@ -15,6 +15,7 @@ namespace FBSApp.SupportClasses.AutoMapper
                 .ForMember(p => p.BirthDate, opt => opt.MapFrom(src => src.BirthDate))
                 .ForMember(p => p.Photo, opt => opt.MapFrom(src => src.Photo))
                 .ForMember(p => p.CountryName, opt => opt.MapFrom(src => src.Country.Name))
+                .ForMember(p => p.CountryId, opt => opt.MapFrom(src => src.Country.Id))
                 .ForMember(p => p.CountryFlag, opt => opt.MapFrom(src => src.Country.Flag));
         }
     }
