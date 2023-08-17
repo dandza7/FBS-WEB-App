@@ -46,7 +46,9 @@ const Player = () => {
   const [selectedEngagementEnd, setSelectedEngagementEnd] =
     React.useState<Dayjs | null>(dayjs(Date.now()));
   const [selectedTeamEngagement, setSelectedTeamEngagement] = useState(null);
-
+  const [selectedDeleteEngagement, setSelectedDeleteEngagement] =
+    useState(null);
+  const [openDeleteEngagement, setOpenDeleteEngagement] = useState(false);
   const handleChangeSelectedTeamEngagement = (selected) => {
     setSelectedTeamEngagement(selected);
   };
@@ -56,6 +58,13 @@ const Player = () => {
   };
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleOpenDeleteEngagement = () => {
+    setOpenDeleteEngagement(true);
+  };
+  const handleCloseDeleteEngagement = () => {
+    setOpenDeleteEngagement(false);
   };
 
   const fetchTeamList = () => {
@@ -189,6 +198,27 @@ const Player = () => {
       .then((res) => {})
       .then((data) => {
         handleClose();
+        fetchEngagements();
+        setshowMaches(false);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+
+  const handleDeleteEngagement = () => {
+    fetch(
+      `http://localhost:5271/api/players/${player.id}/engagement/${selectedDeleteEngagement.id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + authCtx.token,
+        },
+      }
+    )
+      .then((res) => {
+        handleCloseDeleteEngagement();
         fetchEngagements();
         setshowMaches(false);
       })
@@ -340,7 +370,19 @@ const Player = () => {
                           {dayjs(engagament.startDate).format("DD.MM.YYYY")}-
                           {dayjs(engagament.endDate).format("DD.MM.YYYY")}
                         </td>
-                        {authCtx.role == "ADMIN" && <td></td>}
+                        {authCtx.role == "ADMIN" && (
+                          <td>
+                            <div
+                              onClick={() => {
+                                setSelectedDeleteEngagement(engagament);
+                                handleOpenDeleteEngagement();
+                              }}
+                              className={classes.engagementsTable_deleteIcon}
+                            >
+                              <CloseIcon fontSize="small"></CloseIcon>
+                            </div>
+                          </td>
+                        )}
                       </tr>
                     ))}
                   </tbody>
@@ -440,6 +482,50 @@ const Player = () => {
                     Add
                   </button>
                 </div>
+              </div>
+            </div>
+          </div>
+        </Box>
+      </Modal>
+      <Modal
+        open={openDeleteEngagement}
+        onClose={handleCloseDeleteEngagement}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <div className={classes.modalContainerDelete}>
+            <div className={classes.modalHeader}>
+              <h2>Delete engagement</h2>
+              <button
+                onClick={handleCloseDeleteEngagement}
+                className={classes.closeModalButton}
+              >
+                <CloseIcon></CloseIcon>
+              </button>
+            </div>
+            <div className={classes.modalBody}>
+              <div>Are you sure you want to delete this engagement?</div>
+              <br></br>
+              <h4>Player name: {player?.name}</h4>
+              <h4>Team name: {selectedDeleteEngagement?.name}</h4>
+              <h4>
+                Period:{" "}
+                {dayjs(selectedDeleteEngagement?.startDate).format(
+                  "DD.MM.YYYY"
+                )}{" "}
+                -{" "}
+                {dayjs(selectedDeleteEngagement?.endDate).format("DD.MM.YYYY")}
+              </h4>
+
+              <br></br>
+              <div className={classes.modalButtonContainer}>
+                <button
+                  className={classes.modalAddEngagementButton}
+                  onClick={handleDeleteEngagement}
+                >
+                  Confirm
+                </button>
               </div>
             </div>
           </div>
