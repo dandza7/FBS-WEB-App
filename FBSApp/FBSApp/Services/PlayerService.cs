@@ -39,13 +39,6 @@ namespace FBSApp.Services
             {
                 throw new DuplicateItemException($"Player with ID {engagement.PlayerId} already has employment in selected period.");
             }
-            /*foreach (var e in player.Engagements)
-            {
-                if (!(engagement.StartDate > e.EndDate || e.StartDate > engagement.EndDate))
-                {
-                    throw new DuplicateItemException($"Player with ID {engagement.PlayerId} already has employment in selected period.");
-                }
-            }*/
             _unitOfWork.TeamEngagementRepository.Create(new TeamEngagement
             {
                 Team = team,
@@ -58,7 +51,7 @@ namespace FBSApp.Services
 
         public long CreateOrUpdatePlayer(NewPlayerDTO newPlayerDTO)
         {
-            Player player;
+            Player? player;
             if (newPlayerDTO.Id != 0)
             {
                 player = _unitOfWork.PlayerRepository.GetAll().Where(p => p.Id == newPlayerDTO.Id).FirstOrDefault();
@@ -71,7 +64,7 @@ namespace FBSApp.Services
             {
                 player = new Player();
             }
-            var country = _unitOfWork.CountryRepository.GetAll().Where(c => c.Id == newPlayerDTO.CountryId).FirstOrDefault();
+            var country = _unitOfWork.CountryRepository.GetAll().FirstOrDefault(c => c.Id == newPlayerDTO.CountryId);
             if (country == null)
             {
                 throw new NotFoundException($"Country with ID {newPlayerDTO.CountryId} does not exist.");
@@ -138,7 +131,7 @@ namespace FBSApp.Services
 
         public PaginationWrapper<PlayersMatchDTO> GetMatchesByPlayer(long playerId, int page, int pageSize)
         {
-            if (!_unitOfWork.PlayerRepository.GetAll().Where(s => s.Id == playerId).Any())
+            if (!_unitOfWork.PlayerRepository.GetAll().Any(p => p.Id == playerId))
             {
                 throw new NotFoundException($"Player with ID {playerId} does not exist.");
             }
@@ -156,13 +149,13 @@ namespace FBSApp.Services
                     Date = m.Date,
                     HomeTeamGoals = CalculateTeamGoals(m, "home"),
                     AwayTeamGoals = CalculateTeamGoals(m, "away"),
-                    HomeTeam = m.MatchActors.First().IsTeamHost ? _mapper.Map<TeamListPreviewDTO>(m.MatchActors.First().Team) : _mapper.Map<TeamListPreviewDTO>(m.MatchActors.Last().Team),
-                    AwayTeam = m.MatchActors.First().IsTeamHost ? _mapper.Map<TeamListPreviewDTO>(m.MatchActors.Last().Team) : _mapper.Map<TeamListPreviewDTO>(m.MatchActors.First().Team),
+                    HomeTeam = _mapper.Map<TeamListPreviewDTO>(m.MatchActors.Where(ma => ma.IsTeamHost).First().Team),
+                    AwayTeam = _mapper.Map<TeamListPreviewDTO>(m.MatchActors.Where(ma => !ma.IsTeamHost).First().Team),
                     Gameweek = m.Gameweek,
-                    Minutes = m.PlayersEvidention.Where(pe => pe.PlayerId == playerId).First().Minutes,
-                    Goals = m.PlayersEvidention.Where(pe => pe.PlayerId == playerId).First().Goals.Where(g => !g.IsOwnGoal).Count(),
-                    OwnGoals = m.PlayersEvidention.Where(pe => pe.PlayerId == playerId).First().Goals.Where(g => g.IsOwnGoal).Count(),
-                    IsStarter = m.PlayersEvidention.Where(pe => pe.PlayerId == playerId).First().IsStarter,
+                    Minutes = m.PlayersEvidention.First(pe => pe.PlayerId == playerId).Minutes,
+                    Goals = m.PlayersEvidention.First(pe => pe.PlayerId == playerId).Goals.Where(g => !g.IsOwnGoal).Count(),
+                    OwnGoals = m.PlayersEvidention.First(pe => pe.PlayerId == playerId).Goals.Where(g => g.IsOwnGoal).Count(),
+                    IsStarter = m.PlayersEvidention.First(pe => pe.PlayerId == playerId).IsStarter,
                 }),
                 TotalCount = totalCount
             };
@@ -170,7 +163,7 @@ namespace FBSApp.Services
 
         public PlayerListPreviewDTO GetPlayer(long playerId)
         {
-            var player = _unitOfWork.PlayerRepository.GetAll(p => p.Country).Where(p => p.Id == playerId).FirstOrDefault();
+            var player = _unitOfWork.PlayerRepository.GetAll(p => p.Country).FirstOrDefault(p => p.Id == playerId);
             if (player == null)
             {
                 throw new NotFoundException($"Player with ID {playerId} doest not exist!");
@@ -180,7 +173,7 @@ namespace FBSApp.Services
 
         public IEnumerable<AwardDTO> GetPlayersAwards(long playerId)
         {
-            if (!_unitOfWork.PlayerRepository.GetAll().Where(s => s.Id == playerId).Any())
+            if (!_unitOfWork.PlayerRepository.GetAll().Any(p => p.Id == playerId))
             {
                 throw new NotFoundException($"Player with ID {playerId} doest not exist!");
             }
@@ -190,7 +183,7 @@ namespace FBSApp.Services
 
         public IEnumerable<TeamEngagementDTO> GetPlayersEngagements(long playerId)
         {
-            if (!_unitOfWork.PlayerRepository.GetAll().Where(p => p.Id == playerId).Any())
+            if (!_unitOfWork.PlayerRepository.GetAll().Any(p => p.Id == playerId))
             {
                 throw new NotFoundException($"Player with ID {playerId} does not exist!");
             }
@@ -219,7 +212,7 @@ namespace FBSApp.Services
 
         private int CalculateTeamGoals(Match match, string teamtype = "home")
         {
-            var team = teamtype == "home" ? match.MatchActors.Where(ma => ma.IsTeamHost).First().Team : match.MatchActors.Where(ma => !ma.IsTeamHost).First().Team;
+            var team = match.MatchActors.First(ma => ma.IsTeamHost == (teamtype == "home")).Team;
 
             var goals = 0;
 

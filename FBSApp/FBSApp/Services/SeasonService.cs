@@ -23,7 +23,7 @@ namespace FBSApp.Services
 
         public long Create(NewSeasonDTO newSeason)
         {
-            if (_unitOfWork.SeasonRepository.GetAll().Where(l => l.Year == newSeason.Year && l.LeagueId == newSeason.LeagueId).Any())
+            if (_unitOfWork.SeasonRepository.GetAll().Any(l => l.Year == newSeason.Year && l.LeagueId == newSeason.LeagueId))
             {
                 throw new DuplicateItemException($"Selected league already has season in year(s) {newSeason.Year}");
             }
@@ -34,7 +34,7 @@ namespace FBSApp.Services
 
         public IEnumerable<SeasonDTO> GetAll(long leagueId)
         {
-            if (!_unitOfWork.LeagueRepository.GetAll().Where(l => l.Id == leagueId).Any())
+            if (!_unitOfWork.LeagueRepository.GetAll().Any(l => l.Id == leagueId))
             {
                 throw new NotFoundException($"League with ID {leagueId} does not exist.");
             }
@@ -43,7 +43,7 @@ namespace FBSApp.Services
 
         public PaginationWrapper<MatchListPreviewDTO> GetMatchesInSeason(long seasonId, int page, int pageSize)
         {
-            if (!_unitOfWork.SeasonRepository.GetAll().Where(s => s.Id == seasonId).Any())
+            if (!_unitOfWork.SeasonRepository.GetAll().Any(s => s.Id == seasonId))
             {
                 throw new NotFoundException($"Season with ID {seasonId} does not exist.");
             }
@@ -61,8 +61,8 @@ namespace FBSApp.Services
                     Date = m.Date,
                     HomeTeamGoals = CalculateTeamGoals(m, "home"),
                     AwayTeamGoals = CalculateTeamGoals(m, "away"),
-                    HomeTeam = m.MatchActors.First().IsTeamHost ? _mapper.Map<TeamListPreviewDTO>(m.MatchActors.First().Team) : _mapper.Map<TeamListPreviewDTO>(m.MatchActors.Last().Team),
-                    AwayTeam = m.MatchActors.First().IsTeamHost ? _mapper.Map<TeamListPreviewDTO>(m.MatchActors.Last().Team) : _mapper.Map<TeamListPreviewDTO>(m.MatchActors.First().Team),
+                    HomeTeam = _mapper.Map<TeamListPreviewDTO>(m.MatchActors.Where(ma => ma.IsTeamHost).First().Team),
+                    AwayTeam = _mapper.Map<TeamListPreviewDTO>(m.MatchActors.Where(ma => !ma.IsTeamHost).First().Team),
                     Gameweek = m.Gameweek
                 }),
                 TotalCount = totalCount
@@ -71,7 +71,7 @@ namespace FBSApp.Services
 
         public IEnumerable<TeamListPreviewDTO> GetTeamsInSeason(long seasonId)
         {
-            var season = _unitOfWork.SeasonRepository.GetAll().Include(s => s.Teams).ThenInclude(t => t.Country).Where(s => s.Id == seasonId).FirstOrDefault();
+            var season = _unitOfWork.SeasonRepository.GetAll().Include(s => s.Teams).ThenInclude(t => t.Country).FirstOrDefault(s => s.Id == seasonId);
             if (season == null)
             {
                 throw new NotFoundException($"Season with ID {seasonId} does not exist.");
@@ -84,7 +84,7 @@ namespace FBSApp.Services
             var season = _unitOfWork.SeasonRepository.GetAll().Include(s => s.Teams).ThenInclude(t => t.Country)
                                                               .Include(s => s.Matches).ThenInclude(m => m.MatchActors).ThenInclude(ma => ma.Team)
                                                               .Include(s => s.Matches).ThenInclude(m => m.PlayersEvidention.Where(pe => pe.Goals.Any())).ThenInclude(pm => pm.Goals)
-                                                              .Where(s => s.Id == seasonId).FirstOrDefault();
+                                                              .FirstOrDefault(s => s.Id == seasonId);
             if (season == null)
             {
                 throw new NotFoundException($"Season with ID {seasonId} does not exist.");
@@ -110,10 +110,10 @@ namespace FBSApp.Services
 
 
             return table.Select(t => t.Value).OrderByDescending(t => (3 * t.Wins + t.Draws))
-                                             .ThenBy(t => t.Wins + t.Draws + t.Losses)
                                              .ThenByDescending(t => t.GoalsScored - t.GoalsConceded)
                                              .ThenByDescending(t => t.GoalsScored)
-                                             .ThenByDescending(t => t.Wins);
+                                             .ThenByDescending(t => t.Wins)
+                                             .ThenBy(t => t.Wins + t.Draws + t.Losses);
         }
 
         public IEnumerable<TeamTableViewDTO> GetFilteredTable(long seasonId, TableCalculationQuery query)
@@ -121,7 +121,7 @@ namespace FBSApp.Services
             var season = _unitOfWork.SeasonRepository.GetAll().Include(s => s.Teams).ThenInclude(t => t.Country)
                                                               .Include(s => s.Matches.OrderBy(m => m.Date)).ThenInclude(m => m.MatchActors).ThenInclude(ma => ma.Team)
                                                               .Include(s => s.Matches.OrderBy(m => m.Date)).ThenInclude(m => m.PlayersEvidention.Where(pe => pe.Goals.Any())).ThenInclude(pm => pm.Goals)
-                                                              .Where(s => s.Id == seasonId).FirstOrDefault();
+                                                              .FirstOrDefault(s => s.Id == seasonId);
             if (season == null)
             {
                 throw new NotFoundException($"Season with ID {seasonId} does not exist.");
@@ -207,15 +207,15 @@ namespace FBSApp.Services
             }
         }
 
-        private bool CheckIfTeamExceededGameweekFilterLimit(int playedMatches, TCQ_PlayedGameweeksFilter filter = null)
+        private bool CheckIfTeamExceededGameweekFilterLimit(int playedMatches, TCQ_PlayedGameweeksFilter? filter = null)
         {
             return filter == null ? false : playedMatches >= filter.PlayedGameweeks;
         }
 
-        private void CalculateMatchWinner(Match match, Dictionary<string, TeamTableViewDTO> table, TableCalculationQuery filter = null)
+        private void CalculateMatchWinner(Match match, Dictionary<string, TeamTableViewDTO> table, TableCalculationQuery? filter = null)
         {
-            var homeTeam = match.MatchActors.Where(ma => ma.IsTeamHost).First().Team;
-            var awayTeam = match.MatchActors.Where(ma => !ma.IsTeamHost).First().Team;
+            var homeTeam = match.MatchActors.First(ma => ma.IsTeamHost).Team;
+            var awayTeam = match.MatchActors.First(ma => !ma.IsTeamHost).Team;
 
             var homeGoals = 0;
             var awayGoals = 0;
@@ -225,8 +225,8 @@ namespace FBSApp.Services
             foreach (var pe in match.PlayersEvidention)
             {
                 var teamName = _unitOfWork.TeamEngagementRepository.GetAll(te => te.Team).Where(te => te.PlayerId == pe.PlayerId)
-                                                                                  .Where(te => te.EndDate > match.Date && te.StartDate < match.Date)
-                                                                                  .First().Team.Name;
+                                                                                         .Where(te => te.EndDate > match.Date && te.StartDate < match.Date)
+                                                                                         .First().Team.Name;
                 if (teamName == homeTeam.Name)
                 {
                     foreach (var goal in pe.Goals)
@@ -302,16 +302,16 @@ namespace FBSApp.Services
 
         private int CalculateTeamGoals(Match match, string teamtype = "home")
         {
-            var team = teamtype == "home" ? match.MatchActors.Where(ma => ma.IsTeamHost).First().Team : match.MatchActors.Where(ma => !ma.IsTeamHost).First().Team;
+            var team = match.MatchActors.First(ma => ma.IsTeamHost == (teamtype == "home")).Team;
 
             var goals = 0;
 
             foreach (var pe in match.PlayersEvidention)
             {
                 var teamEngagement = _unitOfWork.TeamEngagementRepository.GetAll(te => te.Team).Where(te => te.PlayerId == pe.PlayerId)
-                                                                                      .Where(te => te.TeamId == team.Id)
-                                                                                      .Where(te => te.EndDate > match.Date && te.StartDate < match.Date)
-                                                                                      .FirstOrDefault();
+                                                                                               .Where(te => te.TeamId == team.Id)
+                                                                                               .Where(te => te.EndDate > match.Date && te.StartDate < match.Date)
+                                                                                               .FirstOrDefault();
 
                 foreach (var goal in pe.Goals)
                 {

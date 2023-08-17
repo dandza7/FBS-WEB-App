@@ -45,7 +45,7 @@ namespace FBSApp.Services
 
         public LeagueDTO GetById(long id)
         {
-            var league = _unitOfWork.LeagueRepository.GetAll(l => l.Country).Where(l => l.Id == id).FirstOrDefault();
+            var league = _unitOfWork.LeagueRepository.GetAll(l => l.Country).FirstOrDefault(l => l.Id == id);
             if (league == null)
             {
                 throw new NotFoundException($"League with ID {id} does not exist!");

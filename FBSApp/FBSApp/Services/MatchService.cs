@@ -24,11 +24,12 @@ namespace FBSApp.Services
 
         public MatchSquadDTO GetMatchSquad(long id)
         {
-            var match = _unitOfWork.MatchRepository.GetAll().Where(m => m.Id == id)
-                                                            .Include(m => m.MatchActors)
+            var match = _unitOfWork.MatchRepository.GetAll().Include(m => m.MatchActors)
                                                             .Include(m => m.PlayersEvidention).ThenInclude(pm => pm.Goals)
                                                             .Include(m => m.PlayersEvidention).ThenInclude(pm => pm.Player).ThenInclude(p => p.Country)
-                                                            .FirstOrDefault();
+                                                            .FirstOrDefault(m => m.Id == id);
+
+
             if (match == null)
             {
                 throw new NotFoundException($"Match with ID {id} does not exist!");
@@ -37,22 +38,23 @@ namespace FBSApp.Services
             InsertStaffIntoSquad(match, squads);
             foreach (var pe in match.PlayersEvidention)
             {
-                InsertPlayerIntoSquad(pe, squads, match.MatchActors.Where(ma => ma.IsTeamHost).First().TeamId, match.MatchActors.Where(ma => !ma.IsTeamHost).First().TeamId, match.Date);
+                var homeTeamId = match.MatchActors.Where(ma => ma.IsTeamHost).First().TeamId;
+                var awayTeamId = match.MatchActors.Where(ma => !ma.IsTeamHost).First().TeamId;
+                InsertPlayerIntoSquad(pe, squads, homeTeamId, awayTeamId, match.Date);
             }
             return squads;
         }
 
         public MatchStatsDTO GetMatchStats(long id)
         {
-            var match = _unitOfWork.MatchRepository.GetAll().Where(m => m.Id == id)
-                                                            .Include(m => m.MatchActors).ThenInclude(ma => ma.Stats)
-                                                            .FirstOrDefault();
+            var match = _unitOfWork.MatchRepository.GetAll().Include(m => m.MatchActors).ThenInclude(ma => ma.Stats)
+                                                            .FirstOrDefault(m => m.Id == id);
             if (match == null)
             {
                 throw new NotFoundException($"Match with ID {id} does not exist!");
             }
-            var homeTeamStats = match.MatchActors.Where(ma => ma.IsTeamHost).First().Stats;
-            var awayTeamStats = match.MatchActors.Where(ma => !ma.IsTeamHost).First().Stats;
+            var homeTeamStats = match.MatchActors.First(ma => ma.IsTeamHost).Stats;
+            var awayTeamStats = match.MatchActors.First(ma => !ma.IsTeamHost).Stats;
             if (homeTeamStats == null || awayTeamStats == null)
             {
                 throw new NotFoundException($"There are no complete stats for match with ID {id}.");
@@ -100,10 +102,9 @@ namespace FBSApp.Services
 
         public MatchListPreviewDTO GetOne(long id)
         {
-            var match = _unitOfWork.MatchRepository.GetAll().Where(m => m.Id == id)
-                                                            .Include(m => m.MatchActors).ThenInclude(ma => ma.Team).ThenInclude(t => t.Country)
+            var match = _unitOfWork.MatchRepository.GetAll().Include(m => m.MatchActors).ThenInclude(ma => ma.Team).ThenInclude(t => t.Country)
                                                             .Include(m => m.PlayersEvidention.Where(pe => pe.Goals.Any())).ThenInclude(pm => pm.Goals)
-                                                            .FirstOrDefault();
+                                                            .FirstOrDefault(m => m.Id == id);
             if (match == null)
             {
                 throw new NotFoundException($"Match with ID {id} does not exist!");
@@ -114,24 +115,24 @@ namespace FBSApp.Services
                 Date = match.Date,
                 HomeTeamGoals = CalculateTeamGoals(match, "home"),
                 AwayTeamGoals = CalculateTeamGoals(match, "away"),
-                HomeTeam = _mapper.Map<TeamListPreviewDTO>(match.MatchActors.Where(ma => ma.IsTeamHost).First().Team),
-                AwayTeam = _mapper.Map<TeamListPreviewDTO>(match.MatchActors.Where(ma => !ma.IsTeamHost).First().Team),
+                HomeTeam = _mapper.Map<TeamListPreviewDTO>(match.MatchActors.First(ma => ma.IsTeamHost).Team),
+                AwayTeam = _mapper.Map<TeamListPreviewDTO>(match.MatchActors.First(ma => !ma.IsTeamHost).Team),
                 Gameweek = match.Gameweek
             };
         }
 
         private int CalculateTeamGoals(Match match, string teamtype = "home")
         {
-            var team = teamtype == "home" ? match.MatchActors.Where(ma => ma.IsTeamHost).First().Team : match.MatchActors.Where(ma => !ma.IsTeamHost).First().Team;
+            var team = teamtype == "home" ? match.MatchActors.First(ma => ma.IsTeamHost).Team : match.MatchActors.First(ma => !ma.IsTeamHost).Team;
 
             var goals = 0;
 
             foreach (var pe in match.PlayersEvidention)
             {
                 var teamEngagement = _unitOfWork.TeamEngagementRepository.GetAll(te => te.Team).Where(te => te.PlayerId == pe.PlayerId)
-                                                                                      .Where(te => te.TeamId == team.Id)
-                                                                                      .Where(te => te.EndDate > match.Date && te.StartDate < match.Date)
-                                                                                      .FirstOrDefault();
+                                                                                               .Where(te => te.TeamId == team.Id)
+                                                                                               .Where(te => te.EndDate > match.Date && te.StartDate < match.Date)
+                                                                                               .FirstOrDefault();
 
                 foreach (var goal in pe.Goals)
                 {
@@ -159,20 +160,20 @@ namespace FBSApp.Services
         }
         private void InsertStaffIntoSquad(Match match, MatchSquadDTO squad)
         {
-            var homeTeamId = match.MatchActors.Where(ma => ma.IsTeamHost).First().TeamId;
-            var homeCoach = _unitOfWork.StaffRepository.GetAll().Include(s => s.Country)
-                                                                .Where(s => s.BossId == null)
-                                                                .Where(s => s.Employments.Where(e => e.TeamId == homeTeamId)
-                                                                                         .Where(e => e.StartDate < match.Date && e.EndDate > match.Date).Any()).FirstOrDefault();
+            var homeTeamId = match.MatchActors.First(ma => ma.IsTeamHost).TeamId;
+            var homeCoach = _unitOfWork.StaffRepository.GetAll(s => s.Country)
+                                                          .Where(s => s.BossId == null)
+                                                          .Where(s => s.Employments.Where(e => e.TeamId == homeTeamId)
+                                                                                   .Where(e => e.StartDate < match.Date && e.EndDate > match.Date).Any()).FirstOrDefault();
             if (homeCoach == null)
             {
                 throw new Exception($"ERROR WITH DATA Inserting staff into squad, team with ID {match.MatchActors.Where(ma => ma.IsTeamHost).First().Id} has no head coach at the moment of match with ID {match.Id}.");
             }
-            var awayTeamId = match.MatchActors.Where(ma => !ma.IsTeamHost).First().TeamId;
-            var awayCoach = _unitOfWork.StaffRepository.GetAll().Include(s => s.Country)
-                                                                .Where(s => s.BossId == null)
-                                                                .Where(s => s.Employments.Where(e => e.TeamId == awayTeamId)
-                                                                                         .Where(e => e.StartDate < match.Date && e.EndDate > match.Date).Any()).FirstOrDefault();
+            var awayTeamId = match.MatchActors.First(ma => !ma.IsTeamHost).TeamId;
+            var awayCoach = _unitOfWork.StaffRepository.GetAll(s => s.Country)
+                                                          .Where(s => s.BossId == null)
+                                                          .Where(s => s.Employments.Where(e => e.TeamId == awayTeamId)
+                                                                                   .Where(e => e.StartDate < match.Date && e.EndDate > match.Date).Any()).FirstOrDefault();
             if (awayCoach == null)
             {
                 throw new Exception($"ERROR WITH DATA Inserting staff into squad, team with ID {match.MatchActors.Where(ma => !ma.IsTeamHost).First().Id} has no head coach at the moment of match with ID {match.Id}.");
@@ -183,7 +184,8 @@ namespace FBSApp.Services
         private void InsertPlayerIntoSquad(PlayedMatch playerEvidention, MatchSquadDTO squad, long homeTeamId, long awayTeamId, DateTime matchDate)
         {
             var teamEngagement = _unitOfWork.TeamEngagementRepository.GetAll().Where(te => te.PlayerId == playerEvidention.PlayerId)
-                                                                     .Where(te => te.EndDate > matchDate && te.StartDate < matchDate).FirstOrDefault();
+                                                                              .Where(te => te.EndDate > matchDate && te.StartDate < matchDate)
+                                                                              .FirstOrDefault();
             if (teamEngagement == null)
             {
                 throw new Exception($"ERROR WITH DATA Forming match squad, player with ID {playerEvidention.PlayerId} played a match with ID {playerEvidention.MatchId}, but apparently was a free agent at the time.");

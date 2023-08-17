@@ -5,7 +5,7 @@
         public long Id { get; set; }
         public string Name { get; set; }
         public string Position { get; set; }
-        public string Photo { get; set; }
+        public string? Photo { get; set; }
         public string CountryName { get; set; }
         public long CountryId { get; set; }
         public string CountryFlag { get; set; }
