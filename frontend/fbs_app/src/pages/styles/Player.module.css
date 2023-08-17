@@ -111,6 +111,27 @@
   font-size: 14px;
 }
 
+.engagementsTable_addIcon {
+  cursor: pointer;
+  border: none;
+  gap: 0;
+  padding: 0.2rem;
+}
+.engagementsTable_deleteIcon {
+  cursor: pointer;
+  border: none;
+  display: flex;
+  align-items: center;
+  background-color: #272727;
+  color: white;
+  border-radius: 0.5rem;
+  padding: 0.2rem;
+  max-width: 20px;
+}
+.playerInfoContainer {
+  display: flex;
+  justify-content: space-between;
+}
 .playerInfo {
   display: flex;
   gap: 1rem;
@@ -147,6 +168,15 @@
   z-index: 51;
   overflow-y: scroll;
 }
+.modalContainerDelete {
+  max-width: 500px;
+  min-width: 94vw;
+  height: 94vh;
+  padding-bottom: 1rem;
+  z-index: 51;
+  overflow-y: scroll;
+}
+
 ::-webkit-scrollbar {
   display: none;
 }
@@ -190,19 +220,63 @@
   gap: 0.5rem;
 }
 .dateSpan {
-  min-width: 40px;
+  min-width: 50px;
 }
 .dateFilterInput {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
+.teamSelect {
+  width: 100%;
+}
+.teamSelect_optionContainer {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.teamSelect_logo {
+  height: 18px;
+  width: 16px;
+}
+.modalButtonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+.modalAddEngagementButton {
+  background-color: var(--darkBlue);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.7rem 2rem;
+  color: white;
+  cursor: pointer;
+}
+
+.editPlayerButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(240, 240, 240);
+  border: 1px solid rgb(219, 218, 218);
+  color: rgb(67, 67, 67);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
 @media only screen and (min-width: 650px) {
   .modalContainer {
     max-width: 500px;
     min-width: 20vw;
-    height: 70vh;
+    height: 28vh;
+    padding-bottom: 1rem;
+    z-index: 51;
+  }
+  .modalContainerDelete {
+    max-width: 500px;
+    min-width: 20vw;
+    height: 25vh;
     padding-bottom: 1rem;
     z-index: 51;
     overflow-y: scroll;

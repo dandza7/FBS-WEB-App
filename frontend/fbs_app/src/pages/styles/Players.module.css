@@ -17,6 +17,11 @@
   align-items: center;
   justify-content: space-between;
 }
+.titleFiltersContainer_buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .filters {
   background-color: #ffffff;
   border: 1px solid rgb(230, 229, 229);

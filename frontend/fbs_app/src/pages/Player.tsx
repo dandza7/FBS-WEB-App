@@ -2,7 +2,6 @@ import React from "react";
 import classes from "./styles/Player.module.css";
 import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router";
-import dayjs from "dayjs";
 import { useNavigate } from "react-router";
 import PlayerResultCard from "../components/Results/PlayerResultCard";
 import Pagination from "../components/Utils/Pagination";
@@ -10,10 +9,13 @@ import AuthContext from "../store/auth-context";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import dayjs, { Dayjs } from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers";
 import CloseIcon from "@mui/icons-material/Close";
 import Select from "react-select";
+import AddIcon from "@mui/icons-material/Add";
+import EditIcon from "@mui/icons-material/Edit";
 
 const style = {
   position: "absolute" as "absolute",
@@ -39,11 +41,30 @@ const Player = () => {
   const authCtx = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [allTeams, setAllTeams] = useState<any[]>([]);
+  const [selectedEngagementStart, setSelectedEngagementStart] =
+    React.useState<Dayjs | null>(dayjs(Date.now()));
+  const [selectedEngagementEnd, setSelectedEngagementEnd] =
+    React.useState<Dayjs | null>(dayjs(Date.now()));
+  const [selectedTeamEngagement, setSelectedTeamEngagement] = useState(null);
+  const [selectedDeleteEngagement, setSelectedDeleteEngagement] =
+    useState(null);
+  const [openDeleteEngagement, setOpenDeleteEngagement] = useState(false);
+  const handleChangeSelectedTeamEngagement = (selected) => {
+    setSelectedTeamEngagement(selected);
+  };
+
   const handleOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleOpenDeleteEngagement = () => {
+    setOpenDeleteEngagement(true);
+  };
+  const handleCloseDeleteEngagement = () => {
+    setOpenDeleteEngagement(false);
   };
 
   const fetchTeamList = () => {
@@ -62,7 +83,7 @@ const Player = () => {
           allTeams.push({
             value: item.id,
             label: item.name,
-            image: `data:image/png;base64,${item.flag}`,
+            image: `data:image/png;base64,${item.logo}`,
           });
         });
         setAllTeams(allTeams);
@@ -84,6 +105,10 @@ const Player = () => {
   }
 
   useEffect(() => {
+    fetchPlayer();
+  }, []);
+
+  const fetchPlayer = () => {
     fetch("http://localhost:5271/api/players/" + id, {
       method: "GET",
       headers: {
@@ -100,9 +125,13 @@ const Player = () => {
       .catch((error) => {
         alert(error);
       });
-  }, []);
+  };
 
   useEffect(() => {
+    fetchEngagements();
+  }, []);
+
+  const fetchEngagements = () => {
     fetch("http://localhost:5271/api/players/" + id + "/engagements", {
       method: "GET",
       headers: {
@@ -119,7 +148,7 @@ const Player = () => {
       .catch((error) => {
         alert(error);
       });
-  }, []);
+  };
 
   const getMatches = () => {
     fetch(
@@ -152,32 +181,92 @@ const Player = () => {
     setSelectedPage(page);
   };
 
+  const handleAddTeamEngagement = () => {
+    fetch("http://localhost:5271/api/players/engagement", {
+      method: "POST",
+      body: JSON.stringify({
+        playerId: player.id,
+        teamId: selectedTeamEngagement.value,
+        startDate: dayjs(selectedEngagementStart).format("YYYY-MM-DD"),
+        endDate: dayjs(selectedEngagementEnd).format("YYYY-MM-DD"),
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + authCtx.token,
+      },
+    })
+      .then((res) => {})
+      .then((data) => {
+        handleClose();
+        fetchEngagements();
+        setshowMaches(false);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+
+  const handleDeleteEngagement = () => {
+    fetch(
+      `http://localhost:5271/api/players/${player.id}/engagement/${selectedDeleteEngagement.id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + authCtx.token,
+        },
+      }
+    )
+      .then((res) => {
+        handleCloseDeleteEngagement();
+        fetchEngagements();
+        setshowMaches(false);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+
   return (
     <div className={classes.player}>
       <div className={classes.whiteContainerTitle}>
-        <div className={classes.playerInfo}>
-          <div>
-            <img
-              className={classes.playerImage}
-              src={`data:image/png;base64,${player?.photo}`}
-            ></img>
-          </div>
-          <div className={classes.basicInfo}>
-            <h2>{player?.name}</h2>
-            <div className={classes.playerCountry}>
+        <div className={classes.playerInfoContainer}>
+          <div className={classes.playerInfo}>
+            <div>
               <img
-                className={classes.flagImage}
-                src={`data:image/png;base64,${player?.countryFlag}`}
+                className={classes.playerImage}
+                src={`data:image/png;base64,${player?.photo}`}
               ></img>
-              {player?.countryName}
             </div>
-
-            <p>
-              Age: {getAge(player?.birthDate)} (
-              {dayjs(player?.birthDate).format("DD.MM.YYYY")})
-            </p>
-            <p>Position: {player?.position}</p>
+            <div className={classes.basicInfo}>
+              <h2>{player?.name}</h2>
+              <div className={classes.playerCountry}>
+                <img
+                  className={classes.flagImage}
+                  src={`data:image/png;base64,${player?.countryFlag}`}
+                ></img>
+                {player?.countryName}
+              </div>
+              <p>
+                Age: {getAge(player?.birthDate)} (
+                {dayjs(player?.birthDate).format("DD.MM.YYYY")})
+              </p>
+              <p>Position: {player?.position}</p>
+            </div>
           </div>
+          {authCtx.role === "ADMIN" && (
+            <div>
+              <EditIcon
+                fontSize="s,a;;"
+                className={classes.editPlayerButton}
+                onClick={() => {
+                  navigate("/update-player/" + player.id);
+                }}
+              >
+                Edit
+              </EditIcon>
+            </div>
+          )}
         </div>
       </div>
       <div className={classes.playerMenu}>
@@ -241,7 +330,17 @@ const Player = () => {
                       <th>Time in team</th>
                       {authCtx.role == "ADMIN" && (
                         <th>
-                          <div onClick={handleOpen}>+</div>
+                          <div
+                            onClick={() => {
+                              handleOpen();
+                              fetchTeamList();
+                            }}
+                          >
+                            <AddIcon
+                              fontSize="small"
+                              className={classes.engagementsTable_addIcon}
+                            ></AddIcon>
+                          </div>
                         </th>
                       )}
                     </tr>
@@ -271,13 +370,37 @@ const Player = () => {
                           {dayjs(engagament.startDate).format("DD.MM.YYYY")}-
                           {dayjs(engagament.endDate).format("DD.MM.YYYY")}
                         </td>
-                        {authCtx.role == "ADMIN" && <td></td>}
+                        {authCtx.role == "ADMIN" && (
+                          <td>
+                            <div
+                              onClick={() => {
+                                setSelectedDeleteEngagement(engagament);
+                                handleOpenDeleteEngagement();
+                              }}
+                              className={classes.engagementsTable_deleteIcon}
+                            >
+                              <CloseIcon fontSize="small"></CloseIcon>
+                            </div>
+                          </td>
+                        )}
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
             </>
+          ) : authCtx.role == "ADMIN" ? (
+            <div className={classes.modalButtonContainer}>
+              <button
+                className={classes.modalAddEngagementButton}
+                onClick={() => {
+                  handleOpen();
+                  fetchTeamList();
+                }}
+              >
+                Add Engagement
+              </button>
+            </div>
           ) : (
             <div>There is no data for this player.</div>
           )}
@@ -306,13 +429,33 @@ const Player = () => {
                   <div className={classes.dateFilterInputs}>
                     <div className={classes.dateFilterInput}>
                       <span className={classes.dateSpan}>Team: </span>
-                      <Select></Select>
+                      <Select
+                        options={allTeams}
+                        className={classes.teamSelect}
+                        defaultValue={selectedTeamEngagement}
+                        onChange={handleChangeSelectedTeamEngagement}
+                        formatOptionLabel={(team: any) => (
+                          <div className={classes.teamSelect_optionContainer}>
+                            <img
+                              src={team.image}
+                              className={classes.teamSelect_logo}
+                              alt="country-image"
+                            />
+                            <span>{team.label}</span>
+                          </div>
+                        )}
+                      ></Select>
                     </div>
                     <div className={classes.dateFilterInput}>
                       <span className={classes.dateSpan}>From: </span>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
+                          className={classes.teamSelect}
                           slotProps={{ textField: { size: "small" } }}
+                          value={selectedEngagementStart}
+                          onChange={(newValue) => {
+                            setSelectedEngagementStart(newValue);
+                          }}
                         />
                       </LocalizationProvider>
                     </div>
@@ -320,12 +463,69 @@ const Player = () => {
                       <span className={classes.dateSpan}>To: </span>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
+                          className={classes.teamSelect}
                           slotProps={{ textField: { size: "small" } }}
+                          value={selectedEngagementEnd}
+                          onChange={(newValue) => {
+                            setSelectedEngagementEnd(newValue);
+                          }}
                         />
                       </LocalizationProvider>
                     </div>
                   </div>
                 </div>
+                <div className={classes.modalButtonContainer}>
+                  <button
+                    className={classes.modalAddEngagementButton}
+                    onClick={handleAddTeamEngagement}
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Box>
+      </Modal>
+      <Modal
+        open={openDeleteEngagement}
+        onClose={handleCloseDeleteEngagement}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <div className={classes.modalContainerDelete}>
+            <div className={classes.modalHeader}>
+              <h2>Delete engagement</h2>
+              <button
+                onClick={handleCloseDeleteEngagement}
+                className={classes.closeModalButton}
+              >
+                <CloseIcon></CloseIcon>
+              </button>
+            </div>
+            <div className={classes.modalBody}>
+              <div>Are you sure you want to delete this engagement?</div>
+              <br></br>
+              <h4>Player name: {player?.name}</h4>
+              <h4>Team name: {selectedDeleteEngagement?.name}</h4>
+              <h4>
+                Period:{" "}
+                {dayjs(selectedDeleteEngagement?.startDate).format(
+                  "DD.MM.YYYY"
+                )}{" "}
+                -{" "}
+                {dayjs(selectedDeleteEngagement?.endDate).format("DD.MM.YYYY")}
+              </h4>
+
+              <br></br>
+              <div className={classes.modalButtonContainer}>
+                <button
+                  className={classes.modalAddEngagementButton}
+                  onClick={handleDeleteEngagement}
+                >
+                  Confirm
+                </button>
               </div>
             </div>
           </div>

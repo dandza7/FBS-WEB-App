@@ -15,6 +15,20 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers";
 import CloseIcon from "@mui/icons-material/Close";
+import dayjs, { Dayjs } from "dayjs";
+
+const gameweeks = Array.from({ length: 50 }, (_, i) => {
+  return { label: i + 1, value: i + 1 };
+});
+
+const minutesFH = Array.from({ length: 46 }, (_, i) => {
+  return { label: i, value: i };
+});
+
+const minutesSH = Array.from({ length: 46 }, (_, i) => {
+  return { label: i + 45, value: i + 45 };
+});
+
 const League = () => {
   const [isScoreboard, setIsScoreboard] = useState(false);
   const [selectedSeason, setSelectedSeason] = useState(null);
@@ -30,14 +44,44 @@ const League = () => {
   const authCtx = useContext(AuthContext);
   const [toggleFilters, setToggleFilters] = useState(false);
   const [open, setOpen] = useState(false);
-  const [toggleFilterDate, setToggleFilterDate] = useState(false);
-  const [toggleFilterMinutes, setToggleFilterMinutes] = useState(false);
-  const [toggleFilterGameweeks, setToggleFilterGameweeks] = useState(false);
+  const [toggleFilterDate, setToggleFilterDate] = useState(true);
+  const [toggleFilterMinutes, setToggleFilterMinutes] = useState(true);
+  const [toggleFilterGameweeks, setToggleFilterGameweeks] = useState(true);
   const [toggleFilterGameeweekNumber, setToggleFilterGameeweekNumber] =
-    useState(false);
-  const [toggleFilterSubset, setToggleFilterSubset] = useState(false);
+    useState(true);
+  const [toggleFilterSubset, setToggleFilterSubset] = useState(true);
   const [teamList, setTeamList] = useState<any[]>([]);
+
+  //filters
+  const [teamSubset, setTeamSubset] = useState<any[]>([]);
+  const [dateFilterUpperLimit, setDateFilterUpperLimit] =
+    React.useState<Dayjs | null>(dayjs(Date.now()));
+  const [dateFilterLowerLimit, setDateFilterLowerLimit] =
+    React.useState<Dayjs | null>(dayjs(Date.now()));
+  const [gwNumberFilter, setGwNumberFilter] = useState({
+    label: 40,
+    value: 40,
+  });
+  const [gwRangeFilterLowerLimit, setGwRangeFilterLowerLimit] = useState({
+    label: 1,
+    value: 1,
+  });
+  const [gwRangeFilterUpperLimit, setGwRangeFilterUpperLimit] = useState({
+    label: 40,
+    value: 40,
+  });
+
+  const [minutesRangeFilterLowerLimitFH, setMinutesRangeFilterLowerLimitFH] =
+    useState({ label: 0, value: 0 });
+  const [minutesRangeFilterUpperLimitFH, setMinutesRangeFilterUpperLimitFH] =
+    useState({ label: 45, value: 45 });
+  const [minutesRangeFilterLowerLimitSH, setMinutesRangeFilterLowerLimitSH] =
+    useState({ label: 45, value: 45 });
+  const [minutesRangeFilterUpperLimitSH, setMinutesRangeFilterUpperLimitSH] =
+    useState({ label: 90, value: 90 });
+
   const navigate = useNavigate();
+
   const style = {
     position: "absolute" as "absolute",
     top: "50%",
@@ -169,6 +213,68 @@ const League = () => {
       })
       .then((data) => {
         setTeamList(data);
+        let subset = [];
+        data.map((team) => subset.push(team.id));
+        setTeamSubset(subset);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+
+  const handleCheck = (event: any) => {
+    const teamId = parseInt(event.target.value);
+    var updatedList = [...teamSubset];
+    if (event.target.checked) {
+      updatedList = [...teamSubset, teamId];
+    } else {
+      updatedList.splice(teamSubset.indexOf(teamId), 1);
+    }
+    setTeamSubset(updatedList);
+  };
+
+  const applyFilterHandler = () => {
+    fetch(
+      "http://localhost:5271/api/seasons/" +
+        selectedSeason?.value +
+        "/filteredTable",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          goalsMinuteFilter: {
+            lowerLimitFirstHalf: minutesRangeFilterLowerLimitFH?.value,
+            upperLimitFirstHalf: minutesRangeFilterUpperLimitFH.value,
+            extraTimeIncludedFirstHalf: true,
+            lowerLimitSecondHalf: minutesRangeFilterLowerLimitSH.value,
+            upperLimitSecondHalf: minutesRangeFilterUpperLimitSH.value,
+            extraTimeIncludedSecondHalf: true,
+          },
+          dateFilter: {
+            lowerLimit: dayjs(dateFilterLowerLimit).format("YYYY-MM-DD"),
+            upperLimit: dayjs(dateFilterUpperLimit).format("YYYY-MM-DD"),
+          },
+          gameweeksFilter: {
+            lowerLimit: gwRangeFilterLowerLimit?.value,
+            upperLimit: gwRangeFilterUpperLimit?.value,
+          },
+          playedGameweeksFilter: {
+            playedGameweeks: gwNumberFilter?.value,
+          },
+          teamsSubsetFilter: {
+            ids: teamSubset,
+          },
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + authCtx.token,
+        },
+      }
+    )
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setScoreBoard(data);
       })
       .catch((error) => {
         alert(error);
@@ -186,13 +292,21 @@ const League = () => {
       </div>
       <div className={classes.leagueMenu}>
         <div
-          className={classes.leagueMenuItem}
+          className={
+            !isScoreboard
+              ? classes.leagueMenuItemSelected
+              : classes.leagueMenuItem
+          }
           onClick={() => setIsScoreboard(false)}
         >
           Matches
         </div>
         <div
-          className={classes.leagueMenuItem}
+          className={
+            isScoreboard
+              ? classes.leagueMenuItemSelected
+              : classes.leagueMenuItem
+          }
           onClick={() => setIsScoreboard(true)}
         >
           Scoreboard
@@ -223,8 +337,8 @@ const League = () => {
                 <h3>Matches</h3>
                 <br></br>
                 <div className={classes.results}>
-                  {matches?.map((match) => (
-                    <ResultCard match={match}></ResultCard>
+                  {matches?.map((match, index) => (
+                    <ResultCard match={match} key={index}></ResultCard>
                   ))}
                 </div>
                 {totalMatchCount > pageSize && (
@@ -257,15 +371,17 @@ const League = () => {
             <>
               <div className={classes.titleContainer}>
                 <h3>Scoreboard</h3>
-                <div
-                  className={classes.filterButton}
-                  onClick={() => {
-                    fetchTeamList();
-                    handleOpen();
-                  }}
-                >
-                  <FilterAltIcon></FilterAltIcon>
-                </div>
+                {authCtx.role === "USER" && (
+                  <div
+                    className={classes.filterButton}
+                    onClick={() => {
+                      handleOpen();
+                      fetchTeamList();
+                    }}
+                  >
+                    <FilterAltIcon></FilterAltIcon>
+                  </div>
+                )}
               </div>
               {toggleFilters && (
                 <ScoreboardFilter
@@ -289,20 +405,24 @@ const League = () => {
                     </thead>
                     <tbody>
                       {scoreBoard?.map((team, index) => (
-                        <tr>
+                        <tr key={team.id}>
                           <td>
                             <span
                               className={
-                                index === 0 ||
-                                index === 1 ||
-                                index === 2 ||
-                                index === 3
-                                  ? classes.first
-                                  : index === 4
-                                  ? classes.second
-                                  : index === 17 || index === 18 || index === 19
-                                  ? classes.last
-                                  : classes.other
+                                scoreBoard.length == 20
+                                  ? index === 0 ||
+                                    index === 1 ||
+                                    index === 2 ||
+                                    index === 3
+                                    ? classes.first
+                                    : index === 4
+                                    ? classes.second
+                                    : index === 17 ||
+                                      index === 18 ||
+                                      index === 19
+                                    ? classes.last
+                                    : classes.other
+                                  : classes.none
                               }
                             >
                               {`${index + 1}.`}{" "}
@@ -381,6 +501,11 @@ const League = () => {
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <DatePicker
                             slotProps={{ textField: { size: "small" } }}
+                            value={dateFilterLowerLimit}
+                            onChange={(newValue) => {
+                              console.log(newValue);
+                              setDateFilterLowerLimit(newValue);
+                            }}
                           />
                         </LocalizationProvider>
                       </div>
@@ -389,6 +514,11 @@ const League = () => {
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <DatePicker
                             slotProps={{ textField: { size: "small" } }}
+                            value={dateFilterUpperLimit}
+                            onChange={(newValue) => {
+                              console.log(newValue);
+                              setDateFilterUpperLimit(newValue);
+                            }}
                           />
                         </LocalizationProvider>
                       </div>
@@ -409,11 +539,19 @@ const League = () => {
                     <div className={classes.dateFilterInputs}>
                       <div className={classes.dateFilterInput}>
                         <span className={classes.dateSpan}>From: </span>
-                        <Select></Select>
+                        <Select
+                          defaultValue={gwRangeFilterLowerLimit}
+                          options={gameweeks}
+                          onChange={setGwRangeFilterLowerLimit}
+                        ></Select>
                       </div>
                       <div className={classes.dateFilterInput}>
                         <span className={classes.dateSpan}>To: </span>
-                        <Select></Select>
+                        <Select
+                          defaultValue={gwRangeFilterUpperLimit}
+                          options={gameweeks}
+                          onChange={setGwRangeFilterUpperLimit}
+                        ></Select>
                       </div>
                     </div>
                   </div>
@@ -433,21 +571,41 @@ const League = () => {
                       <div>First half</div>
                       <div className={classes.dateFilterInput}>
                         <span className={classes.dateSpan}>From: </span>
-                        <Select></Select>
+                        <Select
+                          defaultValue={minutesRangeFilterLowerLimitFH}
+                          options={minutesFH}
+                          maxMenuHeight={200}
+                          onChange={setMinutesRangeFilterLowerLimitFH}
+                        ></Select>
                       </div>
                       <div className={classes.dateFilterInput}>
                         <span className={classes.dateSpan}>From: </span>
-                        <Select></Select>
+                        <Select
+                          defaultValue={minutesRangeFilterUpperLimitFH}
+                          options={minutesFH}
+                          maxMenuHeight={200}
+                          onChange={setMinutesRangeFilterUpperLimitFH}
+                        ></Select>
                       </div>
 
                       <div>Second half</div>
                       <div className={classes.dateFilterInput}>
                         <span className={classes.dateSpan}>From: </span>
-                        <Select></Select>
+                        <Select
+                          defaultValue={minutesRangeFilterLowerLimitSH}
+                          options={minutesSH}
+                          maxMenuHeight={200}
+                          onChange={setMinutesRangeFilterLowerLimitSH}
+                        ></Select>
                       </div>
                       <div className={classes.dateFilterInput}>
                         <span className={classes.dateSpan}>From: </span>
-                        <Select></Select>
+                        <Select
+                          defaultValue={minutesRangeFilterUpperLimitSH}
+                          options={minutesSH}
+                          maxMenuHeight={200}
+                          onChange={setMinutesRangeFilterUpperLimitSH}
+                        ></Select>
                       </div>
                     </div>
                   </div>
@@ -466,7 +624,12 @@ const League = () => {
                     <div className={classes.dateFilterInputs}>
                       <div className={classes.dateFilterInput}>
                         <span className={classes.dateSpan}>From: </span>
-                        <Select></Select>
+                        <Select
+                          defaultValue={gwNumberFilter}
+                          options={gameweeks}
+                          maxMenuHeight={200}
+                          onChange={setGwNumberFilter}
+                        ></Select>
                       </div>
                     </div>
                   </div>
@@ -485,7 +648,12 @@ const League = () => {
                     <div className={classes.dateFilterInputs}>
                       {teamList?.map((team) => (
                         <div className={classes.teamFilter_teamContainer}>
-                          <input type="checkBox"></input>
+                          <input
+                            type="checkBox"
+                            defaultChecked
+                            value={team.id}
+                            onChange={handleCheck}
+                          ></input>
                           <div className={classes.teamFilter_team}>
                             <img
                               className={classes.teamFilter_teamLogo}
@@ -498,6 +666,14 @@ const League = () => {
                     </div>
                   </div>
                 )}
+              </div>
+              <div className={classes.centerContainer}>
+                <button
+                  className={classes.applyFiltersButton}
+                  onClick={applyFilterHandler}
+                >
+                  Filter
+                </button>
               </div>
             </div>
           </div>

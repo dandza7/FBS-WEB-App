@@ -130,7 +130,7 @@ const UpdatePlayer = () => {
         return res.json();
       })
       .then((data) => {
-        navigate("/players");
+        navigate("/player/" + player.id);
       })
       .catch((error) => {
         alert(error);
