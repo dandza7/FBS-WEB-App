@@ -1,0 +1,83 @@
+.whiteContainer {
+  width: 80%;
+  margin: auto;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+.nameInput {
+  width: 165px;
+  height: 36px;
+  border: 1px solid rgb(203, 203, 203);
+  border-radius: 0.2rem;
+  font-size: 1rem;
+  font-family: "Raleway", sans-serif;
+  width: 100%;
+}
+.field {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+.playerForm {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+}
+.photo {
+  width: 150px;
+}
+
+.inputFields {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.span {
+  min-width: 81px;
+}
+
+.select {
+  width: 185px;
+}
+.imageInputContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imageInput {
+  display: none;
+}
+
+.buttonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.savePlayerButton {
+  background-color: var(--darkBlue);
+  padding: 0.7rem 2rem;
+  border-radius: 0.5rem;
+  color: white;
+  border: 1px solid rgb(182, 180, 180);
+}
+
+@media only screen and (max-width: 650px) {
+  .playerForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  .photoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+}
