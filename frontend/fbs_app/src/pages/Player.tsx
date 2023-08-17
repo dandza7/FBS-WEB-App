@@ -1,11 +1,30 @@
 import React from "react";
 import classes from "./styles/Player.module.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router";
 import PlayerResultCard from "../components/Results/PlayerResultCard";
 import Pagination from "../components/Utils/Pagination";
+import AuthContext from "../store/auth-context";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers";
+import CloseIcon from "@mui/icons-material/Close";
+import Select from "react-select";
+
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  borderRadius: 1,
+  p: 2,
+};
 
 const Player = () => {
   const [showMatches, setshowMaches] = useState(true);
@@ -17,6 +36,41 @@ const Player = () => {
   const { id } = useParams();
   const pageSize = 5;
   const [selectedPage, setSelectedPage] = useState(1);
+  const authCtx = useContext(AuthContext);
+  const [open, setOpen] = useState(false);
+  const [allTeams, setAllTeams] = useState<any[]>([]);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const fetchTeamList = () => {
+    fetch("http://localhost:5271/api/teams", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        const allTeams: any = [];
+        data.map((item: any) => {
+          allTeams.push({
+            value: item.id,
+            label: item.name,
+            image: `data:image/png;base64,${item.flag}`,
+          });
+        });
+        setAllTeams(allTeams);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
 
   function getAge(dateString: Date) {
     var today = new Date();
@@ -89,6 +143,10 @@ const Player = () => {
         alert(error);
       });
   };
+
+  useEffect(() => {
+    getMatches();
+  }, [selectedPage]);
 
   const changePage = (page: number) => {
     setSelectedPage(page);
@@ -181,6 +239,11 @@ const Player = () => {
                     <tr>
                       <th>Team</th>
                       <th>Time in team</th>
+                      {authCtx.role == "ADMIN" && (
+                        <th>
+                          <div onClick={handleOpen}>+</div>
+                        </th>
+                      )}
                     </tr>
                   </thead>
                   <tbody>
@@ -205,9 +268,10 @@ const Player = () => {
                           </div>
                         </td>
                         <td>
-                          {dayjs(engagament.startDate).format("MM.YYYY")}-
-                          {dayjs(engagament.endDate).format("MM.YYYY")}
+                          {dayjs(engagament.startDate).format("DD.MM.YYYY")}-
+                          {dayjs(engagament.endDate).format("DD.MM.YYYY")}
                         </td>
+                        {authCtx.role == "ADMIN" && <td></td>}
                       </tr>
                     ))}
                   </tbody>
@@ -219,6 +283,54 @@ const Player = () => {
           )}
         </div>
       )}
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <div className={classes.modalContainer}>
+            <div className={classes.modalHeader}>
+              <h2>New engagement</h2>
+              <button
+                onClick={handleClose}
+                className={classes.closeModalButton}
+              >
+                <CloseIcon></CloseIcon>
+              </button>
+            </div>
+            <div className={classes.modalBody}>
+              <div className={classes.filters}>
+                <div className={classes.filterContainer}>
+                  <div className={classes.dateFilterInputs}>
+                    <div className={classes.dateFilterInput}>
+                      <span className={classes.dateSpan}>Team: </span>
+                      <Select></Select>
+                    </div>
+                    <div className={classes.dateFilterInput}>
+                      <span className={classes.dateSpan}>From: </span>
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                          slotProps={{ textField: { size: "small" } }}
+                        />
+                      </LocalizationProvider>
+                    </div>
+                    <div className={classes.dateFilterInput}>
+                      <span className={classes.dateSpan}>To: </span>
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                          slotProps={{ textField: { size: "small" } }}
+                        />
+                      </LocalizationProvider>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Box>
+      </Modal>
     </div>
   );
 };

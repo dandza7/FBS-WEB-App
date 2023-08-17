@@ -179,8 +179,8 @@ const StaffMember = () => {
                           </div>
                         </td>
                         <td>
-                          {dayjs(employment.startDate).format("MM.YYYY")}-
-                          {dayjs(employment.endDate).format("MM.YYYY")}
+                          {dayjs(employment.startDate).format("DD.MM.YYYY")}-
+                          {dayjs(employment.endDate).format("DD.MM.YYYY")}
                         </td>
                       </tr>
                     ))}

@@ -61,9 +61,13 @@ const PlayerResultCard = (props: any) => {
             <div className={classes.goalNumber}>{props.match.goals}</div>
           </div>
         )}
-        <div className={classes.playerMinutes}>
-          <p>{props.match.minutes}'</p>
-        </div>
+        {props.match.minutes > 0 ? (
+          <div className={classes.playerMinutes}>
+            <p>{props.match.minutes}'</p>
+          </div>
+        ) : (
+          <span>Bench</span>
+        )}
         <div className={classes.scoreGoals}>
           <h3>{props.match.homeTeamGoals}</h3>
           <h3>{props.match.awayTeamGoals}</h3>

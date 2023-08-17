@@ -246,7 +246,11 @@ export const Match = () => {
                     {player.goals > 0 && (
                       <div className={classes.playerGoals}>
                         <SportsSoccerIcon fontSize="small"></SportsSoccerIcon>
-                        <div className={classes.goalNumber}>{player.goals}</div>
+                        {player.goals > 1 && (
+                          <div className={classes.goalNumber}>
+                            {player.goals}
+                          </div>
+                        )}
                       </div>
                     )}
                     {player.ownGoals > 0 && (
@@ -268,7 +272,11 @@ export const Match = () => {
                     {player.goals > 0 && (
                       <div className={classes.playerGoals}>
                         <SportsSoccerIcon fontSize="small"></SportsSoccerIcon>
-                        <div className={classes.goalNumber}>{player.goals}</div>
+                        {player.goals > 1 && (
+                          <div className={classes.goalNumber}>
+                            {player.goals}
+                          </div>
+                        )}
                       </div>
                     )}
                     <div className={classes.playerMinutes}>
@@ -315,7 +323,11 @@ export const Match = () => {
                     {player.goals > 0 && (
                       <div className={classes.playerGoals}>
                         <SportsSoccerIcon fontSize="small"></SportsSoccerIcon>
-                        <div className={classes.goalNumber}>{player.goals}</div>
+                        {player.goals > 1 && (
+                          <div className={classes.goalNumber}>
+                            {player.goals}
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -327,7 +339,11 @@ export const Match = () => {
                     {player.goals > 0 && (
                       <div className={classes.playerGoals}>
                         <SportsSoccerIcon fontSize="small"></SportsSoccerIcon>
-                        <div className={classes.goalNumber}>{player.goals}</div>
+                        {player.goals > 1 && (
+                          <div className={classes.goalNumber}>
+                            {player.goals}
+                          </div>
+                        )}
                       </div>
                     )}
                     {player.minutes > 0 && (

@@ -214,7 +214,7 @@
   justify-content: flex-start;
   align-items: center;
   gap: 0.5rem;
-  min-height: 20px;
+  min-height: 25px;
 }
 .awaySquadPlayer {
   padding: 0.8rem 0.3rem;
@@ -223,7 +223,7 @@
   justify-content: flex-end;
   align-items: center;
   gap: 0.5rem;
-  min-height: 20px;
+  min-height: 25px;
 }
 .homeSquadPlayer:nth-of-type(even) {
   background-color: #ededf1;
