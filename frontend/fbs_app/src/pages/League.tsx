@@ -257,15 +257,17 @@ const League = () => {
             <>
               <div className={classes.titleContainer}>
                 <h3>Scoreboard</h3>
-                <div
-                  className={classes.filterButton}
-                  onClick={() => {
-                    fetchTeamList();
-                    handleOpen();
-                  }}
-                >
-                  <FilterAltIcon></FilterAltIcon>
-                </div>
+                {authCtx.role === "USER" && (
+                  <div
+                    className={classes.filterButton}
+                    onClick={() => {
+                      fetchTeamList();
+                      handleOpen();
+                    }}
+                  >
+                    <FilterAltIcon></FilterAltIcon>
+                  </div>
+                )}
               </div>
               {toggleFilters && (
                 <ScoreboardFilter

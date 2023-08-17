@@ -8,7 +8,7 @@ import PlayerCard from "../components/Players/PlayerCard";
 import Pagination from "../components/Utils/Pagination";
 import { useNavigate } from "react-router";
 import ReactLoading from "react-loading";
-
+import AddIcon from "@mui/icons-material/Add";
 const Players = () => {
   const pageSize = 10;
   const [players, setPlayers] = useState<any[]>([]);
@@ -106,15 +106,27 @@ const Players = () => {
       <div className={classes.whiteContainer}>
         <div className={classes.titleFiltersContainer}>
           <h2>Players</h2>
-          <div
-            className={classes.filterButton}
-            onClick={() => {
-              setToggleFilters((prevState) => {
-                return !prevState;
-              });
-            }}
-          >
-            <FilterAltIcon></FilterAltIcon>
+          <div className={classes.titleFiltersContainer_buttons}>
+            {authCtx.role === "ADMIN" && (
+              <div
+                className={classes.filterButton}
+                onClick={() => {
+                  navigate("/new-player");
+                }}
+              >
+                <AddIcon></AddIcon>
+              </div>
+            )}
+            <div
+              className={classes.filterButton}
+              onClick={() => {
+                setToggleFilters((prevState) => {
+                  return !prevState;
+                });
+              }}
+            >
+              <FilterAltIcon></FilterAltIcon>
+            </div>
           </div>
         </div>
         <div className={classes.rightContainer}>
