@@ -78,7 +78,7 @@ namespace FBSApp.Services
 
         public IEnumerable<TeamListPreviewDTO> GetListed()
         {
-            return _mapper.Map<IEnumerable<TeamListPreviewDTO>>(_unitOfWork.TeamRepository.GetAll(t => t.Country));
+            return _mapper.Map<IEnumerable<TeamListPreviewDTO>>(_unitOfWork.TeamRepository.GetAll(t => t.Country).OrderBy(t => t.Name));
         }
 
         public TeamDetailedDTO GetTeamDetailed(long teamId)
