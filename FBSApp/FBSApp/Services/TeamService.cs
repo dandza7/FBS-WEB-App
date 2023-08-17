@@ -48,7 +48,7 @@ namespace FBSApp.Services
 
         public PaginationWrapper<MatchListPreviewDTO> GetMatchesByTeam(long teamId, long seasonId, int page, int pageSize)
         {
-            if (!_unitOfWork.TeamRepository.GetAll().Where(t => t.Id == teamId).Any())
+            if (!_unitOfWork.TeamRepository.GetAll().Any(t => t.Id == teamId))
             {
                 throw new NotFoundException($"Team with ID {teamId} does not exist.");
             }
@@ -68,8 +68,8 @@ namespace FBSApp.Services
                     Date = m.Date,
                     HomeTeamGoals = CalculateTeamGoals(m, "home"),
                     AwayTeamGoals = CalculateTeamGoals(m, "away"),
-                    HomeTeam = m.MatchActors.First().IsTeamHost ? _mapper.Map<TeamListPreviewDTO>(m.MatchActors.First().Team) : _mapper.Map<TeamListPreviewDTO>(m.MatchActors.Last().Team),
-                    AwayTeam = m.MatchActors.First().IsTeamHost ? _mapper.Map<TeamListPreviewDTO>(m.MatchActors.Last().Team) : _mapper.Map<TeamListPreviewDTO>(m.MatchActors.First().Team),
+                    HomeTeam = _mapper.Map<TeamListPreviewDTO>(m.MatchActors.Where(ma => ma.IsTeamHost).First().Team),
+                    AwayTeam = _mapper.Map<TeamListPreviewDTO>(m.MatchActors.Where(ma => !ma.IsTeamHost).First().Team),
                     Gameweek = m.Gameweek
                 }),
                 TotalCount = totalCount
@@ -86,7 +86,7 @@ namespace FBSApp.Services
             var team = _unitOfWork.TeamRepository.GetAll(t => t.Country)
                                                 .Include(t => t.Stadium).ThenInclude(s => s.Address).ThenInclude(a => a.Country)
                                                 .Include(t => t.Seasons).ThenInclude(s => s.League)
-                                                .Where(t => t.Id == teamId).FirstOrDefault();
+                                                .FirstOrDefault(t => t.Id == teamId);
             if (team == null)
             {
                 throw new NotFoundException($"Team with ID {teamId} does not exist.");
@@ -105,16 +105,16 @@ namespace FBSApp.Services
 
         public IEnumerable<PlayerListPreviewDTO> GetTeamsSquad(long teamId, long seasonId)
         {
-            var team = _unitOfWork.TeamRepository.GetAll(t => t.Seasons).Where(t => t.Id == teamId).FirstOrDefault();
+            var team = _unitOfWork.TeamRepository.GetAll(t => t.Seasons).FirstOrDefault(t => t.Id == teamId);
             if (team == null)
             {
                 throw new NotFoundException($"Team with ID {teamId} does not exist.");
             }
-            if (!team.Seasons.Where(s => s.Id == seasonId).Any())
+            if (!team.Seasons.Any(s => s.Id == seasonId))
             {
                 throw new NotFoundException($"There is no squad for team '{team.Name}', because it didn't play season with ID {seasonId}");
             }
-            var season = _unitOfWork.SeasonRepository.GetAll().Where(s => s.Id == seasonId).FirstOrDefault();
+            var season = _unitOfWork.SeasonRepository.GetAll().FirstOrDefault(s => s.Id == seasonId);
             if (season == null)
             {
                 throw new NotFoundException($"Season with ID {seasonId} does not exist.");
@@ -127,7 +127,7 @@ namespace FBSApp.Services
             var retVal = new List<PlayerListPreviewDTO>();
             foreach (var te in teamEngagements)
             {
-                if (!retVal.Where(p => p.Id == te.PlayerId).Any())
+                if (!retVal.Any(p => p.Id == te.PlayerId))
                 {
                     retVal.Add(new PlayerListPreviewDTO
                     {
@@ -147,16 +147,16 @@ namespace FBSApp.Services
 
         public IEnumerable<HeadStaffDTO> GetTeamsStaff(long teamId, long seasonId)
         {
-            var team = _unitOfWork.TeamRepository.GetAll(t => t.Seasons).Where(t => t.Id == teamId).FirstOrDefault();
+            var team = _unitOfWork.TeamRepository.GetAll(t => t.Seasons).FirstOrDefault(t => t.Id == teamId);
             if (team == null)
             {
                 throw new NotFoundException($"Team with ID {teamId} does not exist.");
             }
-            if (!team.Seasons.Where(s => s.Id == seasonId).Any())
+            if (!team.Seasons.Any(s => s.Id == seasonId))
             {
                 throw new NotFoundException($"There is no staff for team '{team.Name}', because it didn't play season with ID {seasonId}");
             }
-            var season = _unitOfWork.SeasonRepository.GetAll().Where(s => s.Id == seasonId).FirstOrDefault();
+            var season = _unitOfWork.SeasonRepository.GetAll().FirstOrDefault(s => s.Id == seasonId);
             if (season == null)
             {
                 throw new NotFoundException($"Season with ID {seasonId} does not exist.");
@@ -195,7 +195,7 @@ namespace FBSApp.Services
 
         private int CalculateTeamGoals(Match match, string teamtype = "home")
         {
-            var team = teamtype == "home" ? match.MatchActors.Where(ma => ma.IsTeamHost).First().Team : match.MatchActors.Where(ma => !ma.IsTeamHost).First().Team;
+            var team = match.MatchActors.First(ma => ma.IsTeamHost == (teamtype == "home")).Team;
 
             var goals = 0;
 

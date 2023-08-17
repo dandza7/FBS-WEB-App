@@ -51,7 +51,7 @@ namespace FBSApp.Services
 
         public IEnumerable<AwardDTO> GetStaffAwards(long staffId)
         {
-            if (!_unitOfWork.StaffRepository.GetAll().Where(s => s.Id == staffId).Any())
+            if (!_unitOfWork.StaffRepository.GetAll().Any(s => s.Id == staffId))
             {
                 throw new NotFoundException($"Staff with ID {staffId} doest not exist!");
             }

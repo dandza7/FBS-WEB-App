@@ -22,7 +22,7 @@ namespace FBSApp.Services
         }
         public JWTokenWrapper Login(LoginDTO login)
         {
-            var user = _unitOfWork.UserRepository.GetAll().Where(u => u.Email == login.Email).FirstOrDefault();
+            var user = _unitOfWork.UserRepository.GetAll().FirstOrDefault(u => u.Email == login.Email);
             if (user == null)
             {
                 throw new NotFoundException($"There is not user in database with email: {login.Email}.");
