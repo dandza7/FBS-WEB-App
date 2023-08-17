@@ -96,8 +96,24 @@ namespace FBSApp.Services
             var engagement = player.Engagements.Where(e => e.Id == engagementId).FirstOrDefault();
             if (engagement != null)
             {
+                DeletePlayerAppearences(engagement);
                 _unitOfWork.TeamEngagementRepository.Delete(engagement);
                 _unitOfWork.SaveChanges();
+            }
+        }
+        private void DeletePlayerAppearences(TeamEngagement engagement)
+        {
+            var appearences = _unitOfWork.PlayedMatchRepository.GetAll().Include(pm => pm.Goals)
+                                                      .Where(pm => pm.PlayerId == engagement.PlayerId)
+                                                      .Where(pm => pm.Match.Date >= engagement.StartDate && pm.Match.Date <= engagement.EndDate)
+                                                      .AsNoTracking().ToList();
+            foreach (var a in appearences)
+            {
+                foreach (var g in a.Goals)
+                {
+                    _unitOfWork.GoalRepository.Delete(g);
+                }
+                _unitOfWork.PlayedMatchRepository.Delete(a);
             }
         }
 

@@ -23,6 +23,8 @@ namespace FBSApp.Repositories
         private IGenericRepository<TeamEmployment> _teamEmploymentRepository;
         private IGenericRepository<Award> _awardRepository;
         private IGenericRepository<TeamStats> _teamStatsRepository;
+        private IGenericRepository<PlayedMatch> _playedMatchRepository;
+        private IGenericRepository<Goal> _goalRepository;
         public UnitOfWork(DbContext FBS_DB_Context)
         {
             _FBS_DB_Context = FBS_DB_Context;
@@ -146,6 +148,22 @@ namespace FBSApp.Repositories
             {
                 _teamStatsRepository ??= new GenericRepository<TeamStats>(_FBS_DB_Context);
                 return _teamStatsRepository;
+            }
+        }
+        public IGenericRepository<PlayedMatch> PlayedMatchRepository
+        {
+            get
+            {
+                _playedMatchRepository ??= new GenericRepository<PlayedMatch>(_FBS_DB_Context);
+                return _playedMatchRepository;
+            }
+        }
+        public IGenericRepository<Goal> GoalRepository
+        {
+            get
+            {
+                _goalRepository ??= new GenericRepository<Goal>(_FBS_DB_Context);
+                return _goalRepository;
             }
         }
 
