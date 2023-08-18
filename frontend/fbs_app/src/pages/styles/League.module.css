@@ -373,6 +373,11 @@
   cursor: pointer;
 }
 
+.scoreBoard_filtersContainer {
+  display: flex;
+  gap: 0.5rem;
+}
+
 @media only screen and (min-width: 650px) {
   .modalContainer {
     max-width: 500px;
