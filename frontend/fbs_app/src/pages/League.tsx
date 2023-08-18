@@ -16,8 +16,11 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers";
 import CloseIcon from "@mui/icons-material/Close";
 import dayjs, { Dayjs } from "dayjs";
+import PrintIcon from "@mui/icons-material/Print";
+import JsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
-const gameweeks = Array.from({ length: 50 }, (_, i) => {
+const gameweeks = Array.from({ length: 38 }, (_, i) => {
   return { label: i + 1, value: i + 1 };
 });
 
@@ -59,20 +62,20 @@ const League = () => {
   const [dateFilterLowerLimit, setDateFilterLowerLimit] =
     React.useState<Dayjs | null>(dayjs(Date.now()));
   const [gwNumberFilter, setGwNumberFilter] = useState({
-    label: 40,
-    value: 40,
+    label: 38,
+    value: 38,
   });
   const [gwRangeFilterLowerLimit, setGwRangeFilterLowerLimit] = useState({
     label: 1,
     value: 1,
   });
   const [gwRangeFilterUpperLimit, setGwRangeFilterUpperLimit] = useState({
-    label: 40,
-    value: 40,
+    label: 38,
+    value: 38,
   });
 
   const [minutesRangeFilterLowerLimitFH, setMinutesRangeFilterLowerLimitFH] =
-    useState({ label: 0, value: 0 });
+    useState({ label: 1, value: 1 });
   const [minutesRangeFilterUpperLimitFH, setMinutesRangeFilterUpperLimitFH] =
     useState({ label: 45, value: 45 });
   const [minutesRangeFilterLowerLimitSH, setMinutesRangeFilterLowerLimitSH] =
@@ -234,6 +237,7 @@ const League = () => {
   };
 
   const applyFilterHandler = () => {
+    setIsLoading(true);
     fetch(
       "http://localhost:5271/api/seasons/" +
         selectedSeason?.value +
@@ -275,10 +279,21 @@ const League = () => {
       })
       .then((data) => {
         setScoreBoard(data);
+        setIsLoading(false);
       })
       .catch((error) => {
         alert(error);
       });
+  };
+
+  const generatePDF = () => {
+    const input = document.getElementById("report");
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new JsPDF();
+      pdf.addImage(imgData, "PNG", 0, 0, 210, 210);
+      pdf.save("download.pdf");
+    });
   };
 
   return (
@@ -382,6 +397,11 @@ const League = () => {
                     <FilterAltIcon></FilterAltIcon>
                   </div>
                 )}
+                {authCtx.role === "ADMIN" && (
+                  <div className={classes.filterButton} onClick={generatePDF}>
+                    <PrintIcon></PrintIcon>
+                  </div>
+                )}
               </div>
               {toggleFilters && (
                 <ScoreboardFilter
@@ -389,7 +409,7 @@ const League = () => {
                 ></ScoreboardFilter>
               )}
               {scoreBoard.length > 0 && (
-                <div className={classes.scoreboard}>
+                <div className={classes.scoreboard} id="report">
                   <table className={classes.leaguesTable}>
                     <thead>
                       <tr>
@@ -670,7 +690,10 @@ const League = () => {
               <div className={classes.centerContainer}>
                 <button
                   className={classes.applyFiltersButton}
-                  onClick={applyFilterHandler}
+                  onClick={() => {
+                    applyFilterHandler();
+                    handleClose();
+                  }}
                 >
                   Filter
                 </button>

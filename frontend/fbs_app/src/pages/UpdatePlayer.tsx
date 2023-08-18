@@ -49,7 +49,7 @@ const UpdatePlayer = () => {
         setFirstName(fullName[0]);
         setLastName(fullName[1]);
         setSelectedPosition({ value: data.position, label: data.position });
-        setSelectedCountry({ value: 1, label: data.countryName });
+        setSelectedCountry({ value: data.countryId, label: data.countryName });
       })
       .catch((error) => {
         alert(error);
@@ -214,7 +214,6 @@ const UpdatePlayer = () => {
                 defaultValue={selectedPosition}
                 onChange={setSelectedPosition}
                 options={positions}
-                isClearable
               ></Select>
             </div>
           )}
