@@ -291,7 +291,7 @@ const League = () => {
     html2canvas(input).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
       const pdf = new JsPDF();
-      pdf.addImage(imgData, "PNG", 0, 0, 210, 210);
+      pdf.addImage(imgData, "PNG", 0, 0, 210, 300);
       pdf.save("download.pdf");
     });
   };
