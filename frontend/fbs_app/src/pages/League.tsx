@@ -386,22 +386,24 @@ const League = () => {
             <>
               <div className={classes.titleContainer}>
                 <h3>Scoreboard</h3>
-                {authCtx.role === "USER" && (
-                  <div
-                    className={classes.filterButton}
-                    onClick={() => {
-                      handleOpen();
-                      fetchTeamList();
-                    }}
-                  >
-                    <FilterAltIcon></FilterAltIcon>
-                  </div>
-                )}
-                {authCtx.role === "ADMIN" && (
-                  <div className={classes.filterButton} onClick={generatePDF}>
-                    <PrintIcon></PrintIcon>
-                  </div>
-                )}
+                <div className={classes.scoreBoard_filtersContainer}>
+                  {authCtx.role === "ADMIN" && (
+                    <div className={classes.filterButton} onClick={generatePDF}>
+                      <PrintIcon></PrintIcon>
+                    </div>
+                  )}
+                  {authCtx.isLoggedIn && (
+                    <div
+                      className={classes.filterButton}
+                      onClick={() => {
+                        handleOpen();
+                        fetchTeamList();
+                      }}
+                    >
+                      <FilterAltIcon></FilterAltIcon>
+                    </div>
+                  )}
+                </div>
               </div>
               {toggleFilters && (
                 <ScoreboardFilter

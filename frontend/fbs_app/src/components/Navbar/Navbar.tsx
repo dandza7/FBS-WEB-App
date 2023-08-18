@@ -2,12 +2,14 @@ import React from "react";
 import classes from "./Navbar.module.css";
 import PersonIcon from "@mui/icons-material/Person";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
-
+import AuthContext from "../../store/auth-context";
+import LogoutIcon from "@mui/icons-material/Logout";
 const Navbar = () => {
+  const authCtx = useContext(AuthContext);
   const [openMenu, setOpenMenu] = useState(false);
   const navigate = useNavigate();
   const openMenuHandler = () => {
@@ -17,6 +19,11 @@ const Navbar = () => {
   const openPageHandler = (url: string) => {
     setOpenMenu(false);
     navigate(url);
+  };
+
+  const logoutHandler = () => {
+    authCtx.logout();
+    navigate("/leagues", { replace: true });
   };
 
   return (
@@ -80,11 +87,20 @@ const Navbar = () => {
             </div>
           </div>
           <div>
-            <div className={classes.loginButton}>
-              <NavLink to="/login" className={classes.NavLink}>
-                <PersonIcon className={classes.icon}></PersonIcon>
-              </NavLink>
-            </div>
+            {!authCtx.isLoggedIn && (
+              <div className={classes.loginButton}>
+                <NavLink to="/login" className={classes.NavLink}>
+                  <PersonIcon className={classes.icon}></PersonIcon>
+                </NavLink>
+              </div>
+            )}
+            {authCtx.isLoggedIn && (
+              <div className={classes.loginButton} onClick={logoutHandler}>
+                <NavLink to="/login" className={classes.NavLink}>
+                  <LogoutIcon className={classes.icon}></LogoutIcon>
+                </NavLink>
+              </div>
+            )}
           </div>
         </div>
       </div>
