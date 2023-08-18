@@ -22,11 +22,13 @@ import { Match } from "./pages/Match";
 import StaffMember from "./pages/StaffMember";
 import NewPlayer from "./pages/NewPlayer";
 import UpdatePlayer from "./pages/UpdatePlayer";
+import Register from "./pages/Register";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path="/login" element={<Login></Login>} />
+      <Route path="/register" element={<Register></Register>} />
       <Route path="/" element={<RootLayout></RootLayout>}>
         {<Route path="/" element={<></>}></Route>}
         <Route path="/leagues" index element={<Leagues></Leagues>}></Route>
