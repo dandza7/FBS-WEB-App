@@ -69,10 +69,10 @@ namespace FBSApp.Controllers
         }
 
         /// <summary>
-        /// [Anonymous] Gets seasons table
+        /// [Admin, User] Gets seasons table filtered
         /// </summary>
         [HttpPost("{seasonId}/filteredTable", Name = "GetFilteredTable")]
-        [AllowAnonymous]
+        [Authorize(Roles = "ADMIN, USER")]
         public ActionResult<IEnumerable<TeamTableViewDTO>> GetFilteredTable(long seasonId, [FromBody] TableCalculationQuery query)
         {
             return Ok(_seasonService.GetFilteredTable(seasonId, query));
