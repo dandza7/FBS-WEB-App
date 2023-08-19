@@ -219,11 +219,10 @@ namespace FBSApp.Services
 
         public IEnumerable<string> Temp()
         {
-            var season = _unitOfWork.SeasonRepository.GetAll().Where(s => s.Id == 1L).FirstOrDefault();
-            var players = _unitOfWork.PlayerRepository.GetAll().Where(p => p.Engagements.Where(e => e.StartDate >= DateTime.Parse("Aug 1, 2018") || e.EndDate <= season.EndDate)
-                                                                                        .Where(e => e.TeamId == 9).Any())
-                                                               .ToList();
-            return players.Select(p => $"{p.Id} - {p.Name}");
+            var retVal = new List<string>();
+            var date = DateTime.Parse("14/10/2000");
+            retVal.Add(date.ToString());
+            return retVal;
         }
 
         private int CalculateTeamGoals(Match match, string teamtype = "home")

@@ -44,5 +44,16 @@ namespace FBSApp.Controllers
         {
             return Ok(_matchService.GetMatchStats(id));
         }
+        /// <summary>
+        /// [Anonymous] Insert match via CSV file
+        /// </summary>
+        [HttpPost(Name = "InsertMatch")]
+        [AllowAnonymous]
+        public ActionResult<long> InsertMatch([FromForm] IFormFileCollection file)
+        {
+            var employees = 0L;//_csvService.ReadCSV<Employee>(file[0].OpenReadStream());
+
+            return Ok(_matchService.InsertMatch(file[0].OpenReadStream()));
+        }
     }
 }

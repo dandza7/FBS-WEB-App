@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CsvHelper;
 using FBSApp.Models;
 using FBSApp.Models.DTOs.Match;
 using FBSApp.Models.DTOs.Player;
@@ -8,6 +9,7 @@ using FBSApp.Models.DTOs.TeamStats;
 using FBSApp.Repositories;
 using FBSApp.SupportClasses.GlobalExceptionHandler.CustomExceptions;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace FBSApp.Services
 {
@@ -20,6 +22,37 @@ namespace FBSApp.Services
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+        }
+
+        public IEnumerable<string> InsertMatch(Stream file)
+        {
+            var reader = new StreamReader(file);
+            var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+            var retVal = new List<string>();
+            while (csv.Read())
+            {
+                switch (csv.GetField(0))
+                {
+                    case "Match":
+                        retVal.Add($"{csv.GetField(1)}, {csv.GetField(2)}, {csv.GetField(3)}");
+                        break;
+                    case "Team":
+                        retVal.Add($"{csv.GetField(1)}, {csv.GetField(2)}");
+                        break;
+                    case "Stats":
+                        retVal.Add($"{csv.GetField(1)}, {csv.GetField(2)}, {csv.GetField(3)}, {csv.GetField(4)}, {csv.GetField(5)}, {csv.GetField(6)}, " +
+                                   $"{csv.GetField(7)}, {csv.GetField(8)}, {csv.GetField(9)}, {csv.GetField(10)}, {csv.GetField(11)}, {csv.GetField(12)}, {csv.GetField(13)}");
+                        break;
+                    case "Player":
+                        retVal.Add($"{csv.GetField(1)}, {csv.GetField(2)}, {csv.GetField(3)}");
+                        break;
+                    case "Goal":
+                        retVal.Add($"{csv.GetField(1)}, {csv.GetField(2)}, {csv.GetField(3)}");
+                        break;
+
+                }
+            }
+            return retVal;
         }
 
         public MatchSquadDTO GetMatchSquad(long id)
