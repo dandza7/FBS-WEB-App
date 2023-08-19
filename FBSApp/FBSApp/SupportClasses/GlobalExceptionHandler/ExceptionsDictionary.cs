@@ -10,13 +10,15 @@ namespace FBSApp.SupportClasses.GlobalExceptionHandler
             {typeof(Exception), HttpStatusCode.InternalServerError},
             {typeof(NotFoundException), HttpStatusCode.NotFound},
             {typeof(BadCredentialsException), HttpStatusCode.BadRequest},
+            {typeof(BadCSVRowFormatException), HttpStatusCode.BadRequest},
             {typeof(DuplicateItemException), HttpStatusCode.BadRequest}
         };
         public static Type[] BadRequestExceptions =
         {
             typeof(BadCredentialsException),
             typeof(NotFoundException),
-            typeof(DuplicateItemException)
+            typeof(DuplicateItemException),
+            typeof(BadCSVRowFormatException)
         };
 
         public static HttpStatusCode GetExceptionStatusCode(Exception ex)
