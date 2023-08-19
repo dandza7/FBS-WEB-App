@@ -24,35 +24,222 @@ namespace FBSApp.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<string> InsertMatch(Stream file)
+        public long InsertMatch(Stream file)
         {
             var reader = new StreamReader(file);
             var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
-            var retVal = new List<string>();
+            Match? currentMatch = null;
+            MatchActor? currentMatchActor = null;
+            TeamStats? currentTeamStats = null;
+            PlayedMatch? currentPlayedMatch = null;
+            Goal? currentGoal = null;
+
             while (csv.Read())
             {
                 switch (csv.GetField(0))
                 {
                     case "Match":
-                        retVal.Add($"{csv.GetField(1)}, {csv.GetField(2)}, {csv.GetField(3)}");
+                        currentMatch = ConvertCSVToMatch(csv);
+                        _unitOfWork.MatchRepository.Create(currentMatch);
                         break;
                     case "Team":
-                        retVal.Add($"{csv.GetField(1)}, {csv.GetField(2)}");
+                        currentMatchActor = ConvertCSVToMatchActor(csv, currentMatch);
+                        _unitOfWork.MatchActorRepository.Create(currentMatchActor);
                         break;
                     case "Stats":
-                        retVal.Add($"{csv.GetField(1)}, {csv.GetField(2)}, {csv.GetField(3)}, {csv.GetField(4)}, {csv.GetField(5)}, {csv.GetField(6)}, " +
-                                   $"{csv.GetField(7)}, {csv.GetField(8)}, {csv.GetField(9)}, {csv.GetField(10)}, {csv.GetField(11)}, {csv.GetField(12)}, {csv.GetField(13)}");
+                        currentTeamStats = ConvertCSVToTeamStats(csv, currentMatchActor);
+                        _unitOfWork.TeamStatsRepository.Create(currentTeamStats);
                         break;
                     case "Player":
-                        retVal.Add($"{csv.GetField(1)}, {csv.GetField(2)}, {csv.GetField(3)}");
+                        currentPlayedMatch = ConvertCSVToPlayedMatch(csv, currentMatch);
+                        _unitOfWork.PlayedMatchRepository.Create(currentPlayedMatch);
                         break;
                     case "Goal":
-                        retVal.Add($"{csv.GetField(1)}, {csv.GetField(2)}, {csv.GetField(3)}");
+                        currentGoal = ConvertCSVToGoal(csv, currentPlayedMatch);
+                        _unitOfWork.GoalRepository.Create(currentGoal);
                         break;
 
                 }
             }
-            return retVal;
+            _unitOfWork.SaveChanges();
+            return currentMatch.Id;
+        }
+
+        private Goal ConvertCSVToGoal(CsvReader csv, PlayedMatch playedMatch)
+        {
+            var minute = 0;
+            if (!Int32.TryParse(csv.GetField(1), out minute))
+            {
+                throw new BadCSVRowFormatException("First field after Player key word must be convertable to INT data type.");
+            }
+            bool isOwnGoal;
+            if (csv.GetField(2) == "Yes")
+            {
+                isOwnGoal = true;
+            }
+            else if (csv.GetField(2) == "No")
+            {
+                isOwnGoal = false;
+            }
+            else
+            {
+                throw new BadCSVRowFormatException("Second field after Team key word must be either Yes or No.");
+            }
+            bool isExtraTime;
+            if (csv.GetField(3) == "Yes")
+            {
+                isExtraTime = true;
+            }
+            else if (csv.GetField(3) == "No")
+            {
+                isExtraTime = false;
+            }
+            else
+            {
+                throw new BadCSVRowFormatException("Third field after Team key word must be either Yes or No.");
+            }
+            return new Goal
+            {
+                GoalInfo = playedMatch,
+                IsOwnGoal = isOwnGoal,
+                IsExtraTime = isExtraTime,
+                Minute = minute
+            };
+        }
+
+        private PlayedMatch ConvertCSVToPlayedMatch(CsvReader csv, Match match)
+        {
+            var playerId = 0L;
+            if (!Int64.TryParse(csv.GetField(1), out playerId))
+            {
+                throw new BadCSVRowFormatException("First field after Player key word must be convertable to LONG data type.");
+            }
+            var player = _unitOfWork.PlayerRepository.GetAll().FirstOrDefault(p => p.Id == playerId);
+            if (player == null)
+            {
+                throw new NotFoundException($"There is no player with ID {playerId} in database.");
+            }
+            var minutes = 0;
+            if (!Int32.TryParse(csv.GetField(2), out minutes))
+            {
+                throw new BadCSVRowFormatException("Second field after Player key word must be convertable to INT data type.");
+            }
+            bool isStarter;
+            if (csv.GetField(3) == "Starter")
+            {
+                isStarter = true;
+            }
+            else if (csv.GetField(3) == "Bench")
+            {
+                isStarter = false;
+            }
+            else
+            {
+                throw new BadCSVRowFormatException("Third field after Team key word must be either Starter or Bench.");
+            }
+            return new PlayedMatch
+            {
+                Match = match,
+                Player = player,
+                Minutes = minutes,
+                IsStarter = isStarter
+            };
+        }
+
+        private TeamStats ConvertCSVToTeamStats(CsvReader csv, MatchActor matchActor)
+        {
+            return new TeamStats
+            {
+                Shots = ConvertCSVFieldToStat(csv.GetField(1)),
+                ShotsOnTarget = ConvertCSVFieldToStat(csv.GetField(2)),
+                BlockedShots = ConvertCSVFieldToStat(csv.GetField(3)),
+                FreeKicks = ConvertCSVFieldToStat(csv.GetField(4)),
+                CornerKicks = ConvertCSVFieldToStat(csv.GetField(5)),
+                Offsides = ConvertCSVFieldToStat(csv.GetField(6)),
+                Possession = ConvertCSVFieldToStat(csv.GetField(7)),
+                Saves = ConvertCSVFieldToStat(csv.GetField(8)),
+                Fouls = ConvertCSVFieldToStat(csv.GetField(9)),
+                RedCards = ConvertCSVFieldToStat(csv.GetField(10)),
+                YellowCards = ConvertCSVFieldToStat(csv.GetField(11)),
+                Tackles = ConvertCSVFieldToStat(csv.GetField(12)),
+                Passes = ConvertCSVFieldToStat(csv.GetField(13)),
+                TeamMatchInfo = matchActor
+            };
+        }
+
+        private int ConvertCSVFieldToStat(string field)
+        {
+            var number = 0;
+            if (!Int32.TryParse(field, out number))
+            {
+                throw new BadCSVRowFormatException("Every field after Stats key word must be convertable to INT data type.");
+            }
+            return number;
+        }
+
+        private MatchActor ConvertCSVToMatchActor(CsvReader csv, Match match)
+        {
+            var teamId = 0L;
+            if (!Int64.TryParse(csv.GetField(1), out teamId))
+            {
+                throw new BadCSVRowFormatException("First field after Team key word must be convertable to LONG data type.");
+            }
+            var team = _unitOfWork.TeamRepository.GetAll().FirstOrDefault(t => t.Id == teamId);
+            if (team == null)
+            {
+                throw new NotFoundException($"There is not team with ID {teamId} in database.");
+            }
+            bool isTeamHost;
+            if (csv.GetField(2) == "Home")
+            {
+                isTeamHost = true;
+            }
+            else if (csv.GetField(2) == "Away")
+            {
+                isTeamHost = false;
+            }
+            else
+            {
+                throw new BadCSVRowFormatException("Second field after Team key word must be either Home or Away.");
+            }
+            return new MatchActor
+            {
+                Match = match,
+                Team = team,
+                IsTeamHost = isTeamHost
+            };
+        }
+
+        private Match ConvertCSVToMatch(CsvReader csv)
+        {
+            var leagueId = 0L;
+            if (!Int64.TryParse(csv.GetField(1), out leagueId))
+            {
+                throw new BadCSVRowFormatException("First field after Match key word must be convertable to LONG data type.");
+            }
+            DateTime matchDate = DateTime.Now;
+            if (!DateTime.TryParse(csv.GetField(2), out matchDate))
+            {
+                throw new BadCSVRowFormatException("Second field after Match key word must be convertable to DATETIME data type.");
+            }
+            var gameweek = 1;
+            if (!Int32.TryParse(csv.GetField(3), out gameweek))
+            {
+                throw new BadCSVRowFormatException("Third field after Match key word must be convertable to INT data type.");
+            }
+            var season = _unitOfWork.SeasonRepository.GetAll(s => s.League).Where(s => s.LeagueId == leagueId)
+                                                                       .Where(s => s.StartDate <= matchDate && matchDate <= s.EndDate)
+                                                                       .FirstOrDefault();
+            if (season == null)
+            {
+                throw new NotFoundException($"There is no season for league with ID {leagueId} in date of {matchDate}");
+            }
+            return new Match
+            {
+                Gameweek = gameweek,
+                Date = matchDate,
+                Season = season,
+            };
         }
 
         public MatchSquadDTO GetMatchSquad(long id)
