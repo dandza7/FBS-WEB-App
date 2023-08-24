@@ -51,8 +51,6 @@ namespace FBSApp.Controllers
         [AllowAnonymous]
         public ActionResult<long> InsertMatch([FromForm] IFormFileCollection file)
         {
-            var employees = 0L;//_csvService.ReadCSV<Employee>(file[0].OpenReadStream());
-
             return Ok(_matchService.InsertMatch(file[0].OpenReadStream()));
         }
     }
