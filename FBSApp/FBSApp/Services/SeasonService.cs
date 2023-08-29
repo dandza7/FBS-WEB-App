@@ -81,10 +81,12 @@ namespace FBSApp.Services
 
         public IEnumerable<TeamTableViewDTO> GetDefaultTable(long seasonId)
         {
+            //Console.WriteLine($"{DateTime.Now} - USAO U FUNKCIJU");
             var season = _unitOfWork.SeasonRepository.GetAll().Include(s => s.Teams).ThenInclude(t => t.Country)
                                                               .Include(s => s.Matches).ThenInclude(m => m.MatchActors).ThenInclude(ma => ma.Team)
                                                               .Include(s => s.Matches).ThenInclude(m => m.PlayersEvidention.Where(pe => pe.Goals.Any())).ThenInclude(pm => pm.Goals)
                                                               .FirstOrDefault(s => s.Id == seasonId);
+            //Console.WriteLine($"{DateTime.Now} - DOBAVIO SEZONU");
             if (season == null)
             {
                 throw new NotFoundException($"Season with ID {seasonId} does not exist.");
@@ -103,10 +105,12 @@ namespace FBSApp.Services
                 GoalsConceded = 0,
             });
             var matches = season.Matches.Where(m => m.MatchActors.Any()); //Izbaciti Where kad se ubace svi mecevi
+            //Console.WriteLine($"{DateTime.Now} - Pocinjem racunanje tabele");
             foreach (var match in matches)
             {
                 CalculateMatchWinner(match, table);
             }
+            //Console.WriteLine($"{DateTime.Now} - Zavrsio racunanje tabele");
 
 
             return table.Select(t => t.Value).OrderByDescending(t => (3 * t.Wins + t.Draws))
