@@ -387,7 +387,7 @@ namespace FBSApp.Services
                                                                                    .Where(e => e.StartDate < match.Date && e.EndDate > match.Date).Any()).FirstOrDefault();
             if (homeCoach == null)
             {
-                throw new Exception($"ERROR WITH DATA Inserting staff into squad, team with ID {match.MatchActors.Where(ma => ma.IsTeamHost).First().Id} has no head coach at the moment of match with ID {match.Id}.");
+                throw new Exception($"ERROR WITH DATA Inserting staff into squad, team with ID {match.MatchActors.Where(ma => ma.IsTeamHost).First().TeamId} has no head coach at the moment of match with ID {match.Id}.");
             }
             var awayTeamId = match.MatchActors.First(ma => !ma.IsTeamHost).TeamId;
             var awayCoach = _unitOfWork.StaffRepository.GetAll(s => s.Country)
@@ -396,7 +396,7 @@ namespace FBSApp.Services
                                                                                    .Where(e => e.StartDate < match.Date && e.EndDate > match.Date).Any()).FirstOrDefault();
             if (awayCoach == null)
             {
-                throw new Exception($"ERROR WITH DATA Inserting staff into squad, team with ID {match.MatchActors.Where(ma => !ma.IsTeamHost).First().Id} has no head coach at the moment of match with ID {match.Id}.");
+                throw new Exception($"ERROR WITH DATA Inserting staff into squad, team with ID {match.MatchActors.Where(ma => !ma.IsTeamHost).First().TeamId} has no head coach at the moment of match with ID {match.Id}.");
             }
             squad.HomeHeadCoach = new StaffDTO { Id = homeCoach.Id, BirthDate = homeCoach.BirthDate, Name = homeCoach.Name, CountryFlag = homeCoach.Country.Flag };
             squad.AwayHeadCoach = new StaffDTO { Id = awayCoach.Id, BirthDate = awayCoach.BirthDate, Name = awayCoach.Name, CountryFlag = awayCoach.Country.Flag };
